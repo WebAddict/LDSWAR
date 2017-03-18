@@ -12,6 +12,12 @@
   <p>
     Wake and Rise
   </p>
+<h2>Lessons</h2>
+<ul>
+  <li class="text" *ngFor="let lesson of lessons | async">
+    {{lesson.$value}}
+  </li>
+</ul>
   <ion-card *ngFor="let item of items">
     <ion-card-header (click)="viewItem(item)">
 	{{item.title}}

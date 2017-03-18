@@ -16,17 +16,21 @@
 </ion-header>
 
 
-<ion-content padding>
-  <h2>Missionaries!</h2>
+<ion-content>
 
-
-  <ion-card *ngFor="let missionary of missionaries">
+  <ion-card *ngFor="let missionary of missionaries | async">
     <ion-card-header (click)="viewMissionary(missionary)">
-	{{missionary.title}}
+	Elder {{missionary.lastName}}
 	</ion-card-header>
 	<ion-card-content>
-	  {{missionary.description}}
+	  {{missionary.missionName}}
 	</ion-card-content>
   </ion-card>
 
+  <h1>Missions</h1>
+  <ion-card *ngFor="let mission of missions | async">
+	<ion-card-content>
+	  {{mission.missionName}}
+	</ion-card-content>
+  </ion-card>
 </ion-content>

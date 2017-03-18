@@ -3,9 +3,20 @@
     <ion-title>
       About
     </ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="addLesson()"><ion-icon name="add-circle"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+<h2>Lessons</h2>
+  <ion-card *ngFor="let lesson of lessons | async">
+    <ion-card-header (click)="viewLesson(lesson)">
+	{{lesson.title}}
+	</ion-card-header>
+	<ion-card-content>
+	  {{lesson.description}}
+	</ion-card-content>
+  </ion-card>
 </ion-content>
