@@ -49,8 +49,7 @@ export const myFirebaseAuthConfig = {
     ContactPage,
     HomePage,
     TabsPage,
-    MissionariesPage,
-    LessonsPage
+    MissionariesPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
 })

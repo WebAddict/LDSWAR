@@ -1,0 +1,26 @@
+<!--
+  Generated template for the Lessons page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>lessons</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngFor="let lesson of lessons | async">
+    <ion-card-header (click)="viewLesson(lesson)">
+	{{lesson.title}}
+	</ion-card-header>
+	<ion-card-content>
+	  {{lesson.description}}
+	</ion-card-content>
+  </ion-card>
+
+</ion-content>
