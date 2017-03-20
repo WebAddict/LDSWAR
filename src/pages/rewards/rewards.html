@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Rewards</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-card *ngFor="let reward of rewards | async">
+    <ion-card-header (click)="viewReward(reward)">
+	{{reward.title}}
+	</ion-card-header>
+	<ion-card-content>
+	  {{reward.description}}
+	</ion-card-content>
+  </ion-card>
+
+</ion-content>

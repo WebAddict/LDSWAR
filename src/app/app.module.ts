@@ -9,12 +9,12 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 
 // Importing Pages
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { MissionariesPage } from '../pages/missionaries/missionaries';
 import { LessonsPage } from '../pages/lessons/lessons';
+import { ActionsPage } from '../pages/actions/actions';
+import { RewardsPage } from '../pages/rewards/rewards';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDsj62-5wjG0lOkRCOzOu-jv46DGQ6xl6g',
@@ -31,12 +31,12 @@ export const myFirebaseAuthConfig = {
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     TabsPage,
     MissionariesPage,
-    LessonsPage
+    LessonsPage,
+    ActionsPage,
+    RewardsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp) ,
@@ -45,12 +45,12 @@ export const myFirebaseAuthConfig = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
     HomePage,
     TabsPage,
     MissionariesPage,
-    LessonsPage
+    LessonsPage,
+    ActionsPage,
+    RewardsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
 })

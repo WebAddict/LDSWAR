@@ -3,30 +3,26 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 @Component({
-  selector: 'page-lessons',
-  templateUrl: 'lessons.html'
+  selector: 'page-rewards',
+  templateUrl: 'rewards.html'
 })
-export class LessonsPage {
+export class RewardsPage {
 
-  lessons: FirebaseListObservable<any[]>;
+  rewards: FirebaseListObservable<any[]>;
   constructor(public navCtrl: NavController, public navParams: NavParams, af: AngularFire) {
-    this.lessons = af.database.list('/lessons');
+    this.rewards = af.database.list('/rewards');
   }
 
-  addLesson(){
+  addReward(){
       //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
   }
  
-  viewLesson(){
+  viewReward(){
  
   }
-  ionViewDidLoad(){
-    //this.addLesson();
-    //console.log('ionViewDidLoad LessonsPage');
- 
-  }
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LessonsPage');
+    console.log('ionViewDidLoad RewardsPage');
   }
 
 }

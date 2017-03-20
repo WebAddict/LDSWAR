@@ -1,29 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Home</ion-title>
-    <ion-buttons end>
-        <button ion-button icon-only (click)="addItem()"><ion-icon name="add-circle"></ion-icon></button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to WAR</h2>
-  <p>
-    Wake and Rise
-  </p>
-<h2>Lessons</h2>
-<ul>
-  <li class="text" *ngFor="let lesson of lessons | async">
-    {{lesson.$value}}
-  </li>
-</ul>
-  <ion-card *ngFor="let item of items">
-    <ion-card-header (click)="viewItem(item)">
-	{{item.title}}
-	</ion-card-header>
-	<ion-card-content>
-	  {{item.description}}
-	</ion-card-content>
-  </ion-card>
+
+  <h2>Wake and Rise</h2>
+
 </ion-content>
