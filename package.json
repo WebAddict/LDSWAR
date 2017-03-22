@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "LDSWar",
+  "author": "Rich Johnson",
+  "homepage": "https://ldswar.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
