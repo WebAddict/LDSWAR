@@ -8,7 +8,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 })
 export class LessonsPage {
 
-  lessons: FirebaseListObservable<any[]>;
+  public lessons: FirebaseListObservable<any[]>;
   constructor(public navCtrl: NavController, public navParams: NavParams, af: AngularFire) {
     this.lessons = af.database.list('/lessons');
   }
@@ -17,8 +17,11 @@ export class LessonsPage {
       //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
   }
  
-  viewLesson(){
- 
+  viewLesson(lesson){
+    //let subscription = this.af.database.object('someLocation').subscribe(data=> {
+      //do something with your data
+    //})
+    //subscription.unsubscribe();
   }
   ionViewDidLoad(){
     //this.addLesson();

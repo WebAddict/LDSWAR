@@ -1,9 +1,13 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { LDSWarApp } from './app.component';
 
 // Importing AF2 Module
 import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+
+// Importing Ionic Native
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 // Importing Providers
 import { AuthService } from '../providers/auth-service';
@@ -30,7 +34,7 @@ export const myFirebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    MyApp,
+    LDSWarApp,
     HomePage,
     TabsPage,
     MissionariesPage,
@@ -39,12 +43,12 @@ export const myFirebaseAuthConfig = {
     RewardsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp) ,
+    IonicModule.forRoot(LDSWarApp) ,
     AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
+    LDSWarApp,
     HomePage,
     TabsPage,
     MissionariesPage,
@@ -52,6 +56,11 @@ export const myFirebaseAuthConfig = {
     ActionsPage,
     RewardsPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, AuthService]
+  providers: [
+    StatusBar,
+    SplashScreen,
+    AuthService,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
 })
 export class AppModule {}

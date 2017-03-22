@@ -6,12 +6,14 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthService {
   private authState: FirebaseAuthState;
+  //public myAccount: any;
   constructor(public auth$: AngularFireAuth, public http: Http) {
-    this.authState = auth$.getAuth();
     auth$.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
     });
+    //this.myName = "Hi there";
     console.log('Hello AuthService Provider');
+    console.log(this.authState);
   }
   get authenticated(): boolean {
     return this.authState !== null;
