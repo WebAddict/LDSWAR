@@ -18,18 +18,18 @@ import { AuthService } from '../providers/auth-service';
 export class LDSWarApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = TabsPage;
-  public pages: Array<{title: string, component: any}>;
+  public pages: Array<{title: string, component: any, icon: any}>;
   constructor(public platform: Platform, public AuthService: AuthService, public statusBar: StatusBar, public splashScreen: SplashScreen) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Tabed Page', component: TabsPage },
-      { title: 'Home', component: HomePage },
-      { title: 'Lessons', component: LessonsPage },
-      { title: 'Actions', component: ActionsPage },
-      { title: 'Rewards', component: RewardsPage },
-      { title: 'Missionaries', component: MissionariesPage }
+      { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
+      { title: 'Home', component: HomePage, icon: 'home' },
+      { title: 'Lessons', component: LessonsPage, icon: 'book' },
+      { title: 'Actions', component: ActionsPage, icon: 'compass' },
+      { title: 'Rewards', component: RewardsPage, icon: 'cart' },
+      { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' }
     ];
   }
 

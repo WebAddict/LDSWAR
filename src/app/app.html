@@ -1,19 +1,42 @@
-<ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-split-pane when="md">
+	<ion-menu [content]="content">
+	  <ion-header>
+		<ion-toolbar color="primary">
+		  <ion-title>Menu</ion-title>
+		</ion-toolbar>
+	  </ion-header>
 
-  <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-    </ion-list>
-  </ion-content>
+	  <ion-content>
+		<ion-list no-lines>
+	      <ion-item-divider color="primary">
+		    My Account
+		  </ion-item-divider>
+		  <button menuClose ion-item>
+		    <ion-icon name="person" item-left></ion-icon>
+			My Profile
+		  </button>
+		  <button menuClose ion-item>
+		    <ion-icon name="flash" item-left></ion-icon>
+			My Points
+		  </button>
+	      <ion-item-divider color="primary">
+		    Sections
+		  </ion-item-divider>
+		  <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+		    <ion-icon name="{{p.icon}}" item-left></ion-icon>
+			{{p.title}}
+		  </button>
+	      <ion-item-divider color="primary">
+		    Admin
+		  </ion-item-divider>
+		  <button menuClose ion-item>
+		    <ion-icon name="flag" item-left></ion-icon>
+			Moderation
+		  </button>
+		</ion-list>
+	  </ion-content>
 
-</ion-menu>
-
-<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
-<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+	</ion-menu>
+	<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+	<ion-nav [root]="rootPage" #content swipeBackEnabled="false" main></ion-nav>
+</ion-split-pane>
