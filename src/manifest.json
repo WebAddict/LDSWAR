@@ -1,7 +1,7 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
-  "start_url": "index.html",
+  "name": "LDS Wake And Rise",
+  "short_name": "LDSWAR",
+  "start_url": "index.html?v=h38xh",
   "display": "standalone",
   "icons": [{
     "src": "assets/imgs/logo.png",

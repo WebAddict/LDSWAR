@@ -8,6 +8,8 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 // Importing Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { IonicStorageModule } from '@ionic/storage';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 // Importing Providers
 import { AuthService } from '../providers/auth-service';
@@ -43,7 +45,8 @@ export const myFirebaseAuthConfig = {
     RewardsPage
   ],
   imports: [
-    IonicModule.forRoot(LDSWarApp) ,
+    IonicModule.forRoot(LDSWarApp),
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig)
   ],
   bootstrap: [IonicApp],
@@ -60,6 +63,7 @@ export const myFirebaseAuthConfig = {
     StatusBar,
     SplashScreen,
     AuthService,
+    Facebook,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
