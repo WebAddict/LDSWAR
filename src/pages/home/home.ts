@@ -9,7 +9,8 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  hits: number;
+  public user2;
+  public hits: number;
 
   constructor(public navCtrl: NavController, public AuthService: AuthService, storage: Storage) {
     storage.get('totalHits').then((val) => {
@@ -21,6 +22,7 @@ export class HomePage {
       }
       storage.set('totalHits', this.hits);
     })
+
   }
 
   addItem(){

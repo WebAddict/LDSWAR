@@ -61,9 +61,9 @@ export class AuthService {
 	var profile = {
 		//datecreated: moment().valueOf(),
 		defaultdate: 'None',
-		email: 'email@email.com',
+		email: firebaseUser.email,
 		enabletouchid: 'false',
-		fullname: 'full name',
+		fullname: firebaseUser.displayName,
 		nickname: 'nickname',
 		profilepic: 'http://www.gravatar.com/avatar?d=mm&s=140',
 		paymentplan: 'Free'
@@ -83,7 +83,11 @@ export class AuthService {
   signInWithFacebook(): firebase.Promise<FirebaseAuthState> {
     if (this.platform.is('cordova')) {
       this.fb.login(['public_profile', 'user_friends', 'email'])
-        .then((res: FacebookLoginResponse) => console.log('Logged into Facebook!', res))
+        .then(function (res: FacebookLoginResponse) {
+	  console.log('Logged into Facebook!', res);
+          const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+          firebase.auth().signInWithCredential(facebookCredential);
+	})
         .catch(e => console.log('Error logging into Facebook', e));
 
       //return Facebook.login(['email', 'public_profile']).then((res: FacebookLoginResponse) => {
