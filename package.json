@@ -3,6 +3,10 @@
   "author": "Rich Johnson",
   "homepage": "https://ldswar.com/",
   "private": true,
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/WebAddict/LDSWAR.git"
+  },
   "scripts": {
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",

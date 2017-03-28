@@ -1,0 +1,284 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+
+# https://firebase.google.com/docs/database/security/securing-data
+
+{
+  "rules": {
+    "foo": {
+      // /foo is readable by the world
+      ".read": true,
+
+      // /foo is writable by the world
+      ".write": true,
+
+      // data written to /foo must be a string less than 100 characters
+      ".validate": "newData.isString() && newData.val().length < 100"
+    }
+  }
+}
+
+
+{
+  "rules": {
+    "messages": {
+      "$message": {
+        // only messages from the last ten minutes can be read
+        ".read": "data.child('timestamp').val() > (now - 600000)",
+
+        // new messages must have a string content and a number timestamp
+        ".validate": "newData.hasChildren(['content', 'timestamp']) && newData.child('content').isString() && newData.child('timestamp').isNumber()"
+      }
+    }
+  }
+}
+
+
+
+{
+  "rules": {
+    "room_names": {
+      // any logged in user can get a list of room names
+      ".read": "auth !== null",
+
+      "$room_id": {
+        // this is just for documenting the structure of rooms, since
+        // they are read-only and no write rule allows this to be set
+        ".validate": "newData.isString()"
+      }
+    },
+
+    "members": {
+       // I can join or leave any room (otherwise it would be a boring demo)
+       // I can have a different name in each room just for fun
+       "$room_id": {
+          // any member can read the list of member names
+          ".read": "data.child(auth.uid).exists()",
+
+          // room must already exist to add a member
+          ".validate": "root.child('room_names/'+$room_id).exists()",
+
+          "$user_id": {
+             ".write": "auth.uid === $user_id",
+             ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 20"
+          }
+       }
+    },
+
+    "messages": {
+      "$room_id": {
+        // the list of messages for a room can be read by any member
+        ".read": "root.child('members/'+$room_id+'/'+auth.uid).exists()",
+
+        // room we want to write a message to must be valid
+        ".validate": "root.child('room_names/'+$room_id).exists()",
+
+        "$message_id": {
+          // a new message can be created if it does not exist, but it
+          // cannot be modified or deleted
+          // any member of a room can write a new message
+          ".write": "root.child('members/'+$room_id+'/'+auth.uid).exists() && !data.exists() && newData.exists()",
+
+          // the room attribute must be a valid key in room_names/ (the room must exist)
+          // the object to write must have a name, message, and timestamp
+          ".validate": "newData.hasChildren(['user', 'message', 'timestamp'])",
+
+          // the message must be written by logged in user
+          "user": {
+             ".validate": "newData.val() === auth.uid"
+          },
+
+          // the message must be longer than 0 chars and less than 50
+          "message": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 50" },
+
+          // messages cannot be added in the past or the future
+          // clients should use firebase.database.ServerValue.TIMESTAMP
+          // to ensure accurate timestamps
+          "timestamp": { ".validate": "newData.val() <= now" },
+
+          // no other fields can be included in a message
+          "$other": { ".validate": false }
+        }
+      }
+    }
+  }
+}
+
+
+{
+  "rules": {
+    // write is allowed for all paths
+    ".write": true,
+    "widget": {
+      // a valid widget must have attributes "color" and "size"
+      // allows deleting widgets (since .validate is not applied to delete rules)
+      ".validate": "newData.hasChildren(['color', 'size'])",
+      "size": {
+        // the value of "size" must be a number between 0 and 99
+        ".validate": "newData.isNumber() &&
+                      newData.val() >= 0 &&
+                      newData.val() <= 99"
+      },
+      "color": {
+        // the value of "color" must exist as a key in our mythical
+        // /valid_colors/ index
+        ".validate": "root.child('valid_colors/' + newData.val()).exists()"
+      }
+    }
+  }
+}
+
+
+{
+  "rules": {
+    // this variant will NOT allow deleting records (since .write would be disallowed)
+    "widget": {
+      // a widget must have 'color' and 'size' in order to be written to this path
+      ".write": "newData.hasChildren(['color', 'size'])",
+      "size": {
+        // the value of "size" must be a number between 0 and 99, ONLY IF WE WRITE DIRECTLY TO SIZE
+        ".write": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 99"
+      },
+      "color": {
+        // the value of "color" must exist as a key in our mythical valid_colors/ index
+        // BUT ONLY IF WE WRITE DIRECTLY TO COLOR
+        ".write": "root.child('valid_colors/'+newData.val()).exists()"
+      }
+    }
+  }
+}
+
+
+{
+  "rules": {
+    "rooms": {
+      // this rule applies to any child of /rooms/, the key for each room id
+      // is stored inside $room_id variable for reference
+      "$room_id": {
+        "topic": {
+          // the room's topic can be changed if the room id has "public" in it
+          ".write": "$room_id.contains('public')"
+        }
+      }
+    }
+  }
+}
+
+{
+  "rules": {
+    "widget": {
+      // a widget can have a title or color attribute
+      "title": { ".validate": true },
+      "color": { ".validate": true },
+
+      // but no other child paths are allowed
+      // in this case, $other means any key excluding "title" and "color"
+      "$other": { ".validate": false }
+    }
+  }
+}
+
+
+
+##### Anonymous Chat Example
+
+{
+  "rules": {
+    // default rules are false if not specified
+    // setting these to true would make ALL CHILD PATHS readable/writable
+    // ".read": false,
+    // ".write": false,
+
+    "room_names": {
+      // the room names can be enumerated and read
+      // they cannot be modified since no write rule
+      // explicitly allows this
+      ".read": true,
+
+      "$room_id": {
+        // this is just for documenting the structure of rooms, since
+        // they are read-only and no write rule allows this to be set
+        ".validate": "newData.isString()"
+      }
+    },
+
+    "messages": {
+      "$room_id": {
+        // the list of messages in a room can be enumerated and each
+        // message could also be read individually, the list of messages
+        // for a room cannot be written to in bulk
+        ".read": true,
+
+        // room we want to write a message to must be valid
+        ".validate": "root.child('room_names/'+$room_id).exists()",
+
+        "$message_id": {
+          // a new message can be created if it does not exist, but it
+          // cannot be modified or deleted
+          ".write": "!data.exists() && newData.exists()",
+          // the room attribute must be a valid key in room_names/ (the room must exist)
+          // the object to write must have a name, message, and timestamp
+          ".validate": "newData.hasChildren(['name', 'message', 'timestamp'])",
+
+          // the name must be a string, longer than 0 chars, and less than 20 and cannot contain "admin"
+          "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 20 && !newData.val().contains('admin')" },
+
+          // the message must be longer than 0 chars and less than 50
+          "message": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length < 50" },
+
+          // messages cannot be added in the past or the future
+          // clients should use firebase.database.ServerValue.TIMESTAMP
+          // to ensure accurate timestamps
+          "timestamp": { ".validate": "newData.val() <= now" },
+
+          // no other fields can be included in a message
+          "$other": { ".validate": false }
+        }
+      }
+    }
+  }
+}
+
+# Index Your Data
+# https://firebase.google.com/docs/database/security/indexing-data
+
+{
+  "rules": {
+    "dinosaurs": {
+      ".indexOn": ["height", "length"]
+    }
+  }
+}
+
+{
+  "rules": {
+    "scores": {
+      ".indexOn": ".value"
+    }
+  }
+}
+
+
+# from CajaFuerte-app
+
+{
+  "rules": {
+    "vaults": {
+      "$vault_id": {
+        // Grants read/write access to the users whose vaultid exactly match the key ($vault_id)
+        ".read": "root.child('users').child(auth.uid).child('vaultid').val() === $vault_id",
+        ".write": "root.child('users').child(auth.uid).child('vaultid').val() === $vault_id",
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    }
+  }
+}

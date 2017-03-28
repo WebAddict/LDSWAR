@@ -7,8 +7,7 @@
 # Keystore Pass: P58Hp5eUoShRTVoKroCXou6j
 
 # Facebook
-keytool -exportcert -alias androiddebugkey -keystore "C:\Projects\LDSWar\.private\LDSWAR.keystore" -storepass P58Hp5eUoShRTVoKroCXou6j -keypass P58Hp5eUoShRTVoKroCXou6j | openssl sha1 -binary | openssl
-base64
+# keytool -exportcert -alias androiddebugkey -keystore "C:\Projects\LDSWar\.private\LDSWAR.keystore" -storepass P58Hp5eUoShRTVoKroCXou6j -keypass P58Hp5eUoShRTVoKroCXou6j | openssl sha1 -binary | openssl base64
 
 
 cordova plugin rm cordova-plugin-console

@@ -24,12 +24,12 @@ import { UsersPage } from '../pages/users/users';
 // Importing Providers
 import { AuthService } from '../providers/auth-service';
 
-export const firebaseConfig = {
+export const myFirebaseConfig = {
   apiKey: 'AIzaSyDsj62-5wjG0lOkRCOzOu-jv46DGQ6xl6g',
   authDomain: 'ldswar-ab4a8.firebaseapp.com',
   databaseURL: 'https://ldswar-ab4a8.firebaseio.com',
   storageBucket: 'ldswar-ab4a8.appspot.com',
-  messagingSenderId: '<your-messaging-sender-id>'
+  messagingSenderId: '156611440340'
 };
 export const myFirebaseAuthConfig = {
     provider: AuthProviders.Password,
@@ -51,7 +51,7 @@ export const myFirebaseAuthConfig = {
   imports: [
     IonicModule.forRoot(LDSWarApp),
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig)
+    AngularFireModule.initializeApp(myFirebaseConfig, myFirebaseAuthConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

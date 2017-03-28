@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage';
 export class HomePage {
   hits: number;
 
-  constructor(public navCtrl: NavController, private _auth: AuthService, storage: Storage) {
+  constructor(public navCtrl: NavController, public AuthService: AuthService, storage: Storage) {
     storage.get('totalHits').then((val) => {
       console.log("got " + val + " hits from storage");
       if (val && val > 0) {
@@ -33,11 +33,11 @@ export class HomePage {
  
   }
   signInWithFacebook(): void {
-    this._auth.signInWithFacebook()
+    this.AuthService.signInWithFacebook()
       .then(() => this.onSignInSuccess());
   }
 
   private onSignInSuccess(): void {
-    console.log("Facebook display name ",this._auth.getDisplayName());
+    console.log("Facebook display name ",this.AuthService.getDisplayName());
   }
 }

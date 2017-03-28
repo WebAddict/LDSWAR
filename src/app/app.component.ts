@@ -19,7 +19,12 @@ export class LDSWarApp {
   @ViewChild(Nav) nav: Nav;
   rootPage: any = TabsPage;
   public pages: Array<{title: string, component: any, icon: any}>;
-  constructor(public platform: Platform, public AuthService: AuthService, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform,
+    public AuthService: AuthService,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen) {
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
