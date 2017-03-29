@@ -32,7 +32,8 @@ import { WelcomePage } from '../pages/welcome/welcome';
 import { MainPage } from '../pages/pages';
 
 // Importing Providers
-import { AuthService } from '../providers/auth-service';
+import { DataProvider } from '../providers/data';
+import { AuthProvider } from '../providers/auth';
 
 export const myFirebaseConfig = {
   apiKey: 'AIzaSyDsj62-5wjG0lOkRCOzOu-jv46DGQ6xl6g',
@@ -46,12 +47,6 @@ export const myFirebaseAuthConfig = {
     method: AuthMethods.Password
 }
 
-
-/**
- * The Pages array lists all of the pages we want to use in our app.
- * We then take these pages and inject them into our NgModule so Angular
- * can find them. As you add and remove pages, make sure to keep this list up to date.
- */
 let pages = [
   LDSWarApp,
   ActionsPage,
@@ -83,10 +78,10 @@ export function providers() {
   return [
     StatusBar,
     SplashScreen,
-    AuthService,
+    DataProvider,
+    AuthProvider,
     Facebook,
     TwitterConnect,
-
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ];

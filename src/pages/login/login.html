@@ -7,24 +7,37 @@
 </ion-header>
 
 
-<ion-content>
-  <form (submit)="doLogin()">
+<ion-content class="login-email">
+  <ion-row>
+    <div padding class="forgot-password-txt" (click)="openForgotPasswordPage()">
+      Forgot Password
+    </div>
+    <div padding class="sign-up-txt" (click)="openSignUpPage()">
+      Sign Up
+    </div>
+  </ion-row>
+
+  <form (ngSubmit)="login()" #loginForm="ngForm">
     <ion-list>
 
       <ion-item>
         <ion-label fixed>Email</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+		<ion-input type="email" [(ngModel)]="form.email" placeholder="E-mail" name="email"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label fixed>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+		<ion-input type="password" [(ngModel)]="form.password" placeholder="Password" name="password"></ion-input>
       </ion-item>
 
-      <div padding>
-        <button ion-button color="primary" block>Login</button>
-      </div>
-
     </ion-list>
+
+    <button ion-button block [disabled]="!loginForm.form.valid"
+      class="log-in-btn">Log In
+    </button>
+
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>
   </form>
 </ion-content>

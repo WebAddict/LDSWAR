@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -13,43 +13,64 @@ import { LessonsPage } from '../pages/lessons/lessons';
 import { ActionsPage } from '../pages/actions/actions';
 import { RewardsPage } from '../pages/rewards/rewards';
 
-import { AuthService } from '../providers/auth-service';
+import { AuthProvider } from '../providers/auth';
+import { DataProvider } from '../providers/data';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class LDSWarApp {
+
   @ViewChild(Nav) nav: Nav;
+  isAppInitialized: boolean = false;
+  user: any;
   rootPage: any = FirstRunPage;
   public pages: Array<{title: string, component: any, icon: any}>;
+
   constructor(
-    public platform: Platform,
-    public auth: AuthService,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen) {
+      private platform: Platform,
+      private data: DataProvider,
+      public auth: AuthProvider,
+      private menu: MenuController,
+      private statusBar: StatusBar,
+      private splashScreen: SplashScreen) {
+
+    this.user = {
+      image: ''
+    };
 
     //this.initializeApp();
     this.platform.ready().then(() => {
+      this.menu.enable(false);
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
 
-      //if (this.auth && this.auth.authenticated()) {
-      //  this.nav.setRoot(TabsPage);
-      //}
+      this.auth.getUserData().subscribe(data => {
+        this.menu.enable(true);
+        this.user = data;
+        this.pages = [
+          { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
+          { title: 'Home', component: HomePage, icon: 'home' },
+          { title: 'Lessons', component: LessonsPage, icon: 'book' },
+          { title: 'Actions', component: ActionsPage, icon: 'compass' },
+          { title: 'Rewards', component: RewardsPage, icon: 'cart' },
+          { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' }
+        ];
+        if (!this.isAppInitialized) {
+          this.nav.setRoot(TabsPage);
+          this.isAppInitialized = true;
+        }
+        this.data.list('pets').subscribe(data => {
+          console.log(data);
+        });
+      }, err => {
+        this.pages = [];
+        this.nav.setRoot(FirstRunPage);
+      });
 
       this.splashScreen.hide();
     });
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
-      { title: 'Home', component: HomePage, icon: 'home' },
-      { title: 'Lessons', component: LessonsPage, icon: 'book' },
-      { title: 'Actions', component: ActionsPage, icon: 'compass' },
-      { title: 'Rewards', component: RewardsPage, icon: 'cart' },
-      { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' }
-    ];
   }
 
   initializeApp() {

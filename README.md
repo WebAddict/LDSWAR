@@ -20,35 +20,61 @@ This is known as a "Hybrid App". It's not as fast or powerful as a native app, b
 This software is built on a Cross Platform environment built on Javascript, HTML and CSS.
 
 The interface is built on:
-[Ionic](http://ionicframework.com/)
+[Ionic 2](http://ionicframework.com/)
 
 Javascript components:
-[Angular 2](https://angular.io/), [Typescript](https://www.typescriptlang.org/), and [ReactiveX](http://reactivex.io/)
+[Angular 2](https://angular.io/), [Typescript 2](https://www.typescriptlang.org/), and [ReactiveX](http://reactivex.io/)
 
 Native components (like camera):
 [Ionic Native](https://ionicframework.com/docs/v2/native/) which extends [Cordova](https://cordova.apache.org/) (that makes it possible to build an app out of html & javascript!)
 
-#### Development Pre-Requsites
+## Development Pre-Requsites
 Note: Most of this development uses Command-Line Tools.
 
 1. Latest [Node & NPM](https://nodejs.org/en/download/) installed
 2. Latest [Git Client](https://git-scm.com/download) installed
 3. All contributers: Latest [Android SDK](https://developer.android.com/studio/index.html) installed
 4. Mac contributers: Latest [XCode](https://developer.apple.com/xcode/) installed
+5. Latest [Java JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) installed
 
-##### Install Global Packages
+### Install Global Packages
+Open your favorite command line client (Windows: click `Windows Key + 'r'` to get the "Run" window, then type `cmd` and click ok)
 
-```
+```sh
 npm install -g cordova ionic typings typescript firebase-tools
 ```
 
-##### Setup Project
-Your Project 
-```
+### Setup Project
+If you don't have a common project folder, I reccomend setting up a "Projects" folder right at the Root of your Hard Drive = /Projects
+
+```sh
 git clone https://github.com/WebAddict/LDSWAR.git
 cd LDSWAR
 npm install
 ionic resources
-ionic serve
 ```
 
+## Project Structure
+Most of our code is in the `src` folder. 
+
+
+## Run the app in your browser
+
+```sh
+ionic serve
+```
+This will launch the app right in your browser
+
+## Run the app on your ANDROID phone/tablet
+Plug in your device, make sure your Settings for ADB Debugging are enabled, and that you can see your device when running `adb devices`
+
+```sh
+ionic run android
+```
+
+This will launch the app right on your device
+
+
+## License
+
+Please see the license file for more information.

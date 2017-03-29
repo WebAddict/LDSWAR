@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
-import { AuthService } from '../../providers/auth-service';
+import { AuthProvider } from '../../providers/auth';
 import { Storage } from '@ionic/storage';
 import { WelcomePage } from '../welcome/welcome';
 
@@ -13,9 +13,9 @@ export class HomePage {
   public hits: number;
 
   constructor(
-    public navCtrl: NavController,
-    public auth: AuthService,
-    storage: Storage) {
+    private navCtrl: NavController,
+    private auth: AuthProvider,
+    private storage: Storage) {
 
     storage.get('totalHits').then((val) => {
       console.log("got " + val + " hits from storage");
@@ -30,7 +30,7 @@ export class HomePage {
   }
 
   logout() {
-    this.auth.signOut().then(() => this.navCtrl.setRoot(WelcomePage));
+    this.auth.logout();
   }
 
   login() {

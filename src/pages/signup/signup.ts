@@ -1,37 +1,65 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, ToastController } from 'ionic-angular';
+import { AlertController, NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { MainPage } from '../../pages/pages';
-import { AuthService } from '../../providers/auth-service';
+import { LoginPage } from '../login/login';
+import { ForgotPasswordPage } from '../forgot-password/forgot-password';
+import { AuthProvider } from '../../providers/auth';
 
 @Component({
   selector: 'page-signup',
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  // The account fields for the login form.
-  // If you're using the username field with or without email, make
-  // sure to add it to the type
-  account: {name: string, email: string, password: string} = {
-    name: 'Test Human',
+
+  public form: {firstName: string, lastName: string, email: string, password: string} = {
+    firstName: 'Test',
+    lastName: 'Test',
     email: 'test@example.com',
-    password: 'test'
+    password: 'demo1234'
   };
   
   alertMessage: string;
 
-  constructor(public navCtrl: NavController,
-              public alertController: AlertController,
-              public auth: AuthService,
-              public toastCtrl: ToastController) {
+  constructor(
+      private navCtrl: NavController,
+      private auth: AuthProvider,
+      private alertController: AlertController,
+      private toastCtrl: ToastController,
+      private loadingCtrl: LoadingController) {
   }
 
-  doSignup() {
-    // Attempt to login in through our auth service
-    this.auth.signUpWithEmail(this.account).then(() => {
-      this.navCtrl.push(MainPage);
-    }, (err) => {
-      this.SignUpError(err);
+  openForgotPasswordPage(): void {
+    this.navCtrl.push(ForgotPasswordPage);
+  }
+
+  openLoginPage(): void {
+    this.navCtrl.push(LoginPage);
+  }
+
+  register() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
+
+    this.auth.registerUser(this.form).subscribe(registerData => {
+      this.auth.loginWithEmail(registerData).subscribe(loginData => {
+        setTimeout(() => {
+          loading.dismiss();
+          this.navCtrl.setRoot(MainPage);
+        }, 1000);
+      }, loginError => {
+        setTimeout(() => {
+          loading.dismiss();
+          this.SignUpError(loginError);
+        }, 1000);
+      });
+    }, registerError => {
+      setTimeout(() => {
+        loading.dismiss();
+        this.SignUpError(registerError);
+      }, 1000);
     });
   }
 

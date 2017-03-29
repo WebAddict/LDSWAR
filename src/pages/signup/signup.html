@@ -7,29 +7,39 @@
 </ion-header>
 
 
-<ion-content>
-  <form (submit)="doSignup()">
+<ion-content class="sign-up">
+  <div padding class="log-in-txt" (click)="openLoginPage()">
+    Log In
+  </div>
+  <form (ngSubmit)="register()" #signUpForm="ngForm">
     <ion-list>
 
       <ion-item>
-        <ion-label fixed>Name</ion-label>
-        <ion-input type="text" [(ngModel)]="account.name" name="name"></ion-input>
+        <ion-label fixed>First Name</ion-label>
+        <ion-input type="text" [(ngModel)]="form.firstName" name="name"></ion-input>
+      </ion-item>
+
+	  <ion-item>
+        <ion-label fixed>Last Name</ion-label>
+        <ion-input type="text" [(ngModel)]="form.LastName" name="name"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label fixed>Email</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        <ion-input type="email" [(ngModel)]="form.email" name="email"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label fixed>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        <ion-input type="password" [(ngModel)]="form.password" name="password"></ion-input>
       </ion-item>
-
-      <div padding>
-        <button ion-button color="primary" block>Signup</button>
-      </div>
-
     </ion-list>
+
+    <button ion-button block [disabled]="!signUpForm.form.valid" class="sign-up-btn">Sign Up</button>
+
+    <div padding class="error" *ngIf="error">
+      <p>{{error}}</p>
+    </div>
+
   </form>
 </ion-content>

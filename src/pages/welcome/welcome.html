@@ -7,9 +7,12 @@
     </div>
   </div>
   <div padding>
-    <button ion-button block (click)="signup()" class="signup">Signup</button>
-    <button ion-button block (click)="login()" class="login">Login with Password</button>
-    <button ion-button block (click)="signInWithFacebook()" class="loginFb">Login with Facebook</button>
-    <button ion-button block (click)="signInWithTwitter()" class="loginTwit">Login with Twitter</button>
+    <button ion-button block (click)="openSignupPage()" class="signup">Signup</button>
+    <button ion-button block (click)="openLoginPage()" class="login">Login with Password</button>
+    <button ion-button block (click)="loginUserWithFacebook()" class="loginFb">Login with Facebook</button>
+    <button ion-button block (click)="loginUserWithTwitter()" class="loginTwit">Login with Twitter</button>
+  </div>
+  <div class="terms-of-use-txt">
+    By Signing up you agree to the <b (click)="openTermsPage()">Terms of Service</b>
   </div>
 </ion-content>
