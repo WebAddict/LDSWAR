@@ -12,7 +12,11 @@ export class HomePage {
   public user2;
   public hits: number;
 
-  constructor(public navCtrl: NavController, public AuthService: AuthService, storage: Storage) {
+  constructor(
+    public navCtrl: NavController,
+    public auth: AuthService,
+    storage: Storage) {
+
     storage.get('totalHits').then((val) => {
       console.log("got " + val + " hits from storage");
       if (val && val > 0) {
@@ -33,13 +37,5 @@ export class HomePage {
   }
   ionViewDidLoad(){
  
-  }
-  signInWithFacebook(): void {
-    this.AuthService.signInWithFacebook()
-      .then(() => this.onSignInSuccess());
-  }
-
-  private onSignInSuccess(): void {
-    console.log("Facebook display name ",this.AuthService.getDisplayName());
   }
 }

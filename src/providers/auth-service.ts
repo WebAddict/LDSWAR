@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AuthProviders, AngularFireAuth, FirebaseAuthState, AuthMethods, FirebaseObjectObservable, AngularFire } from 'angularfire2';
 import * as firebase from 'firebase';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 
 import { Storage } from '@ionic/storage';
 import { Platform } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { TwitterConnect } from '@ionic-native/twitter-connect';
+
+import { LoadingController } from 'ionic-angular';
+
+import { MainPage } from '../pages/pages';
 
 export interface deleteMe {
     status: string;
@@ -42,8 +47,9 @@ export class AuthService {
 
   constructor(
     public auth$: AngularFireAuth,
-    private fb: Facebook, 
-    public af: AngularFire, 
+    private fb: Facebook,
+    private twitter: TwitterConnect,
+    public af: AngularFire,
     private platform: Platform,
     public storage: Storage) {
     
@@ -71,6 +77,7 @@ export class AuthService {
 	//this.createInitialSetup();
 	this.userdata = firebase.database().ref('/users/');
 	this.userdata.child(firebaseUser.uid).update(profile);
+        //this.navCtrl.push(MainPage);
       } else {
         // User is signed out.
         console.log("User is signed out.");
@@ -88,7 +95,9 @@ export class AuthService {
           const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
           firebase.auth().signInWithCredential(facebookCredential);
 	})
-        .catch(e => console.log('Error logging into Facebook', e));
+        .catch(function (e) {
+	  console.log('Error logging into Facebook', e);
+	});
 
       //return Facebook.login(['email', 'public_profile']).then((res: FacebookLoginResponse) => {
       //  const facebookCredential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
@@ -101,10 +110,28 @@ export class AuthService {
       });
     }
   }
+  signInWithTwitter(): firebase.Promise<FirebaseAuthState> {
+    if (this.platform.is('cordova')) {
+      this.twitter.login()
+        .then(function (response) {
+	  console.log('Logged into Twitter!', response);
+          const twitterCredential = firebase.auth.TwitterAuthProvider.credential(response.token, response.secret);
+          firebase.auth().signInWithCredential(twitterCredential);
+	})
+        .catch(function (e) {
+	  console.log('Error logging into Twitter', e);
+	});
+    } else {
+      return this.auth$.login({
+        provider: AuthProviders.Twitter,
+        method: AuthMethods.Popup
+      });
+    }
+  }
 
   signInWithEmail(credentials): firebase.Promise<FirebaseAuthState> {
     return new Promise((resolve: () => void, reject: (reason: Error) => void) => {
-      this.auth$.login({email: credentials.email,password: credentials.password})
+      this.auth$.login({email: credentials.email, password: credentials.password}, {provider: AuthProviders.Password, method: AuthMethods.Password})
       .then((authData) => {
         this.userauth = authData;
         this.getUserData();
@@ -120,7 +147,7 @@ export class AuthService {
       this.auth$.createUser(credentials)
       .then((authData) => {
         this.userauth = authData;
-        this.user = credentials;
+        this.user = authData;
         this.createInitialSetup();
         resolve();
       }).catch((error) => {
@@ -156,7 +183,11 @@ export class AuthService {
 
   getDisplayName(): string {
     if (this.authState != null) {
-      return this.authState.facebook.displayName;
+      if (this.authState.facebook && this.authState.facebook && this.authState.facebook.displayName) {
+        return this.authState.facebook.displayName;
+      } else {
+        return this.authState.provider + ' user';
+      }
     } else {
       return '';
     }
