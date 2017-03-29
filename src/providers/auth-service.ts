@@ -10,8 +10,6 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 import { LoadingController } from 'ionic-angular';
 
-import { MainPage } from '../pages/pages';
-
 export interface deleteMe {
     status: string;
     authResponse: {
@@ -30,7 +28,7 @@ export class AuthService {
   // Private Methods
   private authState: FirebaseAuthState;
   private userauth;
-  private userdata;
+  private usersRef;
   private vaultdata;
   private profilepicdata;
 //  private loading: any;
@@ -58,33 +56,33 @@ export class AuthService {
       this.authState = state;
       //console.log(state);
     });
-    this.userdata = firebase.database().ref('/users/');
+    this.usersRef = firebase.database().ref('/users/');
     firebase.auth().onAuthStateChanged(function(firebaseUser) {
       if (firebaseUser) {
         //console.log(firebaseUser);
-	this.displayName = firebaseUser.displayName;
-	storage.set('displayName', firebaseUser.displayName);
+	this.displayName = firebaseUser.getDisplayName();
+	storage.set('displayName', firebaseUser.getDisplayName());
 	var profile = {
 		//datecreated: moment().valueOf(),
-		defaultdate: 'None',
-		email: firebaseUser.email,
-		enabletouchid: 'false',
-		fullname: firebaseUser.displayName,
+		displayName: firebaseUser.getDisplayName(),
+		email: firebaseUser.getEmail(),
+		fullname: firebaseUser.getDisplayName(),
+		photoUrl: firebaseUser.getPhotoUrl(),
 		nickname: 'nickname',
-		profilepic: 'http://www.gravatar.com/avatar?d=mm&s=140',
-		paymentplan: 'Free'
+		providerId: firebaseUser.getProviderId(),
+		uid: firebaseUser.getUid(),
+		profilepic: 'http://www.gravatar.com/avatar?d=mm&s=140'
 	};
 	//this.createInitialSetup();
-	this.userdata = firebase.database().ref('/users/');
-	this.userdata.child(firebaseUser.uid).update(profile);
-        //this.navCtrl.push(MainPage);
+	this.usersRef = firebase.database().ref('/users/');
+	this.usersRef.child(firebaseUser.uid).update(profile);
       } else {
         // User is signed out.
         console.log("User is signed out.");
       }
     });
   }
-  get authenticated(): boolean {
+  getAuthenticated(): boolean {
     return this.authState !== null;
   }
   signInWithFacebook(): firebase.Promise<FirebaseAuthState> {
@@ -263,7 +261,7 @@ export class AuthService {
     this.user.profilepic = profile.profilepic;
     
     // Save user profile
-    this.userdata.child(this.userauth.uid).update(profile);
+    this.usersRef.child(this.userauth.uid).update(profile);
   }
 
   createVault() {
@@ -279,7 +277,7 @@ export class AuthService {
     this.user.vaultid = this.vaultdata.push().key;
 
     // Save key into the user->houseid node 
-    this.userdata.child(this.userauth.uid).update({vaultid : this.user.vaultid});
+    this.usersRef.child(this.userauth.uid).update({vaultid : this.user.vaultid});
 
     // Add member to housemembers node under Houses
     this.vaultdata.child(this.user.vaultid + "/vaultusers/" + this.userauth.uid).update(vaultuser);
@@ -298,7 +296,7 @@ export class AuthService {
   }
 
   updateName(newname: string) {
-    this.userdata.child(this.userauth.uid).update({'fullname' : newname});
+    this.usersRef.child(this.userauth.uid).update({'fullname' : newname});
   }
 
   updateEmail(newEmail: string) {
@@ -331,7 +329,7 @@ export class AuthService {
     //
     // Delete ALL user data
     this.vaultdata.child(this.user.vaultid).remove();
-    this.userdata.child(firebase.auth().currentUser.uid).remove();
+    this.usersRef.child(firebase.auth().currentUser.uid).remove();
   }
 
   deleteUser() {
@@ -349,12 +347,12 @@ export class AuthService {
   savePicture(pic) {
     this.profilepicdata.child(firebase.auth().currentUser.uid).child('profilepicture.png')
     .putString(pic, 'base64', {contentType: 'image/png'}).then((savedpicture) => {
-      this.userdata.child(firebase.auth().currentUser.uid).update({'profilepic' : savedpicture.downloadURL});
+      this.usersRef.child(firebase.auth().currentUser.uid).update({'profilepic' : savedpicture.downloadURL});
     });
   }
 
   updateEmailNode(newemail) {
-    this.userdata.child(this.userauth.uid).update({'email' : newemail});
+    this.usersRef.child(this.userauth.uid).update({'email' : newemail});
   }
 
 }

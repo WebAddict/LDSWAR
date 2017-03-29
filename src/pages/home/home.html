@@ -17,5 +17,6 @@
 
 {{hits}} hits
 
-    <button ion-button (click)="logout()">Logout</button>
+    <button ion-button (click)="logout()" *ngIf="auth.user">Logout</button>
+    <button ion-button (click)="login()" *ngIf="!auth.user">Login</button>
 </ion-content>

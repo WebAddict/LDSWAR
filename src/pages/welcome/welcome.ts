@@ -19,7 +19,7 @@ export class WelcomePage {
 
   constructor(
     public navCtrl: NavController,
-    public AuthService: AuthService) {
+    public auth: AuthService) {
   }
 
   login() {
@@ -30,14 +30,14 @@ export class WelcomePage {
     this.navCtrl.push(SignupPage);
   }
   signInWithFacebook(): void {
-    this.AuthService.signInWithFacebook()
+    this.auth.signInWithFacebook()
       .then(() => this.login());
   }
   signInWithTwitter(): void {
-    this.AuthService.signInWithTwitter();
+    this.auth.signInWithTwitter();
   }
 
   private onSignInSuccess(): void {
-    console.log("Display name ",this.AuthService.getDisplayName());
+    console.log("Display name ",this.auth.getDisplayName());
   }
 }

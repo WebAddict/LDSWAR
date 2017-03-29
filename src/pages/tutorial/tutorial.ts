@@ -3,8 +3,10 @@ import { Component } from '@angular/core';
 import { MenuController, NavController } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
 import { Slides } from 'ionic-angular';
+import { AuthService } from '../../providers/auth-service';
 
 import { WelcomePage } from '../welcome/welcome';
+import { TabsPage } from '../tabs/tabs';
 
 export interface SlidePages {
   title: string;
@@ -23,7 +25,12 @@ export class TutorialPage {
 
   constructor(
     public navCtrl: NavController,
-    public menu: MenuController) {
+    public menu: MenuController,
+    public auth: AuthService) {
+
+      if (auth && auth.getAuthenticated()) {
+        this.navCtrl.setRoot(TabsPage);
+      }
       this.slidePages = [
         {
           title: "Title 1",

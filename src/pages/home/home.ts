@@ -10,7 +10,6 @@ import { WelcomePage } from '../welcome/welcome';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  public user2;
   public hits: number;
 
   constructor(
@@ -32,6 +31,10 @@ export class HomePage {
 
   logout() {
     this.auth.signOut().then(() => this.navCtrl.setRoot(WelcomePage));
+  }
+
+  login() {
+    this.navCtrl.setRoot(WelcomePage);
   }
 
   addItem(){
