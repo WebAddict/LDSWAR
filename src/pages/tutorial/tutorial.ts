@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 
 import { MenuController, NavController } from 'ionic-angular';
+import { ViewChild } from '@angular/core';
+import { Slides } from 'ionic-angular';
 
 import { WelcomePage } from '../welcome/welcome';
 
-export interface Slide {
+export interface SlidePages {
   title: string;
   description: string;
   image: string;
@@ -15,11 +17,14 @@ export interface Slide {
   templateUrl: 'tutorial.html'
 })
 export class TutorialPage {
-  slides: Slide[];
+  @ViewChild(Slides) slides: Slides;
+  slidePages: SlidePages[];
   showSkip = true;
 
-  constructor(public navCtrl: NavController, public menu: MenuController) {
-      this.slides = [
+  constructor(
+    public navCtrl: NavController,
+    public menu: MenuController) {
+      this.slidePages = [
         {
           title: "Title 1",
           description: "Description 1",
@@ -57,6 +62,10 @@ export class TutorialPage {
   ionViewWillLeave() {
     // enable the root left menu when leaving the tutorial page
     this.menu.enable(true);
+  }
+
+  nextSlide() {
+    this.slides.slideNext();
   }
 
 }

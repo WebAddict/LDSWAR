@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service';
 import { Storage } from '@ionic/storage';
+import { WelcomePage } from '../welcome/welcome';
 
 @Component({
   selector: 'page-home',
@@ -27,6 +28,10 @@ export class HomePage {
       storage.set('totalHits', this.hits);
     })
 
+  }
+
+  logout() {
+    this.auth.signOut().then(() => this.navCtrl.setRoot(WelcomePage));
   }
 
   addItem(){

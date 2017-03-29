@@ -156,11 +156,13 @@ export class AuthService {
     });
   }
 
-  signOut(): void {
-    this.af.auth.unsubscribe();
-    this.authState = null;
-    this.user = null;
-    //this.af.auth.logout();
+  signOut() {
+    return new Promise((resolve: () => void, reject: (reason: Error) => void) => {
+      this.af.auth.unsubscribe();
+      this.authState = null;
+      this.user = null;
+      //this.af.auth.logout();
+    });
   }
 //  signOut(): void {
 //    this.auth$.logout();
