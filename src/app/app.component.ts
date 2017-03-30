@@ -46,6 +46,7 @@ export class LDSWarApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
 
+      // WATCH USER ACCOUNT
       this.auth.getUserData().subscribe(data => {
         this.menu.enable(true);
         this.user = data;
@@ -65,6 +66,8 @@ export class LDSWarApp {
           console.log(data);
         });
       }, err => {
+        this.isAppInitialized = false;
+        this.menu.enable(false);
         this.pages = [];
         this.nav.setRoot(FirstRunPage);
       });

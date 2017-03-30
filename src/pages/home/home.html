@@ -12,11 +12,17 @@
 <h1>Feed Coming Soon</h1>
 
 
+<div>
+  {{menuenabled ? 'Menu Enabled' : 'Menu OFF'}}
+  <button ion-button menuToggle>Toggle Menu</button>
+</div>
 
-<button ion-button menuToggle>Toggle Menu</button>
-
+<div>
 {{hits}} hits
-
+</div>
+<div>
+  {{auth.user ? auth.user.email : 'Guest'}}
     <button ion-button (click)="logout()" *ngIf="auth.user">Logout</button>
     <button ion-button (click)="login()" *ngIf="!auth.user">Login</button>
+</div>
 </ion-content>

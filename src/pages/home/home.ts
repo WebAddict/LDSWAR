@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { MenuController, NavController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth';
 import { Storage } from '@ionic/storage';
 import { WelcomePage } from '../welcome/welcome';
@@ -11,11 +11,13 @@ import { WelcomePage } from '../welcome/welcome';
 })
 export class HomePage {
   public hits: number;
+  public menuenabled: boolean = false;
 
   constructor(
-    private navCtrl: NavController,
-    private auth: AuthProvider,
-    private storage: Storage) {
+      private navCtrl: NavController,
+      private menu: MenuController,
+      private auth: AuthProvider,
+      private storage: Storage) {
 
     storage.get('totalHits').then((val) => {
       console.log("got " + val + " hits from storage");
