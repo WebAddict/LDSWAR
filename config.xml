@@ -36,6 +36,7 @@
   <platform name="ios">
     <allow-intent href="itms:*"/>
     <allow-intent href="itms-apps:*"/>
+	<preference name="deployment-target" value="7.0" />
   </platform>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
@@ -47,6 +48,8 @@
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="60000"/>
+  <preference name="TwitterConsumerKey" value="fZEy2NpSzs6CyZ7BdliFJWNnd" />
+  <preference name="TwitterConsumerSecret" value="7IpU07SfM1p0exqzphUsVlDdFjS9aNErKAtGz1MLGIn1p0MFW4" />
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>

@@ -12,6 +12,7 @@ import { MissionariesPage } from '../pages/missionaries/missionaries';
 import { LessonsPage } from '../pages/lessons/lessons';
 import { ActionsPage } from '../pages/actions/actions';
 import { RewardsPage } from '../pages/rewards/rewards';
+import { WelcomePage } from '../pages/welcome/welcome';
 
 import { AuthProvider } from '../providers/auth';
 import { DataProvider } from '../providers/data';
@@ -25,7 +26,7 @@ export class LDSWarApp {
   isAppInitialized: boolean = false;
   user: any;
   rootPage: any = FirstRunPage;
-  public pages: Array<{title: string, component: any, icon: any}>;
+  public pages: Array<{headingTitle: string, pages: Array<{title: string, component: any, icon: any}>}>;
 
   constructor(
       private platform: Platform,
@@ -39,7 +40,10 @@ export class LDSWarApp {
       image: ''
     };
 
-    //this.initializeApp();
+    this.initializeApp();
+  }
+
+  initializeApp() {
     this.platform.ready().then(() => {
       this.menu.enable(false);
       // Okay, so the platform is ready and our plugins are available.
@@ -51,32 +55,42 @@ export class LDSWarApp {
         this.menu.enable(true);
         this.user = data;
         this.pages = [
-          { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
-          { title: 'Home', component: HomePage, icon: 'home' },
-          { title: 'Lessons', component: LessonsPage, icon: 'book' },
-          { title: 'Actions', component: ActionsPage, icon: 'compass' },
-          { title: 'Rewards', component: RewardsPage, icon: 'cart' },
-          { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' }
+	  { headingTitle: 'My Account', pages: [
+            { title: 'My Profile', component: TabsPage, icon: 'person' },
+            { title: 'My Points', component: TabsPage, icon: 'flash' },
+	  ]},
+	  { headingTitle: 'Sections', pages: [
+            { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
+            { title: 'Home', component: HomePage, icon: 'home' },
+            { title: 'Lessons', component: LessonsPage, icon: 'book' },
+            { title: 'Actions', component: ActionsPage, icon: 'compass' },
+            { title: 'Rewards', component: RewardsPage, icon: 'cart' },
+            { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' },
+	  ]},
+	  { headingTitle: 'Admin', pages: [
+            { title: 'Moderation', component: TabsPage, icon: 'flag' },
+	  ]}
         ];
         if (!this.isAppInitialized) {
-          this.nav.setRoot(TabsPage);
           this.isAppInitialized = true;
+          this.nav.setRoot(TabsPage);
         }
         this.data.list('pets').subscribe(data => {
           console.log(data);
         });
       }, err => {
+        this.pages = [
+	  { headingTitle: 'My Account', pages: [
+            { title: 'Login', component: WelcomePage, icon: 'person' },
+	  ]},
+	];
         this.isAppInitialized = false;
         this.menu.enable(false);
-        this.pages = [];
         this.nav.setRoot(FirstRunPage);
       });
 
       this.splashScreen.hide();
     });
-  }
-
-  initializeApp() {
   }
 
   openPage(page) {

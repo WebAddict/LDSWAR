@@ -4,7 +4,10 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class DataProvider {
-  constructor(private af: AngularFire) {}
+  constructor(
+      private af: AngularFire) {
+  
+  }
 
   push(path: string, data: any): Observable<any> {
     return Observable.create(observer => {

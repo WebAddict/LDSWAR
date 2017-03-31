@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFire, AuthProviders, FirebaseAuthState, AuthMethods } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
@@ -13,6 +13,8 @@ import {DataProvider} from './data';
 export class AuthProvider {
 
   public user: any;
+  public authData: any;
+  public authState: FirebaseAuthState;
 
   constructor(
       private af: AngularFire,
@@ -20,6 +22,11 @@ export class AuthProvider {
       private twitter: TwitterConnect,
       private data: DataProvider,
       private platform: Platform) {
+
+    this.authState = this.af.auth.getAuth();
+    this.af.auth.subscribe((state: FirebaseAuthState) => {
+      this.authState = state;
+    });
 
 //    this.af.database.list('pushTest').push({
 //      teste: 'teste'
@@ -30,14 +37,16 @@ export class AuthProvider {
 
   getUserData() {
     return Observable.create(observer => {
-      this.af.auth.subscribe(authData => {
-        if (authData) {
-          this.data.object('users/' + authData.uid).subscribe(userData => {
+      this.af.auth.subscribe(afAuthData => {
+        if (afAuthData) {
+          this.data.object('users/' + afAuthData.uid).subscribe(userData => {
             console.log(userData);
             this.user = userData;
             observer.next(userData);
           });
         } else {
+	  console.log("No Auth Data in getUserData");
+	  this.user = null;
           observer.error();
         }
       });
@@ -46,10 +55,10 @@ export class AuthProvider {
 
   registerUser(credentials: any) {
     return Observable.create(observer => {
-      this.af.auth.createUser(credentials).then((authData: any) => {
-        this.af.database.list('users').update(authData.uid, {
-          name: authData.auth.email,
-          email: authData.auth.email,
+      this.af.auth.createUser(credentials).then((afAuthData: any) => {
+        this.af.database.list('users').update(afAuthData.uid, {
+          name: afAuthData.auth.email,
+          email: afAuthData.auth.email,
           emailVerified: false,
           provider: 'email',
           image: 'http://www.gravatar.com/avatar?d=mm&s=140'
@@ -81,8 +90,12 @@ export class AuthProvider {
       this.af.auth.login(credentials, {
         provider: AuthProviders.Password,
         method: AuthMethods.Password
-      }).then((authData) => {
-        observer.next(authData);
+      }).then((afAuthData) => {
+        this.data.object('users/' + afAuthData.uid).subscribe(userData => {
+          console.log(userData);
+          this.user = userData;
+          observer.next(userData);
+        });
       }).catch((error) => {
         observer.error(error);
       });
@@ -94,12 +107,12 @@ export class AuthProvider {
       if (this.platform.is('cordova')) {
         this.fb.login(['public_profile', 'email']).then(facebookData => {
           let provider = firebase.auth.FacebookAuthProvider.credential(facebookData.authResponse.accessToken);
-          firebase.auth().signInWithCredential(provider).then(firebaseData => {
-            this.af.database.list('users').update(firebaseData.uid, {
-              name: firebaseData.displayName,
-              email: firebaseData.email,
+          firebase.auth().signInWithCredential(provider).then(firebaseUser => {
+            this.af.database.list('users').update(firebaseUser.uid, {
+              name: firebaseUser.displayName,
+              email: firebaseUser.email,
               provider: 'facebook',
-              image: firebaseData.photoURL
+              image: firebaseUser.photoURL
             });
             observer.next();
           });
@@ -132,14 +145,17 @@ export class AuthProvider {
         this.twitter.login().then(function (response) {
           let provider = firebase.auth.TwitterAuthProvider.credential(response.token, response.secret);
           console.log('Logged into Twitter!', response);
-          firebase.auth().signInWithCredential(provider).then(firebaseData => {
-            this.af.database.list('users').update(firebaseData.uid, {
-              name: firebaseData.displayName,
-              email: firebaseData.email,
+          firebase.auth().signInWithCredential(provider).then(firebaseUser => {
+            this.af.database.list('users').update(firebaseUser.uid, {
+              name: firebaseUser.displayName,
+              email: firebaseUser.email,
               provider: 'twitter',
-              image: firebaseData.photoURL
+              image: firebaseUser.photoURL
             });
             observer.next();
+          }).catch((error) => {
+            console.info("error", error);
+            observer.error(error);
           });
         }, error => {
           observer.error(error);
@@ -177,10 +193,7 @@ export class AuthProvider {
   }
 
   logout() {
-    this.af.auth.logout();
     this.user = null;
-  }
-  signOut() {
     this.af.auth.logout();
   }
 }

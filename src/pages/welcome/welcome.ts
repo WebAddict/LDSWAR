@@ -40,6 +40,7 @@ export class WelcomePage {
     this.auth.loginWithFacebook().subscribe(data => {
       setTimeout(() => {
         loading.dismiss();
+        this.menu.enable(true);
         this.navCtrl.setRoot(MainPage);
       }, 1000);
     }, err => {
@@ -57,6 +58,7 @@ export class WelcomePage {
     this.auth.loginWithTwitter().subscribe(data => {
       setTimeout(() => {
         loading.dismiss();
+        this.menu.enable(true);
         this.navCtrl.setRoot(MainPage);
       }, 1000);
     }, err => {

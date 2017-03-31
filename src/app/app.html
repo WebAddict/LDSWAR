@@ -1,4 +1,4 @@
-<ion-split-pane when="md">
+<ion-split-pane when="lg">
 	<ion-menu [content]="content">
 	  <ion-header>
 		<ion-toolbar color="primary">
@@ -8,31 +8,13 @@
 
 	  <ion-content>
 		<ion-list no-lines>
-	      <ion-item-divider color="primary">
-		    My Account
-		  </ion-item-divider>
-		  <button menuClose ion-item>
-		    <ion-icon name="person" item-left></ion-icon>
-			My Profile
-		  </button>
-		  <button menuClose ion-item>
-		    <ion-icon name="flash" item-left></ion-icon>
-			My Points
-		  </button>
-	      <ion-item-divider color="primary">
-		    Sections
-		  </ion-item-divider>
-		  <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-		    <ion-icon name="{{p.icon}}" item-left></ion-icon>
-			{{p.title}}
-		  </button>
-	      <ion-item-divider color="primary">
-		    Admin
-		  </ion-item-divider>
-		  <button menuClose ion-item>
-		    <ion-icon name="flag" item-left></ion-icon>
-			Moderation
-		  </button>
+		  <div *ngFor="let s of pages">
+	        <ion-item-divider class="listHeadingDivider" color="primary">{{s.headingTitle}}</ion-item-divider>
+		    <button class="listItemButton" menuClose ion-item *ngFor="let p of s.pages" (click)="openPage(p)">
+		      <ion-icon name="{{p.icon}}" item-left></ion-icon>
+			  {{p.title}}
+		    </button>
+		  </div>
 		</ion-list>
 	  </ion-content>
 

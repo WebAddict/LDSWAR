@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, LoadingController, ToastController } from 'ionic-angular';
+import { MenuController, AlertController, NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 import { SignupPage } from '../signup/signup';
@@ -23,6 +23,7 @@ export class LoginPage {
   constructor(
       private navCtrl: NavController,
       private auth: AuthProvider,
+      private menu: MenuController,
       private loadingCtrl: LoadingController,
       private alertController: AlertController,
       private toastCtrl: ToastController) {
@@ -43,6 +44,8 @@ export class LoginPage {
       setTimeout(() => {
         loading.dismiss();
         // The auth subscribe method inside the app.component.ts will handle the page switch to home
+        this.menu.enable(true);
+        this.navCtrl.setRoot(MainPage);
       }, 1000);
     }, err => {
       setTimeout(() => {

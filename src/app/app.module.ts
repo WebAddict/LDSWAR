@@ -15,6 +15,7 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 // Importing Pages
 import { ActionsPage } from '../pages/actions/actions';
+import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 import { HomePage } from '../pages/home/home';
 import { LessonsPage } from '../pages/lessons/lessons';
 import { LibraryPage } from '../pages/library/library';
@@ -50,6 +51,7 @@ export const myFirebaseAuthConfig = {
 let pages = [
   LDSWarApp,
   ActionsPage,
+  ForgotPasswordPage,
   HomePage,
   LessonsPage,
   LibraryPage,
