@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController, LoadingController, ToastController } from 'ionic-angular';
+import { MenuController, AlertController, NavController, LoadingController, ToastController } from 'ionic-angular';
 
 import { MainPage } from '../../pages/pages';
 import { LoginPage } from '../login/login';
@@ -24,6 +24,7 @@ export class SignupPage {
   constructor(
       private navCtrl: NavController,
       private auth: AuthProvider,
+      private menu: MenuController,
       private alertController: AlertController,
       private toastCtrl: ToastController,
       private loadingCtrl: LoadingController) {
@@ -47,6 +48,7 @@ export class SignupPage {
       this.auth.loginWithEmail(registerData).subscribe(loginData => {
         setTimeout(() => {
           loading.dismiss();
+          this.menu.enable(true);
           this.navCtrl.setRoot(MainPage);
         }, 1000);
       }, loginError => {

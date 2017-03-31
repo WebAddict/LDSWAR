@@ -9,6 +9,15 @@ import firebase from 'firebase';
 // Providers
 import {DataProvider} from './data';
 
+interface LDSWarUser {
+  firstName?: string;
+  lastName?: string;
+  displayName?: string;
+  email?: string;
+  emailVerified?: boolean;
+  provider?: string;
+}
+
 @Injectable()
 export class AuthProvider {
 
@@ -56,8 +65,11 @@ export class AuthProvider {
   registerUser(credentials: any) {
     return Observable.create(observer => {
       this.af.auth.createUser(credentials).then((afAuthData: any) => {
+        let displayName = credentials.firstName + ' ' + credentials.lastName;
         this.af.database.list('users').update(afAuthData.uid, {
-          name: afAuthData.auth.email,
+	  firstName: credentials.firstName,
+	  lastName: credentials.lastName,
+          displayName: displayName,
           email: afAuthData.auth.email,
           emailVerified: false,
           provider: 'email',
@@ -153,11 +165,15 @@ export class AuthProvider {
               image: firebaseUser.photoURL
             });
             observer.next();
-          }).catch((error) => {
+          }, function (error) {
+            console.info("error", error);
+            observer.error(error);
+	  }).catch((error) => {
             console.info("error", error);
             observer.error(error);
           });
         }, error => {
+          console.info("error", error);
           observer.error(error);
         });
       } else {

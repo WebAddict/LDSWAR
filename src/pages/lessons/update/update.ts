@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
-import { UpdateLessonsPage } from './update/update';
-
 @Component({
-  selector: 'page-lessons',
-  templateUrl: 'lessons.html'
+  selector: 'page-update-lessons',
+  templateUrl: 'update.html'
 })
-export class LessonsPage {
+export class UpdateLessonsPage {
 
   public lessons: FirebaseListObservable<any[]>;
   constructor(
@@ -21,7 +19,6 @@ export class LessonsPage {
 
   addLesson(){
     //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
-    this.navCtrl.push(UpdateLessonsPage);
   }
  
   viewLesson(lesson){

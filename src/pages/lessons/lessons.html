@@ -1,14 +1,18 @@
 <ion-header>
   <ion-navbar color="primary">
-    <button ion-button menuToggle>
+    <ion-buttons ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
-    </button>
+    </ion-buttons>
     <ion-title>Lessons</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="addLesson()">Add Lesson</button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
 
+    <button ion-button (click)="addLesson()">Add Lesson</button>
   <ion-card *ngFor="let lesson of lessons | async">
     <ion-card-header (click)="viewLesson(lesson)">
 	{{lesson.title}}
