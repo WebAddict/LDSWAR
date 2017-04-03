@@ -9,6 +9,16 @@
 
 <ion-content>
 
-  <h1>update lessons</h1>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Title:</ion-label>
+      <ion-input [(ngModel)]="lesson.title" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Description</ion-label>
+      <ion-input [(ngModel)]="lesson.description" type="text"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button clear (click)="save()">Save</button>
 
 </ion-content>

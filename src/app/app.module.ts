@@ -18,6 +18,8 @@ import { ActionsPage } from '../pages/actions/actions';
 import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 import { HomePage } from '../pages/home/home';
 import { LessonsPage } from '../pages/lessons/lessons';
+import { LessonsDetailPage } from '../pages/lessons/detail/detail';
+import { LessonsUpdatePage } from '../pages/lessons/update/update';
 import { LibraryPage } from '../pages/library/library';
 import { LoginPage } from '../pages/login/login';
 import { MissionariesPage } from '../pages/missionaries/missionaries';
@@ -27,7 +29,6 @@ import { SignupPage } from '../pages/signup/signup';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TermsPage } from '../pages/terms/terms';
 import { TutorialPage } from '../pages/tutorial/tutorial';
-import { UpdateLessonsPage } from '../pages/lessons/update/update';
 import { UsersPage } from '../pages/users/users';
 import { WelcomePage } from '../pages/welcome/welcome';
 
@@ -55,6 +56,8 @@ let pages = [
   ForgotPasswordPage,
   HomePage,
   LessonsPage,
+  LessonsDetailPage,
+  LessonsUpdatePage,
   LibraryPage,
   LoginPage,
   MainPage,
@@ -65,7 +68,6 @@ let pages = [
   TabsPage,
   TermsPage,
   TutorialPage,
-  UpdateLessonsPage,
   UsersPage,
   WelcomePage
 ];

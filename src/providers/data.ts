@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 import { Observable } from 'rxjs/Observable';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class DataProvider {
@@ -17,6 +18,16 @@ export class DataProvider {
         observer.next(newData.path.o[newData.path.o.length - 1]);
       }, error => {
         observer.error(error);
+      });
+    });
+  }
+
+  getSnapshot(path: string): Observable<any> {
+    return Observable.create(observer => {
+      let snapshotRef = firebase.database().ref(path);
+      snapshotRef.on('value', function(snapshot) {
+        observer.next(snapshot);
+        //updateStarCount(postElement, snapshot.val());
       });
     });
   }

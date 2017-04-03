@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
-import { UpdateLessonsPage } from './update/update';
+import { LessonsUpdatePage } from './update/update';
+import { LessonsDetailPage } from './detail/detail';
 
 @Component({
   selector: 'page-lessons',
@@ -21,7 +22,7 @@ export class LessonsPage {
 
   addLesson(){
     //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
-    this.navCtrl.push(UpdateLessonsPage);
+    this.navCtrl.push(LessonsUpdatePage);
   }
  
   viewLesson(lesson){
@@ -29,6 +30,7 @@ export class LessonsPage {
       //do something with your data
     //})
     //subscription.unsubscribe();
+    this.navCtrl.push(LessonsDetailPage, lesson);
   }
   ionViewDidLoad(){
     //this.addLesson();
