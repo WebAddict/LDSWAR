@@ -4,6 +4,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { LessonsUpdatePage } from './update/update';
 import { LessonsDetailPage } from './detail/detail';
+import { LessonsAddPage } from './add/add';
 
 @Component({
   selector: 'page-lessons',
@@ -12,6 +13,10 @@ import { LessonsDetailPage } from './detail/detail';
 export class LessonsPage {
 
   public lessons: FirebaseListObservable<any[]>;
+  public view: any;
+  public viewCards: boolean = false;
+  public viewList: boolean = true;
+
   constructor(
       public navCtrl: NavController,
       public navParams: NavParams,
@@ -21,20 +26,31 @@ export class LessonsPage {
   }
 
   addLesson(){
-    //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
-    this.navCtrl.push(LessonsUpdatePage);
+    this.navCtrl.push(LessonsAddPage);
   }
- 
+  editLesson(lesson){
+    this.navCtrl.push(LessonsUpdatePage, lesson);
+  }
   viewLesson(lesson){
-    //let subscription = this.af.database.object('someLocation').subscribe(data=> {
-      //do something with your data
-    //})
-    //subscription.unsubscribe();
     this.navCtrl.push(LessonsDetailPage, lesson);
+  }
+  deleteLesson(lesson){
+    this.lessons.remove(lesson);
   }
   ionViewDidLoad(){
     //this.addLesson();
     //console.log('ionViewDidLoad LessonsPage');
+  }
+  showFilter() {
+  }
+  showView() {
+    if (this.viewCards) {
+      this.viewCards = false;
+      this.viewList = true;
+    } else {
+      this.viewCards = true;
+      this.viewList = false;
+    }
   }
 
 }

@@ -32,8 +32,14 @@ export class DataProvider {
     });
   }
 
-  update(path: string, data: any) {
-    this.af.database.object(path).update(data);
+  update(path: string, data: any): Observable<any> {
+    return Observable.create(observer => {
+    this.af.database.object(path).update(data).then(() => {
+        observer.next(true);
+      }, error => {
+        observer.error(error);
+      });
+    });
   }
 
   list(path: string): FirebaseListObservable<any> {

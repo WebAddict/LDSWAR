@@ -17,7 +17,7 @@ self.toolbox.precache(
     './build/main.js',
     './build/main.css',
     './build/polyfills.js',
-    'index.html?v=mwys7',
+    'index.html?v=kwid7',
     'manifest.json'
   ]
 );

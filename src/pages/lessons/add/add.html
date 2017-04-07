@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Update Lesson</ion-title>
+    <ion-title>Add Lesson</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -12,7 +12,10 @@
   <ion-list>
     <ion-item>
       <ion-label floating>Title:</ion-label>
-      <ion-input [(ngModel)]="lesson.title" type="text" class="" id="title" name="title" required></ion-input>
+      <ion-input [(ngModel)]="lesson.title" type="text" class="" id="title" name="title" #title="ngModel" required></ion-input>
+        <div [hidden]="lesson.title.valid || lesson.title.pristine" class="alert alert-danger">
+          Title is required
+        </div>
     </ion-item>
     <ion-item>
       <ion-label floating>Description</ion-label>

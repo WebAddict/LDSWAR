@@ -1,21 +1,25 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { AuthProvider } from '../../../providers/auth';
 import { DataProvider } from '../../../providers/data';
 
 
 @Component({
-  selector: 'page-update-lessons',
-  templateUrl: 'update.html'
+  selector: 'page-add-lessons',
+  templateUrl: 'add.html'
 })
-export class LessonsUpdatePage {
+export class LessonsAddPage {
 
+  public lesson: {title: string, description: string, uid: string} = {
+    title: '',
+    description: '',
+    uid: ''
+  };
   public user: any;
-  public lesson: FirebaseObjectObservable<any[]>;
-  lessonPath: string;
 
+  public lessons: FirebaseListObservable<any[]>;
   constructor(
       private navCtrl: NavController,
       private navParams: NavParams,
@@ -23,17 +27,10 @@ export class LessonsUpdatePage {
       public data: DataProvider,
       public auth: AuthProvider) {
 
-    let lessonId = navParams.get('$key');
-    this.lessonPath = 'lessons/' + lessonId;
-    //this.lesson = af.database.object(lessonPath);
-    this.data.getSnapshot(this.lessonPath).subscribe(data => {
-      //console.log(data);
-      this.lesson = data.val();
-    }, err => {
-    });
+    //this.lessons = af.database.list('/lessons');
     this.auth.getUserData().subscribe(userData => {
       this.user = userData;
-      //this.lesson.uid = userData.$key;
+      this.lesson.uid = userData.$key;
       console.log('Set user uid to ', userData);
     }, err => {
       console.log(err)
@@ -41,7 +38,7 @@ export class LessonsUpdatePage {
   }
 
   save() {
-    this.data.update(this.lessonPath, this.lesson).subscribe(key => {
+    this.data.push('/lessons', this.lesson).subscribe(key => {
       console.log('saved', key);
       this.navCtrl.pop();
     }, err => {

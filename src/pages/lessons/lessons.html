@@ -5,21 +5,31 @@
     </ion-buttons>
     <ion-title>Lessons</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="addLesson()">Add Lesson</button>
+      <button ion-button icon-only round (click)="showView()"><ion-icon name="list"></ion-icon></button>
+      <button ion-button icon-only round (click)="showFilter()"><ion-icon name="funnel"></ion-icon></button>
+      <button ion-button icon-only round (click)="addLesson()"><ion-icon name="add"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-
-    <button ion-button (click)="addLesson()">Add Lesson</button>
-  <ion-card *ngFor="let lesson of lessons | async">
-    <ion-card-header (click)="viewLesson(lesson)">
-	{{lesson.title}}
-	</ion-card-header>
-	<ion-card-content>
-	  {{lesson.description}}
-	</ion-card-content>
+<ion-content class="card-background-page">
+  <div *ngIf="viewCards">
+  <ion-card *ngFor="let lesson of lessons | async" (click)="viewLesson(lesson)">
+    <img [src]="lesson.cardBg">
+    <div class="card-title">{{lesson.title}}</div>
+    <div class="card-subtitle">{{lesson.description}}</div>
   </ion-card>
+  </div>
+  <div *ngIf="viewList">
+    <ion-list>
+	  <ion-item-sliding *ngFor="let lesson of lessons | async">
+	      <ion-item (click)="viewLesson(lesson)">{{lesson.title}}</ion-item>
+		  <ion-item-options side="right">
+		    <button ion-button color="danger" (click)="editLesson(lesson)"><ion-icon name="trash"></ion-icon>Edit</button>
+		    <button ion-button color="danger" (click)="deleteLesson(lesson)"><ion-icon name="trash"></ion-icon>Delete</button>
+		  </ion-item-options>
+	  </ion-item-sliding>
+	</ion-list>
+  </div>
 
 </ion-content>

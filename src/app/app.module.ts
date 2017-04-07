@@ -20,6 +20,7 @@ import { HomePage } from '../pages/home/home';
 import { LessonsPage } from '../pages/lessons/lessons';
 import { LessonsDetailPage } from '../pages/lessons/detail/detail';
 import { LessonsUpdatePage } from '../pages/lessons/update/update';
+import { LessonsAddPage } from '../pages/lessons/add/add';
 import { LibraryPage } from '../pages/library/library';
 import { LoginPage } from '../pages/login/login';
 import { MissionariesPage } from '../pages/missionaries/missionaries';
@@ -58,6 +59,7 @@ let pages = [
   LessonsPage,
   LessonsDetailPage,
   LessonsUpdatePage,
+  LessonsAddPage,
   LibraryPage,
   LoginPage,
   MainPage,
