@@ -1,5 +1,5 @@
-# LDSWAR
-"Wake and Rise" is an app for LDS Members of the Allen Ranch Ward of the Gilbert Greenfield Stake.
+# LDSWAR - "Wake And Rise"
+"Wake and Rise" is an app for LDS Members of the Allen Ranch Ward of the Arizona Gilbert Greenfield Stake. It can be accessed at [LDSWAR.com](https://ldswar.com/).
 
 ## Contribute to Development
 
@@ -12,21 +12,26 @@ The two platforms were completely different systems, they had different features
 
 This is known as a "Native App": a smartphone application developed for a specific mobile operating system (Objective-C or Swift for iOS vs. Java for Android).
 
-A few years ago, more apps started being built using a wrapper called Cordova that could take a set of HTML pages and run it on your device, with the look and most functionality of a native app. 
+A few years ago, more apps started being built using a wrapper called [Cordova](https://cordova.apache.org/) that could take a set of HTML pages and run it on your device, with the look and most functionality of a native app. 
 
 This is known as a "Hybrid App". It's not as fast or powerful as a native app, but over the last two years it has gotten better and better. Some of your favorite apps are Hybrid including Twitter and Instagram!
 
 #### This is a HYBRID App
-This software is built on a Cross Platform environment built on Javascript, HTML and CSS.
+This software is built on a Cross Platform environment built on Javascript, HTML and CSS. Contributer's SHOULD refer to the documentation!
 
 The interface is built on:
-[Ionic 2](http://ionicframework.com/)
+[Ionic 3](http://ionicframework.com/)
 
 Javascript components:
-[Angular 2](https://angular.io/), [Typescript 2](https://www.typescriptlang.org/), and [ReactiveX](http://reactivex.io/)
+[Angular 4](https://angular.io/) ([Docs](https://angular.io/docs/ts/latest/guide/)), [Typescript 2](https://www.typescriptlang.org/), and [ReactiveX](http://reactivex.io/)
 
 Native components (like camera):
 [Ionic Native](https://ionicframework.com/docs/v2/native/) which extends [Cordova](https://cordova.apache.org/) (that makes it possible to build an app out of html & javascript!)
+
+Backend:
+[Firebase Database](https://firebase.google.com/docs/database/) ([Docs](https://firebase.google.com/docs/database/web/start), [Ref](https://firebase.google.com/docs/reference/js/firebase.database)) powers our database.
+[Firebase Auth](https://firebase.google.com/docs/auth/) ([Docs](https://firebase.google.com/docs/auth/web/start), [Ref](https://firebase.google.com/docs/reference/js/firebase.auth)) powers our user management.
+[AngularFire 2](https://github.com/angular/angularfire2) is the bridge between Firebase and Angular, giving us live 2-way bindings on data.
 
 ## Development Pre-Requsites
 Note: Most of this development uses Command-Line Tools.
@@ -41,7 +46,7 @@ Note: Most of this development uses Command-Line Tools.
 Open your favorite command line client (Windows: click `Windows Key + 'r'` to get the "Run" window, then type `cmd` and click ok)
 
 ```sh
-npm install -g cordova ionic typings typescript firebase-tools
+npm install -g cordova ionic typings typescript firebase-tools @angular/cli
 ```
 
 ### Setup Project
@@ -55,8 +60,7 @@ ionic resources
 ```
 
 ## Project Structure
-Most of our code is in the `src` folder. 
-
+Most of our code is in the `src` folder.
 
 ## Run the app in your browser
 
@@ -69,11 +73,25 @@ This will launch the app right in your browser
 Plug in your device, make sure your Settings for ADB Debugging are enabled, and that you can see your device when running `adb devices`
 
 ```sh
-ionic run android
+ionic run android --prod
 ```
 
-This will launch the app right on your device
+This will launch the app right on your android device
 
+## Run the app on your iPhone/iPad
+First Build the xcode profile by running
+```sh
+ionic build ios --prod
+```
+
+Then open the project in Xcode. Plug in your device, and press the "play" button to run the app right on your device.
+
+## Credits
+This app relies on works created by others. As we incorporate their works, we will include them here.
+
+
+## Rights
+Copyright 2017 Richard Johnson
 
 ## License
 

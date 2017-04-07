@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-slides [options]="{pager: true}" (ionWillChange)="onSlideChangeStart($event)" pager>
+  <ion-slides (ionSlideWillChange)="onSlideChangeStart($event)" pager>
     <ion-slide *ngFor="let slidePage of slidePages">
       <img [src]="slidePage.image" class="slide-image"/>
       <h2 class="slide-title" [innerHTML]="slidePage.title"></h2>

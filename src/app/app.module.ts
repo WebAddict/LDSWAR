@@ -1,4 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -98,6 +99,7 @@ export function providers() {
 @NgModule({
   declarations: declarations(),
   imports: [
+    BrowserModule,
     IonicModule.forRoot(LDSWarApp),
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(myFirebaseConfig, myFirebaseAuthConfig)

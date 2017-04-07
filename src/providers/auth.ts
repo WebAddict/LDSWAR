@@ -32,7 +32,7 @@ export class AuthProvider {
       private data: DataProvider,
       private platform: Platform) {
 
-    this.authState = this.af.auth.getAuth();
+    //this.authState = this.af.auth.getAuth(); // deprecated
     this.af.auth.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
     });
