@@ -20,12 +20,12 @@ export class HomePage {
       private storage: Storage) {
 
     storage.get('totalHits').then((val) => {
-      console.log("got " + val + " hits from storage");
       if (val && val > 0) {
         this.hits = val + 1;
       } else {
         this.hits = 1;
       }
+      console.log("got " + this.hits + " hits (" + val + " from storage)");
       storage.set('totalHits', this.hits);
     })
 

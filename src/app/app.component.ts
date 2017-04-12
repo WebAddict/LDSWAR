@@ -12,6 +12,7 @@ import { MissionariesPage } from '../pages/missionaries/missionaries';
 import { LessonsPage } from '../pages/lessons/lessons';
 import { ActionsPage } from '../pages/actions/actions';
 import { RewardsPage } from '../pages/rewards/rewards';
+import { UsersPage } from '../pages/users/users';
 import { WelcomePage } from '../pages/welcome/welcome';
 
 import { AuthProvider } from '../providers/auth';
@@ -26,7 +27,7 @@ export class LDSWarApp {
   isAppInitialized: boolean = false;
   user: any;
   rootPage: any = FirstRunPage;
-  public pages: Array<{headingTitle: string, pages: Array<{title: string, component: any, icon: any}>}>;
+  public pages: Array<{headingTitle: string, pages: Array<{title: string, component: any, icon: any, params?: any}>}>;
 
   constructor(
       private platform: Platform,
@@ -67,7 +68,12 @@ export class LDSWarApp {
             { title: 'Rewards', component: RewardsPage, icon: 'cart' },
             { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' },
 	  ]},
+	  { headingTitle: 'My Organization', pages: [
+            { title: 'Users', component: UsersPage, icon: 'people', params: {which: 'organization'} },
+            { title: 'Lessons', component: LessonsPage, icon: 'book' },
+	  ]},
 	  { headingTitle: 'Admin', pages: [
+            { title: 'Users', component: UsersPage, icon: 'people' },
             { title: 'Moderation', component: TabsPage, icon: 'flag' },
 	  ]}
         ];
@@ -96,6 +102,6 @@ export class LDSWarApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.setRoot(page.component, page.params);
   }
 }

@@ -11,7 +11,7 @@ import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 // Importing Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 // Importing Pages

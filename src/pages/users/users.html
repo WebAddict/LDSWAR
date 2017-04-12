@@ -6,5 +6,14 @@
 
 
 <ion-content padding>
+    <ion-list>
+	  <ion-item-sliding *ngFor="let user of users | async">
+	      <ion-item (click)="viewUser(user)">{{user.displayName}}</ion-item>
+		  <ion-item-options side="right">
+		    <button ion-button color="danger" (click)="editUser(user)"><ion-icon name="trash"></ion-icon>Edit</button>
+		    <button ion-button color="danger" (click)="deleteUser(user)"><ion-icon name="trash"></ion-icon>Delete</button>
+		  </ion-item-options>
+	  </ion-item-sliding>
+	</ion-list>
 
 </ion-content>
