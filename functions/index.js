@@ -1,56 +1,51 @@
 'use strict';
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
+
 // Moments library to format dates.
 const moment = require('moment');
 // CORS Express middleware to enable CORS Requests.
 const cors = require('cors')({origin: true});
 
-// [START all]
-/**
- * Returns the server's date. You must provide a `format` URL query parameter or `format` vaue in
- * the request body with which we'll try to format the date.
- *
- * Format must follow the Node moment library. See: http://momentjs.com/
- *
- * Example format: "MMMM Do YYYY, h:mm:ss a".
- * Example request using URL query parameters:
- *   https://us-central1-ldswar-ab4a8.cloudfunctions.net/date?format=MMMM%20Do%20YYYY%2C%20h%3Amm%3Ass%20a
- * Example request using request body with cURL:
- *   curl -H 'Content-Type: application/json' /
- *        -d '{"format": "MMMM Do YYYY, h:mm:ss a"}' /
- *        https://us-central1-ldswar-ab4a8.cloudfunctions.net/date
- *
- * This endpoint supports CORS.
- */
-// [START trigger]
-exports.date = functions.https.onRequest((req, res) => {
-// [END trigger]
-  // [START sendError]
-  // Forbidding PUT requests.
-  if (req.method === 'PUT') {
-    res.status(403).send('Forbidden!');
-  }
-  // [END sendError]
 
-  // [START usingMiddleware]
-  // Enable CORS using the `cors` express middleware.
-  cors(req, res, () => {
-  // [END usingMiddleware]
-    // Reading date format from URL query parameter.
-    // [START readQueryParam]
-    let format = req.query.format;
-    // [END readQueryParam]
-    // Reading date format from request body query parameter
-    if (!format) {
-      // [START readBodyParam]
-      format = req.body.format;
-      // [END readBodyParam]
+exports.calcPoints = functions.database.ref('/points/{uid}/history/{historyId}').onWrite(event => {
+  // https://github.com/firebase/functions-samples/blob/master/child-count/functions/index.js
+  // Only edit data when it is first created.
+  if (event.data.previous.exists()) {
+    //console.log('Already exists - Only edit data when it is first created.' + event.data.previous.val());
+	//return;
+  }
+  // Exit when the data is deleted.
+  if (!event.data.exists()) {
+    //console.log('deleted - Only edit data when it is first created.');
+	//return;
+  }
+  // Exit when there are no points or type assigned
+  //if (!event.data.ref.child('type').exists() || !event.data.ref.child('pointValue').exists()) {
+  //  console.log('Exit when there are no points or type assigned');
+  //  return;
+  //}
+  const type = event.data.ref.child('type').val();
+  const points = event.data.ref.child('pointValue').val();
+  const userPointsRef = event.data.ref.parent;
+  const totalPointsRef = userPointsRef.child('totalPoints');
+  const addedPointsRef = userPointsRef.child(type);
+  console.log('type: ' + type + ' points: ' + points);
+
+  // Return the promise from userPointsRef.transaction() so our function 
+  // waits for this async event to complete before it exits.
+  return userPointsRef.transaction(current => {
+	if (current.child(type).exists()) {
+	}
+    if (event.data.exists() && !event.data.previous.exists()) {
+	  current.child('totalPoints').set((current.child('totalPoints').val() || 0) + points);
+      return current;
     }
-    // [START sendResponse]
-    const formattedDate = moment().format(format);
-    console.log('Sending Formatted date:', formattedDate);
-    res.status(200).send(formattedDate);
-    // [END sendResponse]
+    else if (!event.data.exists() && event.data.previous.exists()) {
+      current.child('totalPoints').set((current.child('totalPoints').val() || 0) - points);
+      return current;
+    }
   });
+
 });
-// [END all]

@@ -70,10 +70,13 @@ export class LDSWarApp {
 	  ]},
 	  { headingTitle: 'My Organization', pages: [
             { title: 'Users', component: UsersPage, icon: 'people', params: {which: 'organization'} },
-            { title: 'Lessons', component: LessonsPage, icon: 'book' },
+            { title: 'Lessons', component: LessonsPage, icon: 'book', params: {which: 'organization'} },
+            { title: 'Rewards', component: RewardsPage, icon: 'cart', params: {which: 'organization'} },
+            { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle', params: {which: 'organization'} },
 	  ]},
 	  { headingTitle: 'Admin', pages: [
-            { title: 'Users', component: UsersPage, icon: 'people' },
+            { title: 'Users', component: UsersPage, icon: 'people', params: {which: 'system'} },
+            { title: 'Lessons', component: LessonsPage, icon: 'book', params: {which: 'system'} },
             { title: 'Moderation', component: TabsPage, icon: 'flag' },
 	  ]}
         ];

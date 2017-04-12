@@ -13,6 +13,7 @@ import { LessonsAddPage } from './add/add';
 export class LessonsPage {
 
   public lessons: FirebaseListObservable<any[]>;
+  public lessonRoot: string = '/'; // end with a slash
   public view: any;
   public viewCards: boolean = false;
   public viewList: boolean = true;
@@ -22,7 +23,11 @@ export class LessonsPage {
       public navParams: NavParams,
       af: AngularFire) {
 
-    this.lessons = af.database.list('/lessons');
+    let which = navParams.get('which');
+    if (which == 'organization') {
+      this.lessonRoot = "/organization/allenRanch/";
+    }
+    this.lessons = af.database.list(this.lessonRoot + 'lessons');
   }
 
   addLesson(){

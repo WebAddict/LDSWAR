@@ -16,6 +16,7 @@ interface LDSWarUser {
   email?: string;
   emailVerified?: boolean;
   provider?: string;
+  totalPoints?: number;
 }
 
 @Injectable()

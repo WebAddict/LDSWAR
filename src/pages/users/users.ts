@@ -28,13 +28,13 @@ export class UsersPage {
     //console.log('ionViewDidLoad UsersPage');
   }
   viewUser(user){
-    //this.navCtrl.push(LessonsDetailPage, lesson);
+    //this.navCtrl.push(LessonsDetailPage, user);
   }
   editUser(user){
-    //this.navCtrl.push(LessonsUpdatePage, lesson);
+    //this.navCtrl.push(LessonsUpdatePage, user);
   }
   deleteUser(user){
-    //this.lessons.remove(lesson);
+    //this.lessons.remove(user);
   }
 
 }
