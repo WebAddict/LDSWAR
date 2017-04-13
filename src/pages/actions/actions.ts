@@ -11,7 +11,7 @@ export class ActionsPage {
 
   public points: FirebaseObjectObservable<any>;
   public pointHistory: FirebaseListObservable<any>;
-
+  //let point
   constructor(
       public navCtrl: NavController,
       public navParams: NavParams,
@@ -26,11 +26,15 @@ export class ActionsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ActionsPage');
   }
-  addPoints(points: number){
+  addPoints(points: number) {
     this.pointHistory.push({pointValue: points});
   }
-  deletePoint(item){
+  deletePoint(item) {
     this.pointHistory.remove(item);
+  }
+
+  reportScriptures() {
+    this.addPoints(100);
   }
 
 }
