@@ -73,7 +73,7 @@ This will launch the app right in your browser
 Plug in your device, make sure your Settings for ADB Debugging are enabled, and that you can see your device when running `adb devices`
 
 ```sh
-ionic run android --prod
+ionic run android -prod
 ```
 
 This will launch the app right on your android device
@@ -81,7 +81,7 @@ This will launch the app right on your android device
 ## Run the app on your iPhone/iPad
 First Build the xcode profile by running
 ```sh
-ionic build ios --prod
+ionic build ios -prod
 ```
 
 Then open the project in Xcode. Plug in your device, and press the "play" button to run the app right on your device.

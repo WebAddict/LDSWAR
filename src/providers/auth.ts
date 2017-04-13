@@ -23,6 +23,7 @@ interface LDSWarUser {
 export class AuthProvider {
 
   public user: any;
+  public uid: string;
   public authData: any;
   public authState: FirebaseAuthState;
 
@@ -36,6 +37,7 @@ export class AuthProvider {
     //this.authState = this.af.auth.getAuth(); // deprecated
     this.af.auth.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
+      this.uid = state.uid;
     });
 
 //    this.af.database.list('pushTest').push({

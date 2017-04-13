@@ -8,20 +8,31 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-card>
+    <ion-card-header>
+	  My Points: <span style="font-size: 120%;">{{(points | async)?.totalPoints}}</span> W.A.R. Points
+	</ion-card-header>
+  </ion-card>
+
   <ion-card>
     <ion-card-header>
 	  My Daily Actions
 	</ion-card-header>
 	<ion-list>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(25)">
+		<ion-icon name="remove-circle" item-left></ion-icon>
+		Heartfelt Prayer
+	  </button>
+	  <button ion-item (click)="addPoints(100)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Read Scriptures
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(100)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Daily W.A.R. Lesson
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(50)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Write in Journal
 	  </button>
@@ -33,28 +44,38 @@
 	  My Weekly Actions
 	</ion-card-header>
 	<ion-list>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(50)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Duty to God
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(500)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Attend Temple
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(200)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Share Testimony
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(100)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Scouting
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(300)">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Attend Mission Prep
 	  </button>
 	</ion-list>
   </ion-card>
+
+	<ion-list>
+	  <ion-item-sliding *ngFor="let item of pointHistory | async">
+	      <ion-item>{{item.pointValue}}</ion-item>
+		  <ion-item-options side="right">
+		    <button ion-button color="danger" (click)="deletePoint(item)"><ion-icon name="trash"></ion-icon>Delete</button>
+		  </ion-item-options>
+	  </ion-item-sliding>
+	</ion-list>
+
 
   <ion-card>
     <ion-card-header>
@@ -87,5 +108,4 @@
 	  </button>
 	</ion-list>
   </ion-card>
-
 </ion-content>
