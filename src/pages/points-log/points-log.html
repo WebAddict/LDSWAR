@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Points Log</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+	<ion-list>
+	  <ion-item-sliding *ngFor="let item of pointHistory | async">
+	      <ion-item>{{item.pointValue}}</ion-item>
+		  <ion-item-options side="right">
+		    <button ion-button color="danger" (click)="deletePoint(item)"><ion-icon name="trash"></ion-icon>Delete</button>
+		  </ion-item-options>
+	  </ion-item-sliding>
+	</ion-list>
+
+</ion-content>

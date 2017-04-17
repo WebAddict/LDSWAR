@@ -3,6 +3,9 @@ import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
 import { AuthProvider } from '../../providers/auth';
 
+import { ReportActionsPage } from './report/report';
+import { PointsLogPage } from '../points-log/points-log';
+
 @Component({
   selector: 'page-actions',
   templateUrl: 'actions.html'
@@ -26,15 +29,22 @@ export class ActionsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ActionsPage');
   }
-  addPoints(points: number) {
-    this.pointHistory.push({pointValue: points});
+  addPoints(points: number, type='unknown') {
+    //this.pointHistory.push({pointValue: points});
+    let action = {reportingType: type}
+    this.navCtrl.push(ReportActionsPage, action);
   }
   deletePoint(item) {
     this.pointHistory.remove(item);
   }
 
   reportScriptures() {
-    this.addPoints(100);
+    let action = {reportingType: 'scriptures'}
+    this.navCtrl.push(ReportActionsPage, action);
+  }
+
+  pointsLog() {
+    this.navCtrl.push(PointsLogPage);
   }
 
 }

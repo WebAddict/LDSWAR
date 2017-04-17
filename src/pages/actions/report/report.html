@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Report {{action.reportingType}} for {{action.pointValue}} WAR Points</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+<form (ngSubmit)="save()" #heroForm="ngForm">
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Title:</ion-label>
+      <ion-input [(ngModel)]="action.title" type="text" class="" id="title" name="title" #title="ngModel" required></ion-input>
+        <div [hidden]="action.title.valid || action.title.pristine" class="alert alert-danger">
+          Title is required
+        </div>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Description</ion-label>
+      <ion-input [(ngModel)]="action.description" type="text" class="" id="description" name="description" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Background Image URL</ion-label>
+      <ion-input [(ngModel)]="action.cardBg" type="text" class="" id="cardBg" name="cardBg" required></ion-input>
+    </ion-item>
+  </ion-list>
+  <button type="submit" class="btn btn-primary" clear>Save</button>
+</form>
+</ion-content>

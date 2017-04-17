@@ -12,27 +12,31 @@
   <ion-card>
     <ion-card-header>
 	  My Points: <span style="font-size: 120%;">{{(points | async)?.totalPoints}}</span> W.A.R. Points
+	  <button ion-button icon-only item-right clear (click)="pointsLog()">
+		<ion-icon name='list-box'></ion-icon> 
+	  </button> 
 	</ion-card-header>
   </ion-card>
 
   <ion-card>
     <ion-card-header>
+	  <ion-icon name="calendar" item-left></ion-icon>
 	  My Daily Actions
 	</ion-card-header>
-	<ion-list>
-	  <button ion-item (click)="addPoints(25)">
+	<ion-list text-wrap>
+	  <button ion-item (click)="addPoints(25, 'prayer')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Heartfelt Prayer
 	  </button>
-	  <button ion-item (click)="reportScriptures()">
+	  <button ion-item (click)="addPoints(25, 'scripture')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Read Scriptures
 	  </button>
-	  <button ion-item (click)="addPoints(100)">
+	  <button ion-item (click)="addPoints(100, 'lesson')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Daily W.A.R. Lesson
 	  </button>
-	  <button ion-item (click)="addPoints(50)">
+	  <button ion-item (click)="addPoints(50, 'journal')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Write in Journal
 	  </button>
@@ -41,26 +45,27 @@
 
   <ion-card>
     <ion-card-header>
+	  <ion-icon name="calendar" item-left></ion-icon>
 	  My Weekly Actions
 	</ion-card-header>
 	<ion-list>
-	  <button ion-item (click)="addPoints(50)">
+	  <button ion-item (click)="addPoints(50, 'dutyToGod')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Duty to God
 	  </button>
-	  <button ion-item (click)="addPoints(500)">
+	  <button ion-item (click)="addPoints(500, 'temple')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Attend Temple
 	  </button>
-	  <button ion-item (click)="addPoints(200)">
+	  <button ion-item (click)="addPoints(200, 'testimony')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Share Testimony
 	  </button>
-	  <button ion-item (click)="addPoints(100)">
+	  <button ion-item (click)="addPoints(100, 'scouting')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Scouting
 	  </button>
-	  <button ion-item (click)="addPoints(300)">
+	  <button ion-item (click)="addPoints(300, 'missionPrep')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Attend Mission Prep
 	  </button>
@@ -86,7 +91,7 @@
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		Social Points
 	  </button>
-	  <button ion-item>
+	  <button ion-item (click)="addPoints(200, 'indexing')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
 		FamilySearch Indexing
 	  </button>

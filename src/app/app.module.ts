@@ -16,6 +16,7 @@ import { TwitterConnect } from '@ionic-native/twitter-connect';
 
 // Importing Pages
 import { ActionsPage } from '../pages/actions/actions';
+import { ReportActionsPage } from '../pages/actions/report/report';
 import { ForgotPasswordPage } from '../pages/forgot-password/forgot-password';
 import { HomePage } from '../pages/home/home';
 import { LessonsPage } from '../pages/lessons/lessons';
@@ -25,6 +26,7 @@ import { LessonsAddPage } from '../pages/lessons/add/add';
 import { LibraryPage } from '../pages/library/library';
 import { LoginPage } from '../pages/login/login';
 import { MissionariesPage } from '../pages/missionaries/missionaries';
+import { PointsLogPage } from '../pages/points-log/points-log';
 import { PrivacyPage } from '../pages/privacy/privacy';
 import { RewardsPage } from '../pages/rewards/rewards';
 import { SignupPage } from '../pages/signup/signup';
@@ -55,6 +57,7 @@ export const myFirebaseAuthConfig = {
 let pages = [
   LDSWarApp,
   ActionsPage,
+  ReportActionsPage,
   ForgotPasswordPage,
   HomePage,
   LessonsPage,
@@ -65,6 +68,7 @@ let pages = [
   LoginPage,
   MainPage,
   MissionariesPage,
+  PointsLogPage,
   PrivacyPage,
   RewardsPage,
   SignupPage,
