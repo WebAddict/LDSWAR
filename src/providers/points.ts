@@ -40,13 +40,22 @@ export class Points {
     return Observable.create(observer => {
       this.data.list('points').subscribe(pointData => {
         if (pointData) {
-	  this.points = pointData;
+          this.points = pointData;
           observer.next(pointData);
         } else {
           observer.error();
         }
       });
     });
+  }
+
+  add(pointInfo, uid) {
+    if (!uid) {
+      //uid = $rootScope.uid;
+    }
+    if (!pointInfo || !pointInfo.type) {
+      return false;
+    }
   }
 
 }
