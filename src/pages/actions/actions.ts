@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { AuthProvider } from '../../providers/auth';
 
 import { ReportActionsPage } from './report/report';
@@ -19,10 +20,10 @@ export class ActionsPage {
       public navCtrl: NavController,
       public navParams: NavParams,
       private auth: AuthProvider,
-      af: AngularFire) {
+      afdb: AngularFireDatabase) {
 
-    this.points = af.database.object('/points/' + this.auth.uid);
-    this.pointHistory = af.database.list('/points/' + this.auth.uid + '/history');
+    this.points = afdb.object('/points/' + this.auth.uid);
+    this.pointHistory = afdb.list('/points/' + this.auth.uid + '/history');
   }
 
 

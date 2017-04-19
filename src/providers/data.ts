@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase';
 
 @Injectable()
 export class DataProvider {
   constructor(
-      private af: AngularFire) {
+      private afdb: AngularFireDatabase) {
   
   }
 
   push(path: string, data: any): Observable<any> {
     return Observable.create(observer => {
-      this.af.database.list(path).push(data).then(firebaseNewData => {
+      this.afdb.list(path).push(data).then(firebaseNewData => {
         // Return the uid created
         let newData: any = firebaseNewData;
         observer.next(newData.path.o[newData.path.o.length - 1]);
@@ -34,7 +35,7 @@ export class DataProvider {
 
   update(path: string, data: any): Observable<any> {
     return Observable.create(observer => {
-    this.af.database.object(path).update(data).then(() => {
+    this.afdb.object(path).update(data).then(() => {
         observer.next(true);
       }, error => {
         observer.error(error);
@@ -43,16 +44,16 @@ export class DataProvider {
   }
 
   list(path: string): FirebaseListObservable<any> {
-    return this.af.database.list(path);
+    return this.afdb.list(path);
   }
 
   object(path: string): FirebaseObjectObservable<any> {
-    return this.af.database.object(path);
+    return this.afdb.object(path);
   }
 
   remove(path: string): Observable<any> {
     return Observable.create(observer => {
-      this.af.database.object(path).remove().then(data => {
+      this.afdb.object(path).remove().then(data => {
         observer.next();
       }, error => {
         observer.error(error);

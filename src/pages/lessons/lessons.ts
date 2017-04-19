@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { LessonsUpdatePage } from './update/update';
 import { LessonsDetailPage } from './detail/detail';
@@ -21,13 +22,13 @@ export class LessonsPage {
   constructor(
       public navCtrl: NavController,
       public navParams: NavParams,
-      af: AngularFire) {
+      afdb: AngularFireDatabase) {
 
     let which = navParams.get('which');
     if (which == 'organization') {
       this.lessonRoot = "/organization/allenRanch/";
     }
-    this.lessons = af.database.list(this.lessonRoot + 'lessons');
+    this.lessons = afdb.list(this.lessonRoot + 'lessons');
   }
 
   addLesson(){

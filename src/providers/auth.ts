@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { AngularFire, AuthProviders, FirebaseAuthState, AuthMethods } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+//import { AngularFire, AuthProviders, FirebaseAuthState, AuthMethods } from 'angularfire2';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
@@ -28,19 +31,20 @@ export class AuthProvider {
   public authState: FirebaseAuthState;
 
   constructor(
-      private af: AngularFire,
+      private afdb: AngularFireDatabase,
+      private afAuth: AngularFireAuth,
       private fb: Facebook,
       private twitter: TwitterConnect,
       private data: DataProvider,
       private platform: Platform) {
 
-    //this.authState = this.af.auth.getAuth(); // deprecated
-    this.af.auth.subscribe((state: FirebaseAuthState) => {
+    //this.authState = this.afAuth.getAuth(); // deprecated
+    this.afAuth.subscribe((state: FirebaseAuthState) => {
       this.authState = state;
       this.uid = state.uid;
     });
 
-//    this.af.database.list('pushTest').push({
+//    this.afdb.list('pushTest').push({
 //      teste: 'teste'
 //    }).then((data) => {
 //      console.log(data);
@@ -49,7 +53,7 @@ export class AuthProvider {
 
   getUserData() {
     return Observable.create(observer => {
-      this.af.auth.subscribe(afAuthData => {
+      this.afAuth.subscribe(afAuthData => {
         if (afAuthData) {
           this.data.object('users/' + afAuthData.uid).subscribe(userData => {
             console.log(userData);
@@ -67,9 +71,9 @@ export class AuthProvider {
 
   registerUser(credentials: any) {
     return Observable.create(observer => {
-      this.af.auth.createUser(credentials).then((afAuthData: any) => {
+      this.afAuth.createUser(credentials).then((afAuthData: any) => {
         let displayName = credentials.firstName + ' ' + credentials.lastName;
-        this.af.database.list('users').update(afAuthData.uid, {
+        this.afdb.list('users').update(afAuthData.uid, {
 	  firstName: credentials.firstName,
 	  lastName: credentials.lastName,
           displayName: displayName,
@@ -102,7 +106,7 @@ export class AuthProvider {
 
   loginWithEmail(credentials) {
     return Observable.create(observer => {
-      this.af.auth.login(credentials, {
+      this.afAuth.login(credentials, {
         provider: AuthProviders.Password,
         method: AuthMethods.Password
       }).then((afAuthData) => {
@@ -123,7 +127,7 @@ export class AuthProvider {
         this.fb.login(['public_profile', 'email']).then(facebookData => {
           let provider = firebase.auth.FacebookAuthProvider.credential(facebookData.authResponse.accessToken);
           firebase.auth().signInWithCredential(provider).then(firebaseUser => {
-            this.af.database.list('users').update(firebaseUser.uid, {
+            this.afdb.list('users').update(firebaseUser.uid, {
               name: firebaseUser.displayName,
               email: firebaseUser.email,
               provider: 'facebook',
@@ -135,11 +139,11 @@ export class AuthProvider {
           observer.error(error);
         });
       } else {
-        this.af.auth.login({
+        this.afAuth.login({
           provider: AuthProviders.Facebook,
           method: AuthMethods.Popup
         }).then((facebookData) => {
-          this.af.database.list('users').update(facebookData.auth.uid, {
+          this.afdb.list('users').update(facebookData.auth.uid, {
             name: facebookData.auth.displayName,
             email: facebookData.auth.email,
             provider: 'facebook',
@@ -161,7 +165,7 @@ export class AuthProvider {
           let provider = firebase.auth.TwitterAuthProvider.credential(response.token, response.secret);
           console.log('Logged into Twitter!', response);
           firebase.auth().signInWithCredential(provider).then(firebaseUser => {
-            this.af.database.list('users').update(firebaseUser.uid, {
+            this.afdb.list('users').update(firebaseUser.uid, {
               name: firebaseUser.displayName,
               email: firebaseUser.email,
               provider: 'twitter',
@@ -180,11 +184,11 @@ export class AuthProvider {
           observer.error(error);
         });
       } else {
-        this.af.auth.login({
+        this.afAuth.login({
           provider: AuthProviders.Twitter,
           method: AuthMethods.Popup
         }).then((twitterData) => {
-          this.af.database.list('users').update(twitterData.auth.uid, {
+          this.afdb.list('users').update(twitterData.auth.uid, {
             name: twitterData.auth.displayName,
             email: twitterData.auth.email,
             provider: 'twitter',
@@ -213,6 +217,6 @@ export class AuthProvider {
 
   logout() {
     this.user = null;
-    this.af.auth.logout();
+    this.afAuth.logout();
   }
 }

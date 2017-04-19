@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthProvider } from './auth';
@@ -11,7 +12,7 @@ export class Lessons {
 
   public lessons: any;
   constructor(
-      private af: AngularFire,
+      private afdb: AngularFireDatabase,
       private data: DataProvider,
       private auth: AuthProvider) {
 

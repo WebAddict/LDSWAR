@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'page-users',
@@ -14,14 +15,14 @@ export class UsersPage {
   constructor(
       public navCtrl: NavController,
       public navParams: NavParams,
-      af: AngularFire) {
+      afdb: AngularFireDatabase) {
 
     //console.log(navParams);
     let which = navParams.get('which');
     if (which == 'organization') {
       this.userRoot = "/organization/allenRanch/";
     }
-    this.users = af.database.list(this.userRoot + 'users');
+    this.users = afdb.list(this.userRoot + 'users');
   }
 
   ionViewDidLoad() {

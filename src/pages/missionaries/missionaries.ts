@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'page-missionaries',
@@ -11,9 +12,9 @@ export class MissionariesPage {
   missions: FirebaseListObservable<any[]>;
   //let lastNames = ["Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson", "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King"];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, af: AngularFire) {
-    this.missionaries = af.database.list('/missionaries');
-    this.missions = af.database.list('/missions');
+  constructor(public navCtrl: NavController, public navParams: NavParams, afdb: AngularFireDatabase) {
+    this.missionaries = afdb.list('/missionaries');
+    this.missions = afdb.list('/missions');
   }
 
   addMissionary(){

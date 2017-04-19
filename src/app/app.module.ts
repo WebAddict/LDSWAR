@@ -6,7 +6,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { LDSWarApp } from './app.component';
 
 // Importing AF2 Module
-import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
 // Importing Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
@@ -49,10 +51,6 @@ export const myFirebaseConfig = {
   storageBucket: 'ldswar-ab4a8.appspot.com',
   messagingSenderId: '156611440340'
 };
-export const myFirebaseAuthConfig = {
-    provider: AuthProviders.Password,
-    method: AuthMethods.Password
-}
 
 let pages = [
   LDSWarApp,
@@ -106,7 +104,9 @@ export function providers() {
     BrowserModule,
     IonicModule.forRoot(LDSWarApp),
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(myFirebaseConfig, myFirebaseAuthConfig)
+    AngularFireModule.initializeApp(myFirebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),

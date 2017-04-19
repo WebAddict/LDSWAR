@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 import { AuthProvider } from '../../../providers/auth';
 import { DataProvider } from '../../../providers/data';
@@ -27,15 +28,15 @@ export class ReportActionsPage {
   constructor(
       private navCtrl: NavController,
       private navParams: NavParams,
-      private af: AngularFire,
+      //private afdb: AngularFireDatabase,
       public data: DataProvider,
       public auth: AuthProvider) {
 
     this.action.reportingType = navParams.get('reportingType');
     this.action.pointValue = 99;
-    this.pointHistory = af.database.list('/points/' + this.auth.uid + '/history');
+    //this.pointHistory = afdb.list('/points/' + this.auth.uid + '/history');
 
-    //this.lessons = af.database.list('/lessons');
+    //this.lessons = afdb.list('/lessons');
     this.auth.getUserData().subscribe(userData => {
       this.user = userData;
       this.action.uid = userData.$key;
@@ -55,19 +56,7 @@ export class ReportActionsPage {
     });
   }
 
-  addLesson(){
-    //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
-  }
- 
-  viewLesson(lesson){
-    //let subscription = this.af.database.object('someLocation').subscribe(data=> {
-      //do something with your data
-    //})
-    //subscription.unsubscribe();
-  }
   ionViewDidLoad(){
-    //this.addLesson();
-    //console.log('ionViewDidLoad LessonsPage');
   }
 
 }

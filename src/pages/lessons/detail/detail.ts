@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { DataProvider } from '../../../providers/data';
 
@@ -14,7 +15,7 @@ export class LessonsDetailPage {
       public navCtrl: NavController,
       public navParams: NavParams,
       private data: DataProvider,
-      af: AngularFire) {
+      afdb: AngularFireDatabase) {
 
     console.log(navParams);
     let lessonId = navParams.get('$key');
@@ -22,7 +23,7 @@ export class LessonsDetailPage {
     //console.log('lesson id ' + lessonId);
     //console.log('lesson path ' + lessonPath);
     //this.lesson = this.data.object(lessonPath);
-    //this.lesson = af.database.object(lessonPath);
+    //this.lesson = afdb.object(lessonPath);
     //af.database.object(lessonPath).then((data) => {
     //  this.lesson = data;
     //  console.log(data);

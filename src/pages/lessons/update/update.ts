@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { AuthProvider } from '../../../providers/auth';
 import { DataProvider } from '../../../providers/data';
@@ -19,13 +20,13 @@ export class LessonsUpdatePage {
   constructor(
       private navCtrl: NavController,
       private navParams: NavParams,
-      private af: AngularFire,
+      private afdb: AngularFireDatabase,
       public data: DataProvider,
       public auth: AuthProvider) {
 
     let lessonId = navParams.get('$key');
     this.lessonPath = 'lessons/' + lessonId;
-    //this.lesson = af.database.object(lessonPath);
+    //this.lesson = afdb.object(lessonPath);
     this.data.getSnapshot(this.lessonPath).subscribe(data => {
       //console.log(data);
       this.lesson = data.val();
@@ -54,7 +55,7 @@ export class LessonsUpdatePage {
   }
  
   viewLesson(lesson){
-    //let subscription = this.af.database.object('someLocation').subscribe(data=> {
+    //let subscription = this.afdb.object('someLocation').subscribe(data=> {
       //do something with your data
     //})
     //subscription.unsubscribe();
