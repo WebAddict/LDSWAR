@@ -38,4 +38,12 @@ export class PointsLogPage {
     });
   }
 
+  wipePoints() {
+    this.points.wipe().subscribe(key => {
+      this.navCtrl.pop();
+    }, err => {
+      console.log(err)
+    });
+  }
+
 }

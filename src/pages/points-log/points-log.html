@@ -4,6 +4,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Points Log</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only round (click)="wipePoints()"><ion-icon name="trash"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -11,7 +14,7 @@
 
 	<ion-list>
 	  <ion-item-sliding *ngFor="let item of pointHistory | async">
-	      <ion-item>{{item.reportingType}} {{item.pointValue}}</ion-item>
+	      <ion-item>{{item.type}} {{item.pointValue}}</ion-item>
 		  <ion-item-options side="right">
 		    <button ion-button color="danger" (click)="deletePoint(item.$key)"><ion-icon name="trash"></ion-icon>Delete</button>
 		  </ion-item-options>

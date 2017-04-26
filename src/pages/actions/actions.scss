@@ -1,3 +1,14 @@
 page-actions {
 
+  ion-card > ion-list > button > div.item-inner > div > ion-label > h2 {
+    font-size: 110%;
+    font-weight: 300;
+  }
+  ion-card > ion-list > button > div.item-inner > div > ion-label > h4 {
+    font-size: 70%;
+    font-style: italic;
+    color: #aaa;
+    font-weight: 200;
+  }
+
 }

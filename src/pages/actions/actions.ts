@@ -26,9 +26,9 @@ export class ActionsPage {
 
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ActionsPage');
+    //console.log('ionViewDidLoad ActionsPage');
   }
-  addPoints(points: number, type='unknown') {
+  addPoints(type='unknown') {
     //this.pointHistory.push({pointValue: points});
     let action = {reportingType: type}
     this.navCtrl.push(ReportActionsPage, action);

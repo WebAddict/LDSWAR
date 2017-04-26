@@ -48,11 +48,61 @@ export class UserPoints {
   }
 }
 
-export class Point {
-    reportingType: string;
-    title: string;
-    uid: string;
-    pointValue: number;
+export class ReportPoints {
+  key: string;
+  type: string;
+  date: any;
+  pointValue: number;
+  constructor(type: string, options?: any) {
+    this.type = type;
+    this.date = new Date;
+    switch (type) {
+      case 'classroom':
+        this.pointValue = 100;
+        break;
+      case 'dutyToGod':
+        this.pointValue = 100;
+        break;
+      case 'friendToActivity':
+        this.pointValue = 200;
+        break;
+      case 'friendToChurch':
+        this.pointValue = 500;
+        break;
+      case 'indexing':
+        this.pointValue = 25;
+        break;
+      case 'journal':
+        this.pointValue = 50;
+        break;
+      case 'lesson':
+        this.pointValue = 100;
+        break;
+      case 'missionPrep':
+        this.pointValue = 250;
+        break;
+      case 'missionary':
+        this.pointValue = 200;
+        break;
+      case 'prayer':
+        this.pointValue = 50;
+        break;
+      case 'scouting':
+        this.pointValue = 50;
+        break;
+      case 'scripture':
+        this.pointValue = 100;
+        break;
+      case 'temple':
+        this.pointValue = 500;
+        break;
+      case 'testimony':
+        this.pointValue = 100;
+        break;
+      default:
+        this.pointValue = 12;
+    }
+  }
 }
 
 @Injectable()
@@ -85,7 +135,7 @@ export class PointsProvider {
     });
   }
 
-  add(pointInfo: Point, uid?: string) {
+  add(reportPoints: ReportPoints, uid?: string) {
     return Observable.create(observer => {
       if (!uid && !this.auth.uid) {
         observer.error();
@@ -93,10 +143,10 @@ export class PointsProvider {
       if (!uid) {
         uid = this.auth.uid;
       }
-      if (!pointInfo || !pointInfo.reportingType) {
+      if (!reportPoints || !reportPoints.type) {
         observer.error();
       }
-      this.data.push('/points/' + uid + '/history', pointInfo).subscribe(pointData => {
+      this.data.push('/points/' + uid + '/history', reportPoints).subscribe(pointData => {
         this.calculate().subscribe(info => {
           observer.next();
         }, error => {
@@ -129,6 +179,25 @@ export class PointsProvider {
       });
     });
   }
+  wipe(uid?: string) {
+    return Observable.create(observer => {
+      if (!uid && !this.auth.uid) {
+        observer.error();
+      }
+      if (!uid) {
+        uid = this.auth.uid;
+      }
+      this.data.remove('/points/' + uid + '/history').subscribe(info => {
+        this.calculate().subscribe(info => {
+          observer.next();
+        }, error => {
+          observer.error(error);
+        });
+      }, error => {
+        observer.error(error);
+      });
+    });
+  }
   calculate(uid?: string) {
     return Observable.create(observer => {
       if (!uid && !this.auth.uid) {
@@ -140,16 +209,16 @@ export class PointsProvider {
       let userPoints = new UserPoints;
       this.data.getSnapshot('/points/' + uid + '/history').subscribe(snapshot => {
         snapshot.forEach(function(pointSnapshot) {
-          var pointInfo = pointSnapshot.val();
-          if (!userPoints.total) {
-            userPoints.total = pointInfo.pointValue;
+          var reportPoints = pointSnapshot.val();
+          if (!userPoints.total || userPoints.total < 1) {
+            userPoints.total = parseInt(reportPoints.pointValue);
           } else {
-            userPoints.total += pointInfo.pointValue;
+            userPoints.total += parseInt(reportPoints.pointValue);
           }
-          if (!userPoints[pointInfo.reportingType]) {
-            userPoints[pointInfo.reportingType] = pointInfo.pointValue;
+          if (!userPoints[reportPoints.type] || userPoints[reportPoints.type] < 1) {
+            userPoints[reportPoints.type] = parseInt(reportPoints.pointValue);
           } else {
-            userPoints[pointInfo.reportingType] += pointInfo.pointValue;
+            userPoints[reportPoints.type] += parseInt(reportPoints.pointValue);
           }
 		});
         // now need to calc spent

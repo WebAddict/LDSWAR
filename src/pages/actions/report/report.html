@@ -3,19 +3,16 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Report {{action.reportingType}} for {{action.pointValue}} WAR Points</ion-title>
+    <ion-title>Report {{reportPoints.reportingType}} for {{reportPoints.pointValue}} WAR Points</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-<form (ngSubmit)="save()" #heroForm="ngForm">
+<form (ngSubmit)="save()">
   <ion-list>
     <ion-item>
-      <ion-label floating>Title:</ion-label>
-      <ion-input [(ngModel)]="action.title" type="text" class="" id="title" name="title" #title="ngModel" required></ion-input>
-        <div [hidden]="action.title.valid || action.title.pristine" class="alert alert-danger">
-          Title is required
-        </div>
+      <ion-label floating>Date</ion-label>
+      <ion-datetime displayFormat="DDD MMM D, YYYY" [(ngModel)]="reportPoints.date" name="date"></ion-datetime>
     </ion-item>
   </ion-list>
   <button type="submit" class="btn btn-primary" clear>Save</button>

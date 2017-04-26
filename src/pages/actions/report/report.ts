@@ -6,7 +6,7 @@ import { FirebaseListObservable } from 'angularfire2/database';
 
 import { AuthProvider } from '../../../providers/auth';
 import { DataProvider } from '../../../providers/data';
-import { PointsProvider } from '../../../providers/points';
+import { PointsProvider, ReportPoints } from '../../../providers/points';
 
 
 @Component({
@@ -15,13 +15,7 @@ import { PointsProvider } from '../../../providers/points';
 })
 export class ReportActionsPage {
 
-  public action: {reportingType: string, title: string, description: string, uid: string, pointValue: number} = {
-    reportingType: '',
-    title: '',
-    description: '',
-    uid: '',
-    pointValue: 0
-  };
+  public reportPoints: ReportPoints;
   public user: any;
 
   public lessons: FirebaseListObservable<any[]>;
@@ -34,15 +28,14 @@ export class ReportActionsPage {
       public auth: AuthProvider,
       public points: PointsProvider) {
 
-    this.action.reportingType = navParams.get('reportingType');
-    this.action.pointValue = 99;
+    let reportType = navParams.get('reportingType');
+    this.reportPoints = new ReportPoints(reportType);
     this.pointHistory = this.data.list('/points/' + this.auth.uid + '/history');
-    this.action.uid = this.auth.uid;
   }
 
   save() {
     //this.pointHistory.push(this.action).then(() => {
-    this.points.add(this.action).subscribe(key => {
+    this.points.add(this.reportPoints).subscribe(key => {
       //console.log('saved', key);
       this.navCtrl.pop();
     }, err => {

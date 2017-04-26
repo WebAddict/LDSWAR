@@ -58,29 +58,29 @@ export class LDSWarApp {
         this.menu.enable(true);
         this.user = data;
         this.pages = [
-	  { headingTitle: 'My Account', pages: [
+	      { headingTitle: 'My Account', pages: [
             { title: 'My Profile', component: TabsPage, icon: 'person' },
             { title: 'My Points', component: TabsPage, icon: 'flash' },
-	  ]},
-	  { headingTitle: 'Sections', pages: [
+          ]},
+          { headingTitle: 'Sections', pages: [
             { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
             { title: 'Home', component: HomePage, icon: 'home' },
             { title: 'Lessons', component: LessonsPage, icon: 'book' },
             { title: 'Actions', component: ActionsPage, icon: 'compass' },
             { title: 'Rewards', component: RewardsPage, icon: 'cart' },
             { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' },
-	  ]},
-	  { headingTitle: 'My Organization', pages: [
+          ]},
+          { headingTitle: 'My Organization', pages: [
             { title: 'Users', component: UsersPage, icon: 'people', params: {which: 'organization'} },
             { title: 'Lessons', component: LessonsPage, icon: 'book', params: {which: 'organization'} },
             { title: 'Rewards', component: RewardsPage, icon: 'cart', params: {which: 'organization'} },
             { title: 'Missionaries', component: MissionariesPage, icon: 'bicycle', params: {which: 'organization'} },
-	  ]},
-	  { headingTitle: 'Admin', pages: [
+          ]},
+          { headingTitle: 'Admin', pages: [
             { title: 'Users', component: UsersPage, icon: 'people', params: {which: 'system'} },
             { title: 'Lessons', component: LessonsPage, icon: 'book', params: {which: 'system'} },
             { title: 'Moderation', component: TabsPage, icon: 'flag' },
-	  ]}
+	      ]}
         ];
         if (!this.isAppInitialized) {
           this.isAppInitialized = true;
