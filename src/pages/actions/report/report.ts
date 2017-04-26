@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { FirebaseListObservable } from 'angularfire2/database';
 
 import { AuthProvider } from '../../../providers/auth';
 import { DataProvider } from '../../../providers/data';
+import { PointsProvider } from '../../../providers/points';
 
 
 @Component({
@@ -30,25 +31,18 @@ export class ReportActionsPage {
       private navParams: NavParams,
       //private afdb: AngularFireDatabase,
       public data: DataProvider,
-      public auth: AuthProvider) {
+      public auth: AuthProvider,
+      public points: PointsProvider) {
 
     this.action.reportingType = navParams.get('reportingType');
     this.action.pointValue = 99;
-    //this.pointHistory = afdb.list('/points/' + this.auth.uid + '/history');
-
-    //this.lessons = afdb.list('/lessons');
-    this.auth.getUserData().subscribe(userData => {
-      this.user = userData;
-      this.action.uid = userData.$key;
-      console.log('Set user uid to ', userData);
-    }, err => {
-      console.log(err)
-    });
+    this.pointHistory = this.data.list('/points/' + this.auth.uid + '/history');
+    this.action.uid = this.auth.uid;
   }
 
   save() {
-    this.pointHistory.push(this.action).then(() => {
-    //this.pointHistory.push('/points', this.action).subscribe(key => {
+    //this.pointHistory.push(this.action).then(() => {
+    this.points.add(this.action).subscribe(key => {
       //console.log('saved', key);
       this.navCtrl.pop();
     }, err => {

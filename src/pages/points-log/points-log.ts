@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { AuthProvider } from '../../providers/auth';
+
+import { DataProvider } from '../../providers/data';
+import { PointsProvider } from '../../providers/points';
 
 @Component({
   selector: 'page-points-log',
@@ -10,21 +13,29 @@ import { AuthProvider } from '../../providers/auth';
 })
 export class PointsLogPage {
 
-  public points: FirebaseObjectObservable<any>;
+  public userPoints: FirebaseObjectObservable<any>;
   public pointHistory: FirebaseListObservable<any>;
 
   constructor(
       public navCtrl: NavController,
       public navParams: NavParams,
-      private auth: AuthProvider,
-      afdb: AngularFireDatabase) {
+      public data: DataProvider,
+      public auth: AuthProvider,
+      public points: PointsProvider) {
 
-    this.points = afdb.object('/points/' + this.auth.uid);
-    this.pointHistory = afdb.list('/points/' + this.auth.uid + '/history');
+    this.userPoints = this.data.object('/points/' + this.auth.uid);
+    this.pointHistory = this.data.list('/points/' + this.auth.uid + '/history');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PointsLogPage');
+  }
+
+  deletePoint(point) {
+    this.points.delete(point).subscribe(key => {
+    }, err => {
+      console.log(err)
+    });
   }
 
 }

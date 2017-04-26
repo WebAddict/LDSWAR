@@ -43,6 +43,7 @@ import { MainPage } from '../pages/pages';
 // Importing Providers
 import { DataProvider } from '../providers/data';
 import { AuthProvider } from '../providers/auth';
+import { PointsProvider } from '../providers/points';
 
 export const myFirebaseConfig = {
   apiKey: 'AIzaSyDsj62-5wjG0lOkRCOzOu-jv46DGQ6xl6g',
@@ -91,6 +92,7 @@ export function providers() {
     SplashScreen,
     DataProvider,
     AuthProvider,
+    PointsProvider,
     Facebook,
     TwitterConnect,
     // Keep this to enable Ionic's runtime error handling during development

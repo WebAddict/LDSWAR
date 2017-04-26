@@ -32,7 +32,7 @@ export class LDSWarApp {
   constructor(
       private platform: Platform,
       private data: DataProvider,
-      public auth: AuthProvider,
+      private auth: AuthProvider,
       private menu: MenuController,
       private statusBar: StatusBar,
       private splashScreen: SplashScreen) {
@@ -49,7 +49,9 @@ export class LDSWarApp {
       this.menu.enable(false);
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
+      if (this.platform.is('cordova')) {
+        this.statusBar.styleDefault();
+      }
 
       // WATCH USER ACCOUNT
       this.auth.getUserData().subscribe(data => {
@@ -97,8 +99,9 @@ export class LDSWarApp {
         this.menu.enable(false);
         this.nav.setRoot(FirstRunPage);
       });
-
-      this.splashScreen.hide();
+      if (this.platform.is('cordova')) {
+        this.splashScreen.hide();
+      }
     });
   }
 

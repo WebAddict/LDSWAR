@@ -8,7 +8,7 @@ import { AuthProvider } from './auth';
 import { DataProvider } from './data';
 
 @Injectable()
-export class Lessons {
+export class LessonProvider {
 
   public lessons: any;
   constructor(

@@ -11,9 +11,9 @@
 
 	<ion-list>
 	  <ion-item-sliding *ngFor="let item of pointHistory | async">
-	      <ion-item>{{item.pointValue}}</ion-item>
+	      <ion-item>{{item.reportingType}} {{item.pointValue}}</ion-item>
 		  <ion-item-options side="right">
-		    <button ion-button color="danger" (click)="deletePoint(item)"><ion-icon name="trash"></ion-icon>Delete</button>
+		    <button ion-button color="danger" (click)="deletePoint(item.$key)"><ion-icon name="trash"></ion-icon>Delete</button>
 		  </ion-item-options>
 	  </ion-item-sliding>
 	</ion-list>

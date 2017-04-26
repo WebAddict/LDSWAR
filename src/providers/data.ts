@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 
 @Injectable()
 export class DataProvider {
   constructor(
+      fbapp: FirebaseApp,
       private afdb: AngularFireDatabase) {
   
   }
@@ -26,9 +27,8 @@ export class DataProvider {
   getSnapshot(path: string): Observable<any> {
     return Observable.create(observer => {
       let snapshotRef = firebase.database().ref(path);
-      snapshotRef.on('value', function(snapshot) {
+      snapshotRef.once('value', function(snapshot) {
         observer.next(snapshot);
-        //updateStarCount(postElement, snapshot.val());
       });
     });
   }
@@ -36,6 +36,16 @@ export class DataProvider {
   update(path: string, data: any): Observable<any> {
     return Observable.create(observer => {
     this.afdb.object(path).update(data).then(() => {
+        observer.next(true);
+      }, error => {
+        observer.error(error);
+      });
+    });
+  }
+
+  set(path: string, data: any): Observable<any> {
+    return Observable.create(observer => {
+    this.afdb.object(path).set(data).then(() => {
         observer.next(true);
       }, error => {
         observer.error(error);

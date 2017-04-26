@@ -26,19 +26,19 @@
 	<ion-list text-wrap>
 	  <button ion-item (click)="addPoints(25, 'prayer')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Heartfelt Prayer
+		Heartfelt Prayer {{points.dutyToGodPoints ? points.dutyToGodPoints : 0 | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(25, 'scripture')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Read Scriptures
+		Read Scriptures {{points.dutyToGodPoints ? points.dutyToGodPoints : 0 | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(100, 'lesson')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Daily W.A.R. Lesson
+		Daily W.A.R. Lesson {{points.dutyToGodPoints ? points.dutyToGodPoints : 0 | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(50, 'journal')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Write in Journal
+		Write in Journal {{points.journalPoints ? points.journalPoints : 0 | number:0}} W.A.R. Points
 	  </button>
 	</ion-list>
   </ion-card>
