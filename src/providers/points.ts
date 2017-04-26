@@ -180,6 +180,7 @@ export class PointsProvider {
     });
   }
   wipe(uid?: string) {
+    // be careful - there is no UNDO from doing this... All Confirmation popups should be handled by page, not this service
     return Observable.create(observer => {
       if (!uid && !this.auth.uid) {
         observer.error();
