@@ -11,7 +11,7 @@
 
   <ion-card>
     <ion-card-header>
-	  My Points: <span style="font-size: 120%;">{{(points | async)?.totalPoints}}</span> W.A.R. Points
+	  My Points: <span style="font-size: 120%;">{{(points | async)?.total | number:0}}</span> W.A.R. Points
 	  <button ion-button icon-only item-right clear (click)="pointsLog()">
 		<ion-icon name='list-box'></ion-icon> 
 	  </button> 
@@ -26,19 +26,19 @@
 	<ion-list text-wrap>
 	  <button ion-item (click)="addPoints(25, 'prayer')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Heartfelt Prayer {{points.dutyToGodPoints ? points.dutyToGodPoints : 0 | number:0}} W.A.R. Points
+		Heartfelt Prayer {{(points | async)?.prayer | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(25, 'scripture')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Read Scriptures {{points.dutyToGodPoints ? points.dutyToGodPoints : 0 | number:0}} W.A.R. Points
+		Read Scriptures {{(points | async)?.scripture | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(100, 'lesson')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Daily W.A.R. Lesson {{points.dutyToGodPoints ? points.dutyToGodPoints : 0 | number:0}} W.A.R. Points
+		Daily W.A.R. Lesson {{(points | async)?.lesson | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(50, 'journal')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Write in Journal {{points.journalPoints ? points.journalPoints : 0 | number:0}} W.A.R. Points
+		Write in Journal {{(points | async)?.journal | number:0}} W.A.R. Points
 	  </button>
 	</ion-list>
   </ion-card>
@@ -51,36 +51,26 @@
 	<ion-list>
 	  <button ion-item (click)="addPoints(50, 'dutyToGod')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Duty to God
+		Duty to God {{(points | async)?.dutyToGod | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(500, 'temple')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Attend Temple
+		Attend Temple {{(points | async)?.temple | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(200, 'testimony')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Share Testimony
+		Share Testimony {{(points | async)?.testimony | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(100, 'scouting')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Scouting
+		Scouting {{(points | async)?.scouting | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(300, 'missionPrep')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Attend Mission Prep
+		Attend Mission Prep {{(points | async)?.missionPrep | number:0}} W.A.R. Points
 	  </button>
 	</ion-list>
   </ion-card>
-
-	<ion-list>
-	  <ion-item-sliding *ngFor="let item of pointHistory | async">
-	      <ion-item>{{item.pointValue}}</ion-item>
-		  <ion-item-options side="right">
-		    <button ion-button color="danger" (click)="deletePoint(item)"><ion-icon name="trash"></ion-icon>Delete</button>
-		  </ion-item-options>
-	  </ion-item-sliding>
-	</ion-list>
-
 
   <ion-card>
     <ion-card-header>
@@ -89,27 +79,27 @@
 	<ion-list>
 	  <button ion-item>
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Social Points
+		Social Points {{(points | async)?.social | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item (click)="addPoints(200, 'indexing')">
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		FamilySearch Indexing
+		FamilySearch Indexing {{(points | async)?.indexing | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item>
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Write Missionaires
+		Write Missionaires {{(points | async)?.missionary | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item>
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Bring Friends to Church
+		Bring Friends to Church {{(points | async)?.friendToChurch | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item>
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Bring Friends to Activities
+		Bring Friends to Activities {{(points | async)?.friendToActivity | number:0}} W.A.R. Points
 	  </button>
 	  <button ion-item>
 		<ion-icon name="remove-circle" item-left></ion-icon>
-		Classroom &amp; Leader Awarded Points
+		Classroom &amp; Leader Awarded Points {{(points | async)?.classroom | number:0}} W.A.R. Points
 	  </button>
 	</ion-list>
   </ion-card>

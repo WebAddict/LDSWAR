@@ -7,25 +7,46 @@ import { Observable } from 'rxjs/Observable';
 import { AuthProvider } from './auth';
 import { DataProvider } from './data';
 
-interface UserPoints {
-  availableToSpend?: number;
-  classroomPoints?: number;
-  dutyToGodPoints?: number;
-  friendToActivityPoints?: number;
-  friendToChurchPoints?: number;
-  indexingPoints?: number;
-  journalPoints?: number;
-  lessonPoints?: number;
-  missionPrepPoints?: number;
-  missionaryPoints?: number;
-  scoutingPoints?: number;
-  scripturePoints?: number;
-  socialPoints?: number;
-  templePoints?: number;
-  testimonyPoints?: number;
-  totalPoints?: number;
+export class UserPoints {
+  availableToSpend: number;
+  classroom: number;
+  dutyToGod: number;
+  friendToActivity: number;
+  friendToChurch: number;
+  indexing: number;
+  journal: number;
+  lesson: number;
+  missionPrep: number;
+  missionary: number;
+  prayer: number;
+  scouting: number;
+  scripture: number;
+  social: number;
+  spent: number;
+  temple: number;
+  testimony: number;
+  total: number;
+  constructor() {
+    this.availableToSpend = 0;
+    this.classroom = 0;
+    this.dutyToGod = 0;
+    this.friendToActivity = 0;
+    this.friendToChurch = 0;
+    this.indexing = 0;
+    this.journal = 0;
+    this.lesson = 0;
+    this.missionPrep = 0;
+    this.missionary = 0;
+    this.prayer = 0;
+    this.scouting = 0;
+    this.scripture = 0;
+    this.social = 0;
+    this.spent = 0;
+    this.temple = 0;
+    this.testimony = 0;
+    this.total = 0;
+  }
 }
-
 
 export class Point {
     reportingType: string;
@@ -38,7 +59,6 @@ export class Point {
 export class PointsProvider {
 
   public points: any;
-  userPoints
   constructor(
       private afdb: AngularFireDatabase,
       private data: DataProvider,
@@ -46,9 +66,15 @@ export class PointsProvider {
 
   }
 
-  getPoints() {
+  getPoints(uid?: string) {
     return Observable.create(observer => {
-      this.data.list('points').subscribe(pointData => {
+      if (!uid && !this.auth.uid) {
+        observer.error();
+      }
+      if (!uid) {
+        uid = this.auth.uid;
+      }
+      this.data.list('/points/' + uid).subscribe(pointData => {
         if (pointData) {
           this.points = pointData;
           observer.next(pointData);
@@ -111,15 +137,32 @@ export class PointsProvider {
       if (!uid) {
         uid = this.auth.uid;
       }
-      let totalPoints = 0;
+      let userPoints = new UserPoints;
       this.data.getSnapshot('/points/' + uid + '/history').subscribe(snapshot => {
         snapshot.forEach(function(pointSnapshot) {
           var pointInfo = pointSnapshot.val();
-          totalPoints += pointInfo.pointValue;
+          if (!userPoints.total) {
+            userPoints.total = pointInfo.pointValue;
+          } else {
+            userPoints.total += pointInfo.pointValue;
+          }
+          if (!userPoints[pointInfo.reportingType]) {
+            userPoints[pointInfo.reportingType] = pointInfo.pointValue;
+          } else {
+            userPoints[pointInfo.reportingType] += pointInfo.pointValue;
+          }
 		});
-		console.log("Calculated " + totalPoints + " points");
-        this.data.set('/points/' + uid + '/totalPoints', totalPoints).subscribe(info => {
-          observer.next();
+        // now need to calc spent
+
+        // now update
+		console.log("Calculated " + userPoints.total + " total points");
+		console.log(userPoints);
+        this.data.update('/points/' + uid, userPoints).subscribe(info => {
+          this.data.set('/users/' + uid + '/totalPoints', userPoints.total).subscribe(info => {
+            observer.next();
+          }, error => {
+            observer.error(error);
+          });
         }, error => {
           observer.error(error);
         });

@@ -14,7 +14,6 @@ import { PointsLogPage } from '../points-log/points-log';
 export class ActionsPage {
 
   public points: FirebaseObjectObservable<any>;
-  public pointHistory: FirebaseListObservable<any>;
   //let point
   constructor(
       public navCtrl: NavController,
@@ -23,7 +22,6 @@ export class ActionsPage {
       afdb: AngularFireDatabase) {
 
     this.points = afdb.object('/points/' + this.auth.uid);
-    this.pointHistory = afdb.list('/points/' + this.auth.uid + '/history');
   }
 
 
@@ -33,14 +31,6 @@ export class ActionsPage {
   addPoints(points: number, type='unknown') {
     //this.pointHistory.push({pointValue: points});
     let action = {reportingType: type}
-    this.navCtrl.push(ReportActionsPage, action);
-  }
-  deletePoint(item) {
-    this.pointHistory.remove(item);
-  }
-
-  reportScriptures() {
-    let action = {reportingType: 'scriptures'}
     this.navCtrl.push(ReportActionsPage, action);
   }
 
