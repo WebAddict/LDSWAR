@@ -35,7 +35,7 @@ export class DataProvider {
 
   update(path: string, data: any): Observable<any> {
     return Observable.create(observer => {
-    this.afdb.object(path).update(data).then(() => {
+      this.afdb.object(path).update(data).then(() => {
         observer.next(true);
       }, error => {
         observer.error(error);
@@ -45,7 +45,7 @@ export class DataProvider {
 
   set(path: string, data: any): Observable<any> {
     return Observable.create(observer => {
-    this.afdb.object(path).set(data).then(() => {
+      this.afdb.object(path).set(data).then(() => {
         observer.next(true);
       }, error => {
         observer.error(error);

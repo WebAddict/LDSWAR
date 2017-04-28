@@ -25,22 +25,22 @@
 	</ion-card-header>
 	<ion-list>
 	  <button ion-item (click)="addPoints('prayer')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{prayer ? 'checkmark-circle' : 'remove-circle' }}" color="{{prayer ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Heartfelt Prayer</h2>
 		<h4>{{(points | async)?.prayer | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('scripture')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{scripture ? 'checkmark-circle' : 'remove-circle' }}" color="{{scripture ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Read Scriptures</h2>
 		<h4>{{(points | async)?.scripture | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('lesson')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{lesson ? 'checkmark-circle' : 'remove-circle' }}" color="{{lesson ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Daily W.A.R. Lesson</h2>
 		<h4>{{(points | async)?.lesson | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('journal')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{journal ? 'checkmark-circle' : 'remove-circle' }}" color="{{journal ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Write in Journal</h2>
 		<h4>{{(points | async)?.journal | number:0}} W.A.R. Points</h4>
 	  </button>
@@ -54,27 +54,27 @@
 	</ion-card-header>
 	<ion-list>
 	  <button ion-item (click)="addPoints('dutyToGod')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{dutyToGod ? 'checkmark-circle' : 'remove-circle' }}" color="{{dutyToGod ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Duty to God</h2>
 		<h4>{{(points | async)?.dutyToGod | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('temple')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{temple ? 'checkmark-circle' : 'remove-circle' }}" color="{{temple ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Attend Temple</h2>
 		<h4>{{(points | async)?.temple | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('testimony')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{testimony ? 'checkmark-circle' : 'remove-circle' }}" color="{{testimony ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Share Testimony</h2>
 		<h4>{{(points | async)?.testimony | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('scouting')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{scouting ? 'checkmark-circle' : 'remove-circle' }}" color="{{scouting ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Scouting</h2>
 		<h4>{{(points | async)?.scouting | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('missionPrep')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{missionPrep ? 'checkmark-circle' : 'remove-circle' }}" color="{{missionPrep ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Attend Mission Prep</h2>
 		<h4>{{(points | async)?.missionPrep | number:0}} W.A.R. Points</h4>
 	  </button>
@@ -87,32 +87,32 @@
 	</ion-card-header>
 	<ion-list>
 	  <button ion-item (click)="addPoints('social')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{social ? 'checkmark-circle' : 'remove-circle' }}" color="{{social ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Social Points</h2>
 		<h4>{{(points | async)?.social | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('indexing')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{indexing ? 'checkmark-circle' : 'remove-circle' }}" color="{{indexing ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>FamilySearch Indexing</h2>
 		<h4>{{(points | async)?.indexing | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('missionary')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{missionary ? 'checkmark-circle' : 'remove-circle' }}" color="{{missionary ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Write Missionaires</h2>
 		<h4>{{(points | async)?.missionary | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('friendToChurch')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{friendToChurch ? 'checkmark-circle' : 'remove-circle' }}" color="{{friendToChurch ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Bring Friends to Church</h2>
 		<h4>{{(points | async)?.friendToChurch | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('friendToActivity')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{friendToActivity ? 'checkmark-circle' : 'remove-circle' }}" color="{{friendToActivity ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Bring Friends to Activities</h2>
 		<h4>{{(points | async)?.friendToActivity | number:0}} W.A.R. Points</h4>
 	  </button>
 	  <button ion-item (click)="addPoints('classroom')">
-		<ion-icon name="remove-circle" item-left></ion-icon>
+		<ion-icon name="{{classroom ? 'checkmark-circle' : 'remove-circle' }}" color="{{classroom ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Classroom &amp; Leader Awarded Points</h2>
 		<h4>{{(points | async)?.classroom | number:0}} W.A.R. Points</h4>
 	  </button>

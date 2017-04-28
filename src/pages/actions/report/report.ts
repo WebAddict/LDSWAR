@@ -30,7 +30,7 @@ export class ReportActionsPage {
 
     let reportType = navParams.get('reportingType');
     this.reportPoints = new ReportPoints(reportType);
-    this.pointHistory = this.data.list('/points/' + this.auth.uid + '/history');
+    this.pointHistory = this.data.list('/pointLogs/' + this.auth.uid);
   }
 
   save() {

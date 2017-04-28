@@ -3,6 +3,7 @@ import 'rxjs/add/operator/map';
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import * as moment from 'moment';
 
 import { AuthProvider } from './auth';
 import { DataProvider } from './data';
@@ -55,7 +56,7 @@ export class ReportPoints {
   pointValue: number;
   constructor(type: string, options?: any) {
     this.type = type;
-    this.date = new Date;
+    this.date = moment().local().format('YYYY-MM-DD');
     switch (type) {
       case 'classroom':
         this.pointValue = 100;
@@ -103,12 +104,104 @@ export class ReportPoints {
         this.pointValue = 12;
     }
   }
+
+  public setKey() {
+    let useDate = moment(this.date).local();
+    switch (this.type) {
+      case 'classroom':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'dutyToGod':
+        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        break;
+      case 'friendToActivity':
+        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        break;
+      case 'friendToChurch':
+        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        break;
+      case 'indexing':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'journal':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'lesson':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'missionPrep':
+        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        break;
+      case 'missionary':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'prayer':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'scouting':
+        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        break;
+      case 'scripture':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'temple':
+        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        break;
+      case 'testimony':
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      default:
+        this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+    }
+  }
+
+  public zeroPad(num: number, places?: number) {
+    places = places || 0;
+    let zero = places - num.toString().length + 1;
+    return Array(+(zero > 0 && zero)).join("0") + num;
+  }
+
+  public makeDayKey(dateStr?: string) {
+    if (dateStr) {
+      var date = new Date(dateStr);
+    } else {
+      var date = new Date();
+    }
+    date.setHours(0);
+    let dayKey = date.getDate();
+    if (date.getMonth() == 6) {
+      dayKey += 30;
+    }
+    return '2017-' + this.zeroPad(116, 3);
+  }
+
+  public makeDateKey(dateStr?: string) {
+    if (dateStr) {
+      var date = new Date(dateStr);
+    } else {
+      var date = new Date();
+    }
+    date.setHours(0);
+    return date.toISOString().split('T')[0];
+  }
+
+  public makeWeekKey(dateStr?: string) {
+    if (dateStr) {
+      var date = new Date(dateStr);
+    } else {
+      var date = new Date();
+    }
+    date.setHours(0);
+    //return date.getWeek();
+    return '2017-17';
+  }
 }
 
 @Injectable()
 export class PointsProvider {
 
   public points: any;
+  public userPoints: any;
   constructor(
       private afdb: AngularFireDatabase,
       private data: DataProvider,
@@ -125,12 +218,22 @@ export class PointsProvider {
         uid = this.auth.uid;
       }
       this.data.list('/points/' + uid).subscribe(pointData => {
-        if (pointData) {
-          this.points = pointData;
-          observer.next(pointData);
-        } else {
-          observer.error();
-        }
+        this.userPoints = [];
+        pointData.forEach(item => {
+          if (!item.$key || !item.$value) {
+          } else {
+            this.userPoints[item.$key] = item.$value;
+          }
+        });
+        observer.next(this.userPoints);
+        //if (pointData) {
+        //  this.points = pointData;
+        //  observer.next(pointData);
+        //} else {
+        //  observer.error();
+        //}
+      }, error => {
+        observer.error(error);
       });
     });
   }
@@ -146,7 +249,10 @@ export class PointsProvider {
       if (!reportPoints || !reportPoints.type) {
         observer.error();
       }
-      this.data.push('/points/' + uid + '/history', reportPoints).subscribe(pointData => {
+      reportPoints.setKey();
+      let key = reportPoints.key;
+      reportPoints.key = null;
+      this.data.set('/pointLogs/' + uid + '/' + key, reportPoints).subscribe(pointData => {
         this.calculate().subscribe(info => {
           observer.next();
         }, error => {
@@ -168,7 +274,7 @@ export class PointsProvider {
       if (!pointId) {
         observer.error();
       }
-      this.data.remove('/points/' + uid + '/history/' + pointId).subscribe(info => {
+      this.data.remove('/pointLogs/' + uid + '/' + pointId).subscribe(info => {
         this.calculate().subscribe(info => {
           observer.next();
         }, error => {
@@ -188,7 +294,7 @@ export class PointsProvider {
       if (!uid) {
         uid = this.auth.uid;
       }
-      this.data.remove('/points/' + uid + '/history').subscribe(info => {
+      this.data.remove('/pointLogs/' + uid).subscribe(info => {
         this.calculate().subscribe(info => {
           observer.next();
         }, error => {
@@ -208,7 +314,7 @@ export class PointsProvider {
         uid = this.auth.uid;
       }
       let userPoints = new UserPoints;
-      this.data.getSnapshot('/points/' + uid + '/history').subscribe(snapshot => {
+      this.data.getSnapshot('/pointLogs/' + uid).subscribe(snapshot => {
         snapshot.forEach(function(pointSnapshot) {
           var reportPoints = pointSnapshot.val();
           if (!userPoints.total || userPoints.total < 1) {
@@ -227,7 +333,7 @@ export class PointsProvider {
         // now update
 		console.log("Calculated " + userPoints.total + " total points");
 		console.log(userPoints);
-        this.data.update('/points/' + uid, userPoints).subscribe(info => {
+        this.data.set('/points/' + uid, userPoints).subscribe(info => {
           this.data.set('/users/' + uid + '/totalPoints', userPoints.total).subscribe(info => {
             observer.next();
           }, error => {
@@ -241,5 +347,4 @@ export class PointsProvider {
       });
     });
   }
-
 }
