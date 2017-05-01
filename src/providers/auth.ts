@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 //import { AngularFire, AuthProviders, FirebaseAuthState, AuthMethods } from 'angularfire2';
+import * as firebase from 'firebase/app';
 
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
@@ -66,30 +67,20 @@ export class AuthProvider {
       this.afAuth.authState.subscribe(firebaseUser => {
         this.firebaseUser = firebaseUser;
         this.uid = firebaseUser.uid;
-	if (firebaseUser) {
-	  this.data.object('users/' + firebaseUser.uid).subscribe(LDSWarUser => {
-	    this.user = LDSWarUser;
-	    this.LDSWarUser = LDSWarUser;
-	    observer.next(LDSWarUser);
-	  });
+        if (firebaseUser) {
+          this.data.object('/users/' + firebaseUser.uid).subscribe(LDSWarUser => {
+            this.user = LDSWarUser;
+            this.LDSWarUser = LDSWarUser;
+            observer.next(LDSWarUser);
+          });
         } else {
-	  observer.error();
-	}
+          this.uid = null;
+          this.user = null;
+          this.firebaseUser = null;
+          this.LDSWarUser = null;
+          observer.error();
+        }
       });
-
-//      this.afAuth.subscribe(afAuthData => {
-//        if (afAuthData) {
-//          this.data.object('users/' + afAuthData.uid).subscribe(userData => {
-//            console.log(userData);
-//            this.user = userData;
-//            observer.next(userData);
-//          });
-//        } else {
-//	  console.log("No Auth Data in getUserData");
-//	  this.user = null;
-//          observer.error();
-//        }
-//      });
     });
   }
 
@@ -97,73 +88,38 @@ export class AuthProvider {
     return Observable.create(observer => {
       this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then((firebaseUser) => {
         let displayName = credentials.firstName + ' ' + credentials.lastName;
-	this.data.object('users/' + firebaseUser.uid).set({
-	});
-	credentials.created = true;
-	observer.next(credentials);
+        this.data.object('/users/' + firebaseUser.uid).set({
+          firstName: credentials.firstName,
+          lastName: credentials.lastName,
+          displayName: displayName,
+          email: credentials.email,
+          emailVerified: false,
+          provider: 'email',
+          image: 'http://www.gravatar.com/avatar?d=mm&s=140'
+        });
+        credentials.created = true;
+        observer.next(credentials);
       }).catch((error: any) => {
-	observer.error(error);
+        observer.error(error);
       });
-//      this.afAuth.createUser(credentials).then((afAuthData: any) => {
-//        let displayName = credentials.firstName + ' ' + credentials.lastName;
-//        this.afdb.list('users').update(afAuthData.uid, {
-//	  firstName: credentials.firstName,
-//	  lastName: credentials.lastName,
-//          displayName: displayName,
-//          email: afAuthData.auth.email,
-//          emailVerified: false,
-//          provider: 'email',
-//          image: 'http://www.gravatar.com/avatar?d=mm&s=140'
-//        });
-//        credentials.created = true;
-//        observer.next(credentials);
-//      }).catch((error: any) => {
-//        if (error) {
-//          switch (error.code) {
-//            case 'INVALID_EMAIL':
-//              observer.error('E-mail inválido.');
-//              break;
-//            case 'EMAIL_TAKEN':
-//              observer.error('Este e-mail já está sendo utilizado.');
-//              break;
-//            case 'NETWORK_ERROR':
-//              observer.error('Aconteceu algum erro ao tentar se conectar ao servidor, tente novamente mais tarde.');
-//              break;
-//            default:
-//              observer.error(error);
-//          }
-//        }
-//      });
     });
   }
 
   loginWithEmail(credentials) {
     return Observable.create(observer => {
         this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password).then((firebaseUser) => {
-	  this.firebaseUser = firebaseUser;
-          this.data.object('users/' + firebaseUser.uid).subscribe(userData => {
+          this.firebaseUser = firebaseUser;
+          this.data.object('/users/' + firebaseUser.uid).subscribe(userData => {
             console.log(userData);
             this.user = userData;
             this.LDSWarUser = userData;
             observer.next(userData);
           });
-	}).catch(function(error) {
+        }).catch(function(error) {
           // Handle Errors here.
-	  console.log(error);
-	  observer.error(error);
+          console.log(error);
+          observer.error(error);
         });
-//      this.afAuth.login(credentials, {
-//        provider: AuthProviders.Password,
-//        method: AuthMethods.Password
-//      }).then((afAuthData) => {
-//        this.data.object('users/' + afAuthData.uid).subscribe(userData => {
-//          console.log(userData);
-//          this.user = userData;
-//          observer.next(userData);
-//        });
-//      }).catch((error) => {
-//        observer.error(error);
-//      });
     });
   }
 
@@ -171,35 +127,34 @@ export class AuthProvider {
     return Observable.create(observer => {
       if (this.platform.is('cordova')) {
         this.fb.login(['public_profile', 'email']).then(facebookData => {
-//          let provider = fbapp.auth.FacebookAuthProvider.credential(facebookData.authResponse.accessToken);
-//          this.afAuth.auth.signInWithCredential(provider).then(firebaseUser => {
-//            this.afdb.list('users').update(firebaseUser.uid, {
-//              name: firebaseUser.displayName,
-//              email: firebaseUser.email,
-//              provider: 'facebook',
-//              image: firebaseUser.photoURL
-//            });
-//            observer.next();
-//          });
+          let credential = firebase.auth.FacebookAuthProvider.credential(facebookData.authResponse.accessToken);
+          this.afAuth.auth.signInWithCredential(credential).then(firebaseUser => {
+            this.data.object('/users/' + firebaseUser.uid).update({
+              displayName: firebaseUser.displayName,
+              email: firebaseUser.email,
+              provider: 'facebook',
+              image: firebaseUser.photoURL
+            });
+            observer.next();
+          });
         }, error => {
           observer.error(error);
         });
       } else {
-//        this.afAuth.login({
-//          provider: AuthProviders.Facebook,
-//          method: AuthMethods.Popup
-//        }).then((facebookData) => {
-//          this.afdb.list('users').update(facebookData.auth.uid, {
-//            name: facebookData.auth.displayName,
-//            email: facebookData.auth.email,
-//            provider: 'facebook',
-//            image: facebookData.auth.photoURL
-//          });
-//          observer.next();
-//        }).catch((error) => {
-//          console.info("error", error);
-//          observer.error(error);
-//        });
+        let provider = new firebase.auth.FacebookAuthProvider();
+        provider.addScope('public_profile');
+        provider.addScope('email');
+        //provider.addScope('user_birthday');
+        this.afAuth.auth.signInWithRedirect(provider).then((firebaseUser) => {
+          this.firebaseUser = firebaseUser;
+          this.data.object('/users/' + firebaseUser.uid).update({
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email,
+            provider: 'facebook',
+            image: firebaseUser.photoURL
+          });
+          observer.next();
+        });
       }
     });
   }
@@ -208,43 +163,68 @@ export class AuthProvider {
     return Observable.create(observer => {
       if (this.platform.is('cordova')) {
         this.twitter.login().then(function (response) {
-//          let provider = fbapp.auth.TwitterAuthProvider.credential(response.token, response.secret);
+          let credential = firebase.auth.TwitterAuthProvider.credential(response.token, response.secret);
 //          console.log('Logged into Twitter!', response);
-//          this.afAuth.auth.signInWithCredential(provider).then(firebaseUser => {
-//            this.afdb.list('users').update(firebaseUser.uid, {
-//              name: firebaseUser.displayName,
-//              email: firebaseUser.email,
-//              provider: 'twitter',
-//              image: firebaseUser.photoURL
-//            });
-//            observer.next();
-//          }, function (error) {
-//            console.info("error", error);
-//            observer.error(error);
-//	      }).catch((error) => {
-//            console.info("error", error);
-//            observer.error(error);
-//          });
+          this.afAuth.auth.signInWithCredential(credential).then(firebaseUser => {
+            this.data.object('/users/' + firebaseUser.uid).update({
+              displayName: firebaseUser.displayName,
+              email: firebaseUser.email,
+              provider: 'twitter',
+              image: firebaseUser.photoURL
+            });
+            observer.next();
+          }, function (error) {
+            console.info("error", error);
+            observer.error(error);
+          }).catch((error) => {
+            console.info("error", error);
+            observer.error(error);
+          });
         }, error => {
           console.info("error", error);
           observer.error(error);
         });
       } else {
-//        this.afAuth.login({
-//          provider: AuthProviders.Twitter,
-//          method: AuthMethods.Popup
-//        }).then((twitterData) => {
-//          this.afdb.list('users').update(twitterData.auth.uid, {
-//            name: twitterData.auth.displayName,
-//            email: twitterData.auth.email,
-//            provider: 'twitter',
-//            image: twitterData.auth.photoURL
-//          });
-//          observer.next();
-//        }).catch((error) => {
-//          console.info("error", error);
-//          observer.error(error);
-//        });
+        let provider = new firebase.auth.TwitterAuthProvider();
+        this.afAuth.auth.signInWithPopup(provider).then((result) => {
+          console.log(result);
+          this.firebaseUser = result.user;
+          this.data.object('/users/' + result.user.uid).update({
+            displayName: result.user.displayName,
+            email: result.user.email,
+            provider: 'twitter',
+            image: result.user.photoURL
+          });
+          observer.next();
+        }).catch((error) => {
+          console.info("error", error);
+          observer.error(error);
+        });
+      }
+    });
+  }
+
+  loginWithGoogle() {
+    return Observable.create(observer => {
+      if (this.platform.is('cordova')) {
+          observer.error("No Cordova Support");
+      } else {
+        let provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('https://www.googleapis.com/auth/plus.login');
+        this.afAuth.auth.signInWithPopup(provider).then((result) => {
+          console.log(result);
+          this.firebaseUser = result.user;
+          this.data.object('/users/' + result.user.uid).update({
+            displayName: result.user.displayName,
+            email: result.user.email,
+            provider: 'google',
+            image: result.user.photoURL
+          });
+          observer.next();
+        }).catch((error) => {
+          console.info("error", error);
+          observer.error(error);
+        });
       }
     });
   }

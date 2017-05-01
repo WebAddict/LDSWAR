@@ -68,6 +68,24 @@ export class WelcomePage {
       }, 1000);
     });
   }
+  loginUserWithGoogle() {
+    let loading = this.loadingCtrl.create({
+      content: 'Please wait...'
+    });
+    loading.present();
+    this.auth.loginWithGoogle().subscribe(data => {
+      setTimeout(() => {
+        loading.dismiss();
+        this.menu.enable(true);
+        this.navCtrl.setRoot(MainPage);
+      }, 1000);
+    }, err => {
+      setTimeout(() => {
+        loading.dismiss();
+        this.ShowError(err);
+      }, 1000);
+    });
+  }
   
   ShowError(error): void {
     switch (error.code) {

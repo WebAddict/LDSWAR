@@ -24,7 +24,7 @@ export class PointsLogPage {
       public points: PointsProvider) {
 
     this.userPoints = this.data.object('/points/' + this.auth.uid);
-    this.pointHistory = this.data.list('/points/' + this.auth.uid + '/history');
+    this.pointHistory = this.data.list('/pointLogs/' + this.auth.uid);
   }
 
   ionViewDidLoad() {

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Edit Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="{{(user | async)?.image ? (user | async)?.image : defaultAvatarUrl}}">
+      </ion-avatar>
+      <h1>{{(user | async)?.displayName}}</h1>
+      <h2><span style="font-size: 120%;">{{(user | async)?.totalPoints | number:0}}</span> W.A.R. Points</h2>
+    </ion-item>
+  </ion-card>
+
+  
+  <ion-card>
+    <ion-card-header>
+	  <ion-icon name="person" item-left></ion-icon>
+	  Edit My Profile
+	</ion-card-header>
+	<ion-list>
+	  <ion-item>
+		<ion-label floating>First Name</ion-label>
+		<ion-input type="text" [(ngModel)]="user.firstName" name="firstName"></ion-input>
+	  </ion-item>
+	  <ion-item>
+		<ion-label floating>Last Name</ion-label>
+		<ion-input type="text" [(ngModel)]="user.lastName" name="lastName"></ion-input>
+	  </ion-item>
+	</ion-list>
+  </ion-card>
+
+</ion-content>

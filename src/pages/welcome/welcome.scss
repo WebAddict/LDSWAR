@@ -63,4 +63,14 @@ page-welcome {
       background-color: #657786;
     }
   }
+  button.loginGoog {
+    margin-top: 25px;
+    background-color: #4285F4;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    color: #f5f8fa;
+
+    &.activated {
+      background-color: #657786;
+    }
+  }
 }

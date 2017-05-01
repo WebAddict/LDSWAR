@@ -12,6 +12,7 @@ import { MissionariesPage } from '../pages/missionaries/missionaries';
 import { LessonsPage } from '../pages/lessons/lessons';
 import { ActionsPage } from '../pages/actions/actions';
 import { RewardsPage } from '../pages/rewards/rewards';
+import { UserPage } from '../pages/user/user';
 import { UsersPage } from '../pages/users/users';
 import { WelcomePage } from '../pages/welcome/welcome';
 
@@ -59,10 +60,10 @@ export class LDSWarApp {
         this.user = data;
         this.pages = [
 	      { headingTitle: 'My Account', pages: [
-            { title: 'My Profile', component: TabsPage, icon: 'person' },
+            { title: 'My Profile', component: UserPage, icon: 'person' },
             { title: 'My Points', component: TabsPage, icon: 'flash' },
           ]},
-          { headingTitle: 'Sections', pages: [
+          { headingTitle: 'My Sections', pages: [
             { title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
             { title: 'Home', component: HomePage, icon: 'home' },
             { title: 'Lessons', component: LessonsPage, icon: 'book' },

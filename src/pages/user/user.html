@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Me</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="{{(user | async)?.image ? (user | async)?.image : defaultAvatarUrl}}">
+      </ion-avatar>
+      <h1>{{(user | async)?.displayName}}</h1>
+      <h2><span style="font-size: 120%;">{{(user | async)?.totalPoints | number:0}}</span> W.A.R. Points</h2>
+    </ion-item>
+  </ion-card>
+
+  
+  <ion-card>
+	<ion-list>
+	  <button ion-item (click)="editProfile()">
+		<ion-icon name="person" item-left></ion-icon>
+		Edit Profile
+	  </button>
+	  <button ion-item (click)="pointsLog()">
+		<ion-icon name="list-box" item-left></ion-icon>
+		Point Log
+	  </button>
+	</ion-list>
+  </ion-card>
+
+</ion-content>

@@ -14,7 +14,10 @@
 
 	<ion-list>
 	  <ion-item-sliding *ngFor="let item of pointHistory | async">
-	      <ion-item>{{item.type}} {{item.pointValue}}</ion-item>
+	      <ion-item>
+			<div style="font-size: 13px; line-height: 15px;"><span class="pmfont" style="font-size: 16px;{{item.pointValue < 0 ? ' color:red;' : ''}}">{{item.pointValue}}</span> <span>{{item.type}}</span></div>
+			<div style="font-size: 10px;">{{item.$key}} {{item.date}}</div>
+		  </ion-item>
 		  <ion-item-options side="right">
 		    <button ion-button color="danger" (click)="deletePoint(item.$key)"><ion-icon name="trash"></ion-icon>Delete</button>
 		  </ion-item-options>

@@ -17,6 +17,7 @@ export class ReportActionsPage {
 
   public reportPoints: ReportPoints;
   public user: any;
+  reportType: string = null;
 
   public lessons: FirebaseListObservable<any[]>;
   public pointHistory: FirebaseListObservable<any>;
@@ -28,8 +29,8 @@ export class ReportActionsPage {
       public auth: AuthProvider,
       public points: PointsProvider) {
 
-    let reportType = navParams.get('reportingType');
-    this.reportPoints = new ReportPoints(reportType);
+    this.reportType = navParams.get('reportingType');
+    this.reportPoints = new ReportPoints(this.reportType);
     this.pointHistory = this.data.list('/pointLogs/' + this.auth.uid);
   }
 

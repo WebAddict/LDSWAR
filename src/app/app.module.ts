@@ -35,6 +35,8 @@ import { SignupPage } from '../pages/signup/signup';
 import { TabsPage } from '../pages/tabs/tabs';
 import { TermsPage } from '../pages/terms/terms';
 import { TutorialPage } from '../pages/tutorial/tutorial';
+import { UserPage } from '../pages/user/user';
+import { UserEditPage } from '../pages/user/edit/edit';
 import { UsersPage } from '../pages/users/users';
 import { WelcomePage } from '../pages/welcome/welcome';
 
@@ -74,6 +76,8 @@ let pages = [
   TabsPage,
   TermsPage,
   TutorialPage,
+  UserPage,
+  UserEditPage,
   UsersPage,
   WelcomePage
 ];
