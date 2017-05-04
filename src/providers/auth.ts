@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 //import { AngularFire, AuthProviders, FirebaseAuthState, AuthMethods } from 'angularfire2';
-import * as firebase from 'firebase/app';
 
 import { AngularFireModule, FirebaseApp } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import * as firebase from 'firebase/app'; // app and typings
+
 import { Observable } from 'rxjs/Observable';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { TwitterConnect } from '@ionic-native/twitter-connect';
 
-//import { User as FirebaseUser } from 'firebase/auth';
 
 // Providers
 import {DataProvider} from './data';
@@ -28,56 +28,75 @@ interface LDSWarUser {
 @Injectable()
 export class AuthProvider {
 
-  firebaseUser: any;
-  public LDSWarUser: any;
-  public user: any;
-  public uid: string;
-  public authData: any;
-  //public authState: FirebaseAuthState;
+  public firebaseUser: Observable<firebase.User> | null;
+  public currentUser: FirebaseObjectObservable<any[]> | null;
+  public uid: string | null;
 
   constructor(
-      fbapp: FirebaseApp,
+      private fbApp: FirebaseApp,
       private afdb: AngularFireDatabase,
       private afAuth: AngularFireAuth,
-      private fb: Facebook,
+      private facebook: Facebook,
       private twitter: TwitterConnect,
       private data: DataProvider,
       private platform: Platform) {
 
     /* `afAuth.authState` = Observable<firebase.User> */
+    this.firebaseUser = afAuth.authState;
     afAuth.authState.subscribe(firebaseUser => {
-      this.firebaseUser = firebaseUser;
-      this.uid = firebaseUser.uid;
-    });
-    //this.firebaseUser = afAuth.authState;
-    //this.afAuth.subscribe((state: FirebaseAuthState) => {
-    //  this.authState = state;
-    //  this.uid = state.uid;
-    //});
+      if (firebaseUser) {
+        this.uid = firebaseUser.uid;
+        this.currentUser = afdb.object('/users/' + firebaseUser.uid);
+        console.log(this.currentUser);
 
-//    this.afdb.list('pushTest').push({
-//      teste: 'teste'
-//    }).then((data) => {
-//      console.log(data);
-//    });
+        // online presence
+        //var myConnectionsRef = fbApp.database().ref('/users/' + firebaseUser.uid + '/connections');
+        var lastOnlineRef = fbApp.database().ref('/users/' + firebaseUser.uid + '/lastOnline');
+        lastOnlineRef.set(firebase.database.ServerValue.TIMESTAMP);
+        var onlineUsersRef = fbApp.database().ref('/onlineUsers/' + firebaseUser.uid);
+        var connectedRef = fbApp.database().ref(".info/connected");
+        connectedRef.on("value", function(snapshot) {
+          if (snapshot.val() === true) {
+            // add this device to my connections list
+            //var con = myConnectionsRef.push(true);
+            onlineUsersRef.set({displayName: firebaseUser.displayName, organization: 'allenRanch', photoURL: firebaseUser.photoURL});
+
+            // when I disconnect, remove this device
+            //con.onDisconnect().remove();
+            onlineUsersRef.onDisconnect().remove();
+
+            // when I disconnect, update the last time I was seen online
+            lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
+          } else {
+            //alert("not connected");
+          }
+        });
+      } else {
+        this.currentUser = null;
+      }
+    }, err => {
+      // error in observable subscription to firebaseUser (authState)
+      this.currentUser = null;
+    });
+  }
+
+  getEmail() {
+    //if (this.currentUser && this.currentUser.email) {
+    //  return this.currentUser.email;
+    //}
+    return 'none';
   }
 
   getUserData() {
     return Observable.create(observer => {
       this.afAuth.authState.subscribe(firebaseUser => {
-        this.firebaseUser = firebaseUser;
-        this.uid = firebaseUser.uid;
         if (firebaseUser) {
+          //this.firebaseUser = firebaseUser;
+          this.uid = firebaseUser.uid;
           this.data.object('/users/' + firebaseUser.uid).subscribe(LDSWarUser => {
-            this.user = LDSWarUser;
-            this.LDSWarUser = LDSWarUser;
             observer.next(LDSWarUser);
           });
         } else {
-          this.uid = null;
-          this.user = null;
-          this.firebaseUser = null;
-          this.LDSWarUser = null;
           observer.error();
         }
       });
@@ -108,11 +127,11 @@ export class AuthProvider {
   loginWithEmail(credentials) {
     return Observable.create(observer => {
         this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password).then((firebaseUser) => {
-          this.firebaseUser = firebaseUser;
+          //this.firebaseUser = firebaseUser;
           this.data.object('/users/' + firebaseUser.uid).subscribe(userData => {
             console.log(userData);
-            this.user = userData;
-            this.LDSWarUser = userData;
+            //this.user = userData;
+            //this.LDSWarUser = userData;
             observer.next(userData);
           });
         }).catch(function(error) {
@@ -126,7 +145,7 @@ export class AuthProvider {
   loginWithFacebook() {
     return Observable.create(observer => {
       if (this.platform.is('cordova')) {
-        this.fb.login(['public_profile', 'email']).then(facebookData => {
+        this.facebook.login(['public_profile', 'email']).then(facebookData => {
           let credential = firebase.auth.FacebookAuthProvider.credential(facebookData.authResponse.accessToken);
           this.afAuth.auth.signInWithCredential(credential).then(firebaseUser => {
             this.data.object('/users/' + firebaseUser.uid).update({
@@ -146,7 +165,7 @@ export class AuthProvider {
         provider.addScope('email');
         //provider.addScope('user_birthday');
         this.afAuth.auth.signInWithRedirect(provider).then((firebaseUser) => {
-          this.firebaseUser = firebaseUser;
+          //this.firebaseUser = firebaseUser;
           this.data.object('/users/' + firebaseUser.uid).update({
             displayName: firebaseUser.displayName,
             email: firebaseUser.email,
@@ -188,7 +207,7 @@ export class AuthProvider {
         let provider = new firebase.auth.TwitterAuthProvider();
         this.afAuth.auth.signInWithPopup(provider).then((result) => {
           console.log(result);
-          this.firebaseUser = result.user;
+          //this.firebaseUser = result.user;
           this.data.object('/users/' + result.user.uid).update({
             displayName: result.user.displayName,
             email: result.user.email,
@@ -213,7 +232,7 @@ export class AuthProvider {
         provider.addScope('https://www.googleapis.com/auth/plus.login');
         this.afAuth.auth.signInWithPopup(provider).then((result) => {
           console.log(result);
-          this.firebaseUser = result.user;
+          //this.firebaseUser = result.user;
           this.data.object('/users/' + result.user.uid).update({
             displayName: result.user.displayName,
             email: result.user.email,
@@ -242,8 +261,17 @@ export class AuthProvider {
   }
 
   logout() {
-    this.user = null;
-    this.LDSWarUser = null;
-    this.afAuth.auth.signOut();
+    return Observable.create(observer => {
+      this.uid = null;
+      //this.user = null;
+      this.firebaseUser = null;
+      //this.LDSWarUser = null;
+      this.afAuth.auth.signOut().then(function() {
+        observer.next();
+      }, function(error) {
+        observer.error(error);
+        // An error happened.
+      });
+    });
   }
 }

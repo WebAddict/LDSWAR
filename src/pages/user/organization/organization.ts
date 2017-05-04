@@ -1,22 +1,23 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { AuthProvider } from '../../../providers/auth';
 import { DataProvider } from '../../../providers/data';
 
-import { UserOrganizationPage } from '../organization/organization';
 
 @IonicPage()
 @Component({
-  selector: 'page-edit-user',
-  templateUrl: 'edit.html',
+  selector: 'page-organization-user',
+  templateUrl: 'organization.html',
 })
-export class UserEditPage {
+export class UserOrganizationPage {
 
   //public user: FirebaseObjectObservable<any[]>;
   user: any;
+  public organizationList: FirebaseListObservable<any[]>;
+  public organizationGroups: FirebaseListObservable<any[]>;
   error: string;
   uid: string;
 
@@ -37,23 +38,20 @@ export class UserEditPage {
       this.user = data.val();
     }, err => {
     });
+    this.organizationList = this.data.list('/organizations');
+    this.organizationGroups = this.data.list('/organizationGroups');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad User');
   }
 
-  saveUser() {
-    this.user.displayName = this.user.firstName + ' ' + this.user.lastName;
-    this.data.update('/users/' + this.uid, this.user).subscribe(key => {
+  saveOrganization() {
+    this.data.set('/users/' + this.uid + '/organization', this.user.organization).subscribe(key => {
       this.navCtrl.pop();
     }, err => {
       console.log(err);
     });
-  }
-
-  editOrganization() {
-    this.navCtrl.push(UserOrganizationPage);
   }
 
 }

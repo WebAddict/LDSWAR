@@ -78,3 +78,11 @@ $colors: (
 
 @import "roboto";
 @import "noto-sans";
+
+@font-face {
+    font-family: 'permanent_markerregular';
+    src: url('../assets/fonts/PermanentMarker-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

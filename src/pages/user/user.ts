@@ -8,6 +8,7 @@ import { AuthProvider } from '../../providers/auth';
 
 import { PointsLogPage } from '../points-log/points-log';
 import { UserEditPage } from './edit/edit';
+import { WelcomePage } from '../welcome/welcome';
 
 @IonicPage()
 @Component({
@@ -18,6 +19,8 @@ export class UserPage {
 
   public user: FirebaseObjectObservable<any[]>;
   defaultAvatarUrl: string = "http://www.gravatar.com/avatar?d=mm&s=140";
+  public uid: string;
+  public isMe: boolean = false;
 
   constructor(
       public navCtrl: NavController,
@@ -25,11 +28,12 @@ export class UserPage {
       public auth: AuthProvider,
       afdb: AngularFireDatabase) {
 
-    let uid = navParams.get('uid');
-    if (!uid) {
-      uid = this.auth.uid;
+    this.uid = navParams.get('uid');
+    if (!this.uid) {
+      this.uid = this.auth.uid;
+      this.isMe = true;
     }
-    this.user = afdb.object('/users/' + uid);
+    this.user = afdb.object('/users/' + this.uid);
   }
 
   ionViewDidLoad() {
@@ -42,6 +46,12 @@ export class UserPage {
 
   pointsLog() {
     this.navCtrl.push(PointsLogPage);
+  }
+
+  logout() {
+    this.auth.logout().subscribe(function() {
+      this.navCtrl.setRoot(WelcomePage);
+    });
   }
 
 }

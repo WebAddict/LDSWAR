@@ -9,18 +9,26 @@
 
 <ion-content padding>
 
+<h1>Welcome to &quot;Wake And Rise&quot;</h1>
 
-<div>
-  {{menuenabled ? 'Menu Enabled' : 'Menu OFF'}}
-  <button ion-button menuToggle>Toggle Menu</button>
-</div>
+<p>This is in ACTIVE Development and is not ready to use quite yet.</p>
 
-<div>
-{{hits}} hits
-</div>
-<div>
-  {{auth.user ? auth.user.email : 'Guest'}}
-    <button ion-button (click)="logout()" *ngIf="auth.user">Logout</button>
-    <button ion-button (click)="login()" *ngIf="!auth.user">Login</button>
-</div>
+<h2>What Works?</h2>
+
+<ul>
+  <li>Entire Backend framework is almost fully built out</li>
+  <li>Registration and User management</li>
+  <li>Entering Points / Actions via Dates</li>
+  <li>Basic User Profile edits</li>
+</ul>
+
+<h2>What Doesn't Work?</h2>
+
+<ul>
+  <li>Lesson's not ready</li>
+  <li>Entering Points / Actions via Dates</li>
+  <li>Rewards will be built last</li>
+</ul>
+
+
 </ion-content>

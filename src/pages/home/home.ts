@@ -16,7 +16,7 @@ export class HomePage {
   constructor(
       private navCtrl: NavController,
       private menu: MenuController,
-      private auth: AuthProvider,
+      public auth: AuthProvider,
       private storage: Storage) {
 
     storage.get('totalHits').then((val) => {
@@ -32,7 +32,9 @@ export class HomePage {
   }
 
   logout() {
-    this.auth.logout();
+    this.auth.logout().subscribe(function() {
+      this.navCtrl.setRoot(WelcomePage);
+    });
   }
 
   login() {

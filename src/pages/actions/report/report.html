@@ -9,6 +9,7 @@
 
 <ion-content>
 <form (ngSubmit)="save()">
+  {{(firebaseUser)?.displayName}}
   <ion-list>
     <ion-item>
       <ion-label floating>Date</ion-label>

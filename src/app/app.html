@@ -2,7 +2,10 @@
 	<ion-menu [content]="content">
 	  <ion-header>
 		<ion-toolbar color="primary">
-		  <ion-title>Menu</ion-title>
+		  <ion-title>{{(currentUser)?.firstName}} Menu</ion-title>
+		  <ion-buttons end>
+		    <button ion-button icon-only round (click)="logout()"><ion-icon class="fa fa-sign-out"></ion-icon>Signout</button>
+		  </ion-buttons>
 		</ion-toolbar>
 	  </ion-header>
 

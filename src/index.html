@@ -23,7 +23,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/favicon-16x16.png">
   <meta name="msapplication-TileColor" content="#4e8ef7">
   <meta name="msapplication-TileImage" content="/assets/icon/ms-icon-144x144.png">
-  <link rel="manifest" href="/manifest.json?v=kwid7">
+  <link rel="manifest" href="/manifest.json?v=mw7dg">
   <meta name="theme-color" content="#4e8ef7">
   
   <!-- cordova.js required for cordova apps -->
@@ -32,25 +32,40 @@
   <!-- un-comment this code to enable service worker
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js?v=kwid7')
+      navigator.serviceWorker.register('service-worker.js?v=mw7dg')
         .then(() => console.log('service worker installed'))
         .catch(err => console.log('Error', err));
     }
   </script>-->
+  <style>
+   body {
+   }
+    #tmpLoading {
+	  position: relative;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+	  width: 100%;
+	  text-align: center;
+	  vertical-align: middle;
+	  font-size: 300%;
+	}
+  </style>
 
-  <link href="build/main.css?v=kwid7" rel="stylesheet">
-
+  <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+  <link href="build/main.css?v=mw7dg" rel="stylesheet">
 </head>
 <body>
 
   <!-- Ionic's root component and where the app will load -->
-  <ion-app>Loading...</ion-app>
+  <ion-app><div id="tmpLoading"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div></ion-app>
 
   <!-- The polyfills js is generated during the build process -->
-  <script src="build/polyfills.js?v=kwid7"></script>
+  <script src="build/polyfills.js?v=mw7dg"></script>
 
   <!-- The bundle js is generated during the build process -->
-  <script src="build/main.js?v=kwid7"></script>
+  <script src="build/main.js?v=mw7dg"></script>
 
 </body>
 </html>

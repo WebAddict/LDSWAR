@@ -62,7 +62,7 @@ export class ActionsPage {
     
     let dateNow = moment().local();
     this.dateKey = dateNow.format('YYYY-MM-DD');
-    this.weekKey = dateNow.format('YYYY-WW');
+    this.weekKey = dateNow.format('YYYY-ww');
 
     this.classroomKey = 'classroom-' + this.dateKey;
     this.dutyToGodKey = 'dutyToGod-' + this.weekKey;

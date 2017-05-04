@@ -112,13 +112,13 @@ export class ReportPoints {
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
         break;
       case 'dutyToGod':
-        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        this.key = this.type + '-' + useDate.format('YYYY-ww');
         break;
       case 'friendToActivity':
-        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        this.key = this.type + '-' + useDate.format('YYYY-ww');
         break;
       case 'friendToChurch':
-        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        this.key = this.type + '-' + useDate.format('YYYY-ww');
         break;
       case 'indexing':
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
@@ -130,7 +130,7 @@ export class ReportPoints {
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
         break;
       case 'missionPrep':
-        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        this.key = this.type + '-' + useDate.format('YYYY-ww');
         break;
       case 'missionary':
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
@@ -139,13 +139,13 @@ export class ReportPoints {
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
         break;
       case 'scouting':
-        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        this.key = this.type + '-' + useDate.format('YYYY-ww');
         break;
       case 'scripture':
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
         break;
       case 'temple':
-        this.key = this.type + '-' + useDate.format('YYYY-WW');
+        this.key = this.type + '-' + useDate.format('YYYY-ww');
         break;
       case 'testimony':
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');

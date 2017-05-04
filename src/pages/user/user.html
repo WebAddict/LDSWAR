@@ -4,6 +4,9 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Me</ion-title>
+    <ion-buttons *ngIf="isMe" end>
+      <button ion-button icon-only round (click)="logout()"><ion-icon class="fa fa-sign-out"></ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

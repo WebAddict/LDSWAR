@@ -13,6 +13,9 @@
     "ionic:build": "ionic-app-scripts build",
     "ionic:serve": "ionic-app-scripts serve"
   },
+  "config": {
+    "ionic_copy": "./config/copy.config.js"
+  },
   "dependencies": {
     "@angular/common": "4.0.0",
     "@angular/compiler": "4.0.0",
@@ -31,6 +34,7 @@
     "angularfire2": "^4.0.0-rc0",
     "countup.js": "^1.8.5",
     "firebase": "^3.8.0",
+    "font-awesome": "^4.7.0",
     "ionic-angular": "3.0.1",
     "ionicons": "3.0.0",
     "moment": "^2.18.1",

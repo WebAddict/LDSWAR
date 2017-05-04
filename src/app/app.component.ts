@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MenuController, Nav, Platform } from 'ionic-angular';
+import { MenuController, Nav, NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -19,30 +19,84 @@ import { WelcomePage } from '../pages/welcome/welcome';
 import { AuthProvider } from '../providers/auth';
 import { DataProvider } from '../providers/data';
 
+import { AngularFireModule, FirebaseApp } from 'angularfire2';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import * as firebase from 'firebase/app'; // app and typings
+import { Observable } from 'rxjs/Observable';
+
+// todo
+// https://developers.google.com/android/guides/client-auth
 @Component({
   templateUrl: 'app.html'
 })
 export class LDSWarApp {
 
   @ViewChild(Nav) nav: Nav;
-  isAppInitialized: boolean = false;
-  user: any;
   rootPage: any = FirstRunPage;
   public pages: Array<{headingTitle: string, pages: Array<{title: string, component: any, icon: any, params?: any}>}>;
 
+  // revised
+  //public firebaseUser: firebase.User;
+  //public currentUser: FirebaseObjectObservable<any[]>;
+  isAppInitialized: boolean = false;
+
   constructor(
+      public fbApp: FirebaseApp,
+      public afdb: AngularFireDatabase,
+      public afAuth: AngularFireAuth,
       private platform: Platform,
       private data: DataProvider,
-      private auth: AuthProvider,
+      public auth: AuthProvider,
       private menu: MenuController,
       private statusBar: StatusBar,
       private splashScreen: SplashScreen) {
 
-    this.user = {
-      image: ''
-    };
+    //this.initializeApp();
 
-    this.initializeApp();
+    this.platform.ready().then(() => {
+      if (this.platform.is('cordova')) {
+        this.statusBar.styleDefault();
+      }
+
+      this.auth.firebaseUser.subscribe(firebaseUser => {
+        if (firebaseUser) {
+          this.menu.enable(true);
+          this.pages = [
+            { headingTitle: 'My Account', pages: [
+              { title: 'My Profile', component: UserPage, icon: 'person' },
+              //{ title: 'My Points', component: TabsPage, icon: 'flash' },
+            ]},
+            { headingTitle: 'My Sections', pages: [
+              //{ title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
+              { title: 'Home', component: HomePage, icon: 'home' },
+              { title: 'Lessons', component: LessonsPage, icon: 'book' },
+              { title: 'Actions', component: ActionsPage, icon: 'compass' },
+              { title: 'Rewards', component: RewardsPage, icon: 'cart' },
+              //{ title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' },
+            ]},
+          ];
+          if (!this.isAppInitialized) {
+            this.isAppInitialized = true;
+            this.nav.setRoot(TabsPage);
+          }
+
+        } else {
+          this.menu.enable(false);
+          this.pages = [
+            { headingTitle: 'My Account', pages: [
+              { title: 'Login', component: WelcomePage, icon: 'person' },
+            ]},
+          ];
+          this.isAppInitialized = false;
+          this.nav.setRoot(FirstRunPage);
+        }
+      });
+
+      if (this.platform.is('cordova')) {
+        this.splashScreen.hide();
+      }
+    });
   }
 
   initializeApp() {
@@ -57,7 +111,7 @@ export class LDSWarApp {
       // WATCH USER ACCOUNT
       this.auth.getUserData().subscribe(data => {
         this.menu.enable(true);
-        this.user = data;
+        //this.user = data;
         this.pages = [
 	      { headingTitle: 'My Account', pages: [
             { title: 'My Profile', component: UserPage, icon: 'person' },
@@ -87,15 +141,12 @@ export class LDSWarApp {
           this.isAppInitialized = true;
           this.nav.setRoot(TabsPage);
         }
-        this.data.list('pets').subscribe(data => {
-          console.log(data);
-        });
       }, err => {
         this.pages = [
-	  { headingTitle: 'My Account', pages: [
-            { title: 'Login', component: WelcomePage, icon: 'person' },
-	  ]},
-	];
+          { headingTitle: 'My Account', pages: [
+                { title: 'Login', component: WelcomePage, icon: 'person' },
+          ]},
+        ];
         this.isAppInitialized = false;
         this.menu.enable(false);
         this.nav.setRoot(FirstRunPage);
@@ -110,5 +161,12 @@ export class LDSWarApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component, page.params);
+  }
+
+  logout() {
+    this.auth.logout().subscribe(function() {
+      this.menu.enable(false);
+      this.nav.setRoot(WelcomePage);
+    });
   }
 }

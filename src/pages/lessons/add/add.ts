@@ -19,9 +19,7 @@ export class LessonsAddPage {
     description: '',
     uid: ''
   };
-  public user: any;
 
-  public lessons: FirebaseListObservable<any[]>;
   constructor(
       private navCtrl: NavController,
       private navParams: NavParams,
@@ -29,14 +27,7 @@ export class LessonsAddPage {
       public data: DataProvider,
       public auth: AuthProvider) {
 
-    //this.lessons = afdb.list('/lessons');
-    this.auth.getUserData().subscribe(userData => {
-      this.user = userData;
-      this.lesson.uid = userData.$key;
-      console.log('Set user uid to ', userData);
-    }, err => {
-      console.log(err)
-    });
+    this.lesson.uid = auth.uid;
   }
 
   save() {
@@ -46,21 +37,6 @@ export class LessonsAddPage {
     }, err => {
       console.log(err)
     });
-  }
-
-  addLesson(){
-    //this.lessons.push({'lastName': "Williams", 'missionName': "Random Mission"});
-  }
- 
-  viewLesson(lesson){
-    //let subscription = this.afdb.object('someLocation').subscribe(data=> {
-      //do something with your data
-    //})
-    //subscription.unsubscribe();
-  }
-  ionViewDidLoad(){
-    //this.addLesson();
-    //console.log('ionViewDidLoad LessonsPage');
   }
 
 }
