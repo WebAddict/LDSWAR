@@ -30,7 +30,7 @@ export class TutorialPage {
 
     this.slidePages = [
       {
-        title: "Title 1",
+        title: "<span style\"font-size: 50px;\">Title 1</span>",
         description: "Description 1",
         image: 'assets/img/ica-slidebox-img-1.png',
       },

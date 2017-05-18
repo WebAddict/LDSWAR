@@ -11,18 +11,31 @@
 <form (ngSubmit)="save()" #heroForm="ngForm">
   <ion-list>
     <ion-item>
-      <ion-label floating>Title:</ion-label>
+      <ion-label floating>Full Title:</ion-label>
       <ion-input [(ngModel)]="lesson.title" type="text" class="" id="title" name="title" #title="ngModel" required></ion-input>
-        <div [hidden]="lesson.title.valid || lesson.title.pristine" class="alert alert-danger">
-          Title is required
-        </div>
     </ion-item>
     <ion-item>
-      <ion-label floating>Description</ion-label>
-      <ion-input [(ngModel)]="lesson.description" type="text" class="" id="description" name="description" required></ion-input>
+      <ion-label floating>Short Title:</ion-label>
+      <ion-input [(ngModel)]="lesson.shortTitle" type="text" class="" id="shortTitle" name="shortTitle" #title="ngModel"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>Background Image URL</ion-label>
+      <ion-label floating>SubTitle</ion-label>
+      <ion-input [(ngModel)]="lesson.subTitle" type="text" class="" id="subTitle" name="subTitle"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Youtube Video above Content</ion-label>
+      <ion-input [(ngModel)]="lesson.youtubeOne" type="text" style="font-size: 10px;" id="htmlBody" name="youtubeOne"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>HTML Formatted Content</ion-label>
+      <ion-textarea [(ngModel)]="lesson.htmlBody" style="font-size: 10px;" id="htmlBody" name="htmlBody" required></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Youtube Video below Content</ion-label>
+      <ion-input [(ngModel)]="lesson.youtubeOne" type="text" style="font-size: 10px;" id="htmlBody" name="youtubeOne"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Card Background Image URL</ion-label>
       <ion-input [(ngModel)]="lesson.cardBg" type="text" class="" id="cardBg" name="cardBg" required></ion-input>
     </ion-item>
   </ion-list>

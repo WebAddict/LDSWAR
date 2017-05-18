@@ -14,11 +14,7 @@ import { DataProvider } from '../../../providers/data';
 })
 export class LessonsAddPage {
 
-  public lesson: {title: string, description: string, uid: string} = {
-    title: '',
-    description: '',
-    uid: ''
-  };
+  public lesson: any = {};
 
   constructor(
       private navCtrl: NavController,

@@ -1,6 +1,6 @@
 <ion-header no-shadow>
   <ion-navbar>
-    <ion-buttons end *ngIf="showSkip">
+    <ion-buttons end>
       <button ion-button (click)="startApp()" color="primary">Skip</button>
     </ion-buttons>
   </ion-navbar>
@@ -8,17 +8,36 @@
 
 <ion-content no-bounce>
   <ion-slides (ionSlideWillChange)="onSlideChangeStart($event)" pager>
-    <ion-slide *ngFor="let slidePage of slidePages">
-      <img [src]="slidePage.image" class="slide-image"/>
-      <h2 class="slide-title" [innerHTML]="slidePage.title"></h2>
-      <p [innerHTML]="slidePage.description"></p>
+    <ion-slide>
+      <img src="assets/img/ica-slidebox-img-1.png" class="slide-image"/>
+      <h2 class="slide-title">Wake And Rise</h2>
+      <p>Day after day, we are confronted with the battle of our lives. The LDS WAR app is designed to help you to &quot;Gird up your loins&quot; and &quot;Put on the Armor of God&quot; to empower you to fight the daily battles we face against the advasary.</p>
+      <button ion-button outline (click)="nextSlide()">Next</button>
+    </ion-slide>
+    <ion-slide>
+      <img src="assets/img/ica-slidebox-img-1.png" class="slide-image"/>
+      <h2 class="slide-title">Set Daily &amp; Weekly Goals</h2>
+      <p>By establishing goals and tracking our results, we are able to establish healthy and positive habits that improves our spiritual strength.</p>
+      <button ion-button outline (click)="nextSlide()">Next</button>
+    </ion-slide>
+    <ion-slide>
+      <img src="assets/img/ica-slidebox-img-1.png" class="slide-image"/>
+      <h2 class="slide-title">Take in a Daily Lesson</h2>
+      <p>There are daily lessons available that give a dose of the spirit.</p>
+      <button ion-button outline (click)="nextSlide()">Next</button>
+    </ion-slide>
+    <ion-slide>
+      <img src="assets/img/ica-slidebox-img-1.png" class="slide-image"/>
+      <h2 class="slide-title">We are stronger together</h2>
+      <p>By encouraging us to share our experiences, the Wake And Rise app helps bring us together to bond and lift each other up.</p>
       <button ion-button outline (click)="nextSlide()">Next</button>
     </ion-slide>
     <ion-slide>
       <img src="assets/img/ica-slidebox-img-4.png" class="slide-image"/>
-      <h2 class="slide-title">Slide #4</h2>
+      <h2 class="slide-title">Earn WAR Points</h2>
+      <p>The ultimate rewards for doing this program are all spiritual. To help you keep track of your progress, we have Wake And Rise Points.</p>
       <button ion-button icon-right large clear (click)="startApp()">
-        Continue
+        Let's Go!
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
     </ion-slide>

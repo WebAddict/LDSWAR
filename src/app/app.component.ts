@@ -38,7 +38,7 @@ export class LDSWarApp {
 
   // revised
   //public firebaseUser: firebase.User;
-  //public currentUser: FirebaseObjectObservable<any[]>;
+  public currentUser: FirebaseObjectObservable<any[]>;
   isAppInitialized: boolean = false;
 
   constructor(
@@ -60,7 +60,17 @@ export class LDSWarApp {
       }
 
       this.auth.firebaseUser.subscribe(firebaseUser => {
-        if (firebaseUser) {
+        if (!firebaseUser) {
+          this.menu.enable(false);
+          this.pages = [
+            { headingTitle: 'My Account', pages: [
+              { title: 'Login', component: WelcomePage, icon: 'person' },
+            ]},
+          ];
+          this.isAppInitialized = false;
+          this.nav.setRoot(FirstRunPage);
+        } else {
+          this.currentUser = afdb.object('/users/' + firebaseUser.uid);
           this.menu.enable(true);
           this.pages = [
             { headingTitle: 'My Account', pages: [
@@ -80,16 +90,6 @@ export class LDSWarApp {
             this.isAppInitialized = true;
             this.nav.setRoot(TabsPage);
           }
-
-        } else {
-          this.menu.enable(false);
-          this.pages = [
-            { headingTitle: 'My Account', pages: [
-              { title: 'Login', component: WelcomePage, icon: 'person' },
-            ]},
-          ];
-          this.isAppInitialized = false;
-          this.nav.setRoot(FirstRunPage);
         }
       });
 

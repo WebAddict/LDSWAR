@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app';
 @Injectable()
 export class DataProvider {
   constructor(
-      fbapp: FirebaseApp,
+      private fbApp: FirebaseApp,
       private afdb: AngularFireDatabase) {
   
   }
@@ -53,8 +53,8 @@ export class DataProvider {
     });
   }
 
-  list(path: string): FirebaseListObservable<any> {
-    return this.afdb.list(path);
+  list(path: string, query?: any): FirebaseListObservable<any> {
+    return this.afdb.list(path, query);
   }
 
   object(path: string): FirebaseObjectObservable<any> {

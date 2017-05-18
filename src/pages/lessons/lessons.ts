@@ -16,8 +16,8 @@ export class LessonsPage {
   public lessons: FirebaseListObservable<any[]>;
   public lessonRoot: string = '/'; // end with a slash
   public view: any;
-  public viewCards: boolean = false;
-  public viewList: boolean = true;
+  public viewCards: boolean = true;
+  public viewList: boolean = false;
 
   constructor(
       public navCtrl: NavController,

@@ -23,13 +23,15 @@ interface LDSWarUser {
   emailVerified?: boolean;
   provider?: string;
   totalPoints?: number;
+  photoURL?: string;
 }
 
 @Injectable()
 export class AuthProvider {
 
   public firebaseUser: Observable<firebase.User> | null;
-  public currentUser: FirebaseObjectObservable<any[]> | null;
+  public currentUser: any = {};
+  public myUser: any;
   public uid: string | null;
 
   constructor(
@@ -46,8 +48,15 @@ export class AuthProvider {
     afAuth.authState.subscribe(firebaseUser => {
       if (firebaseUser) {
         this.uid = firebaseUser.uid;
-        this.currentUser = afdb.object('/users/' + firebaseUser.uid);
-        console.log(this.currentUser);
+
+        // Load `currentUser`
+        var currentUserRef = fbApp.database().ref('/users/' + firebaseUser.uid);
+        currentUserRef.on("value", function(snapshot) {
+          if (snapshot.val() === true) {
+            this.currentUser = snapshot.val();
+            console.log('/users/' + firebaseUser.uid, snapshot.val());
+          }
+        });
 
         // online presence
         //var myConnectionsRef = fbApp.database().ref('/users/' + firebaseUser.uid + '/connections');
@@ -59,7 +68,7 @@ export class AuthProvider {
           if (snapshot.val() === true) {
             // add this device to my connections list
             //var con = myConnectionsRef.push(true);
-            onlineUsersRef.set({displayName: firebaseUser.displayName, organization: 'allenRanch', photoURL: firebaseUser.photoURL});
+            onlineUsersRef.set({displayName: firebaseUser.displayName, organization: 'allenRanch', photoURL: firebaseUser.photoURL, onlineSince: firebase.database.ServerValue.TIMESTAMP});
 
             // when I disconnect, remove this device
             //con.onDisconnect().remove();
@@ -114,7 +123,7 @@ export class AuthProvider {
           email: credentials.email,
           emailVerified: false,
           provider: 'email',
-          image: 'http://www.gravatar.com/avatar?d=mm&s=140'
+          photoURL: 'http://www.gravatar.com/avatar?d=mm&s=140'
         });
         credentials.created = true;
         observer.next(credentials);
@@ -152,7 +161,7 @@ export class AuthProvider {
               displayName: firebaseUser.displayName,
               email: firebaseUser.email,
               provider: 'facebook',
-              image: firebaseUser.photoURL
+              photoURL: firebaseUser.photoURL
             });
             observer.next();
           });
@@ -170,7 +179,7 @@ export class AuthProvider {
             displayName: firebaseUser.displayName,
             email: firebaseUser.email,
             provider: 'facebook',
-            image: firebaseUser.photoURL
+            photoURL: firebaseUser.photoURL
           });
           observer.next();
         });
@@ -189,7 +198,7 @@ export class AuthProvider {
               displayName: firebaseUser.displayName,
               email: firebaseUser.email,
               provider: 'twitter',
-              image: firebaseUser.photoURL
+              photoURL: firebaseUser.photoURL
             });
             observer.next();
           }, function (error) {
@@ -212,7 +221,7 @@ export class AuthProvider {
             displayName: result.user.displayName,
             email: result.user.email,
             provider: 'twitter',
-            image: result.user.photoURL
+            photoURL: result.user.photoURL
           });
           observer.next();
         }).catch((error) => {
@@ -237,7 +246,7 @@ export class AuthProvider {
             displayName: result.user.displayName,
             email: result.user.email,
             provider: 'google',
-            image: result.user.photoURL
+            photoURL: result.user.photoURL
           });
           observer.next();
         }).catch((error) => {

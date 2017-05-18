@@ -7,8 +7,9 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
+<!--
 <h1>Welcome to &quot;Wake And Rise&quot;</h1>
 
 <p>This is in ACTIVE Development and is not ready to use quite yet.</p>
@@ -25,10 +26,60 @@
 <h2>What Doesn't Work?</h2>
 
 <ul>
-  <li>Lesson's not ready</li>
-  <li>Entering Points / Actions via Dates</li>
+  <li>Lesson's and thier actions not ready</li>
   <li>Rewards will be built last</li>
 </ul>
+-->
+
+<ion-card>
+  <ion-item>
+    <ion-avatar item-left>
+      <img src="{{(currentUser | async)?.photoURL}}">
+    </ion-avatar>
+    <h2>Waht would you like to share?</h2>
+  </ion-item>
+</ion-card>
+<ion-card>
+  <ion-item>
+    <ion-avatar item-left>
+      <img src="{{(auth.currentUser)?.photoURL}}">
+    </ion-avatar>
+    <h2>Waht would you like to share?</h2>
+  </ion-item>
+</ion-card>
+
+
+
+<ion-card *ngFor="let feedItem of feedItems | async">
+  <ion-item>
+    <ion-avatar item-left>
+      <img src="https://ionicframework.com/dist/preview-app/www/assets/img/marty-avatar.png">
+    </ion-avatar>
+    <h2>{{feedItem.displayName}}</h2>
+    <p>November 5, 1955</p>
+  </ion-item>
+  <!--<img src="https://ionicframework.com/dist/preview-app/www/assets/img/advance-card-bttf.png">-->
+  <ion-card-content>
+    <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
+  </ion-card-content>
+  <ion-row>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>12 Likes</div>
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button icon-left clear small>
+        <ion-icon name="text"></ion-icon>
+        <div>4 Comments</div>
+      </button>
+    </ion-col>
+    <ion-col center text-center>
+      <ion-note>{{feedItem.postDate | date:'short'}}</ion-note>
+    </ion-col>
+  </ion-row>
+</ion-card>
 
 
 </ion-content>

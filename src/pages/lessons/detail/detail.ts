@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { NavController, NavParams } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
@@ -15,7 +16,8 @@ export class LessonsDetailPage {
       public navCtrl: NavController,
       public navParams: NavParams,
       private data: DataProvider,
-      afdb: AngularFireDatabase) {
+      afdb: AngularFireDatabase,
+      public sanitizer: DomSanitizer) {
 
     console.log(navParams);
     let lessonId = navParams.get('$key');
