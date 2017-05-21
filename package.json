@@ -32,7 +32,9 @@
         "@ionic-native/twitter-connect": "^3.7.0",
         "@ionic/storage": "^2.0.1",
         "angularfire2": "^4.0.0-rc0",
-        "cordova-android": "~6.1.2",
+        "cordova-android": "^6.2.3",
+        "cordova-browser": "^4.1.0",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-buildinfo": "^1.1.0",
         "cordova-plugin-console": "1.0.5",
         "cordova-plugin-device": "1.1.4",
@@ -70,7 +72,9 @@
     "description": "LDS War: An Ionic project",
     "cordova": {
         "platforms": [
-            "android"
+            "android",
+            "browser",
+            "ios"
         ],
         "plugins": {
             "cordova-plugin-console": {},

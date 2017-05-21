@@ -22,7 +22,7 @@ interface LDSWarUser {
   email?: string;
   emailVerified?: boolean;
   provider?: string;
-  totalPoints?: number;
+  pointsTotal?: number;
   photoURL?: string;
 }
 
@@ -114,22 +114,31 @@ export class AuthProvider {
 
   registerUser(credentials: any) {
     return Observable.create(observer => {
-      this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then((firebaseUser) => {
-        let displayName = credentials.firstName + ' ' + credentials.lastName;
-        this.data.object('/users/' + firebaseUser.uid).set({
-          firstName: credentials.firstName,
-          lastName: credentials.lastName,
-          displayName: displayName,
-          email: credentials.email,
-          emailVerified: false,
-          provider: 'email',
-          photoURL: 'http://www.gravatar.com/avatar?d=mm&s=140'
+      if (!credentials.organization || credentials.organization != 'allenRanch') {
+          observer.error("At this time, this app is only available for Allen Ranch Members...");
+      } else {
+        this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then((firebaseUser) => {
+          let displayName = credentials.firstName + ' ' + credentials.lastName;
+          this.data.object('/users/' + firebaseUser.uid).set({
+            firstName: credentials.firstName,
+            lastName: credentials.lastName,
+            dateRegistered: firebase.database.ServerValue.TIMESTAMP,
+            lastOnline: firebase.database.ServerValue.TIMESTAMP,
+            displayName: displayName,
+            email: credentials.email,
+            emailVerified: false,
+            organization: credentials.organization,
+            spentPoints: 0,
+            pointsTotal: 0,
+            provider: 'email',
+            photoURL: '../../assets/img/blank_avatar.png'
+          });
+          credentials.created = true;
+          observer.next(credentials);
+        }).catch((error: any) => {
+          observer.error(error);
         });
-        credentials.created = true;
-        observer.next(credentials);
-      }).catch((error: any) => {
-        observer.error(error);
-      });
+      }
     });
   }
 
@@ -169,6 +178,7 @@ export class AuthProvider {
           observer.error(error);
         });
       } else {
+        // NOT Cordova
         let provider = new firebase.auth.FacebookAuthProvider();
         provider.addScope('public_profile');
         provider.addScope('email');

@@ -88,6 +88,9 @@ export class ReportPoints {
       case 'prayer':
         this.pointValue = 50;
         break;
+      case 'registration':
+        this.pointValue = 5;
+        break;
       case 'scouting':
         this.pointValue = 50;
         break;
@@ -137,6 +140,9 @@ export class ReportPoints {
         break;
       case 'prayer':
         this.key = this.type + '-' + useDate.format('YYYY-MM-DD');
+        break;
+      case 'registration':
+        this.key = this.type;
         break;
       case 'scouting':
         this.key = this.type + '-' + useDate.format('YYYY-ww');
@@ -334,7 +340,7 @@ export class PointsProvider {
 		console.log("Calculated " + userPoints.total + " total points");
 		console.log(userPoints);
         this.data.set('/points/' + uid, userPoints).subscribe(info => {
-          this.data.set('/users/' + uid + '/totalPoints', userPoints.total).subscribe(info => {
+          this.data.set('/users/' + uid + '/pointsTotal', userPoints.total).subscribe(info => {
             observer.next();
           }, error => {
             observer.error(error);

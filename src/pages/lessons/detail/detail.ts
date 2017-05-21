@@ -5,6 +5,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
 
 import { DataProvider } from '../../../providers/data';
+import { ReportActionsPage } from '../../actions/report/report';
 
 @Component({
   selector: 'page-lessons-detail',
@@ -21,7 +22,7 @@ export class LessonsDetailPage {
 
     console.log(navParams);
     let lessonId = navParams.get('$key');
-    let lessonPath = 'lessons/' + lessonId;
+    let lessonPath = '/organization/allenRanch/lessons/' + lessonId;
     //console.log('lesson id ' + lessonId);
     //console.log('lesson path ' + lessonPath);
     //this.lesson = this.data.object(lessonPath);
@@ -39,6 +40,11 @@ export class LessonsDetailPage {
       this.lesson = data.val();
     }, err => {
     });
+  }
+
+  report(key) {
+    let action = {reportingType: 'lesson'}
+    this.navCtrl.push(ReportActionsPage, action);
   }
 
   ionViewDidLoad() {

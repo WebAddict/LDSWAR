@@ -1,33 +1,22 @@
 <ion-header>
-
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Login</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content class="login-email">
-  <ion-row>
-    <div padding class="forgot-password-txt" (click)="openForgotPasswordPage()">
-      Forgot Password
-    </div>
-    <div padding class="sign-up-txt" (click)="openSignUpPage()">
-      Sign Up
-    </div>
-  </ion-row>
 
   <form (ngSubmit)="login()" #loginForm="ngForm">
     <ion-list>
 
       <ion-item>
         <ion-label fixed>Email</ion-label>
-		<ion-input type="email" [(ngModel)]="form.email" placeholder="E-mail" name="email"></ion-input>
+		<ion-input type="email" [(ngModel)]="form.email" placeholder="E-mail" name="email" required></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label fixed>Password</ion-label>
-		<ion-input type="password" [(ngModel)]="form.password" placeholder="Password" name="password"></ion-input>
+		<ion-input type="password" [(ngModel)]="form.password" placeholder="Password" name="password" required></ion-input>
       </ion-item>
 
     </ion-list>

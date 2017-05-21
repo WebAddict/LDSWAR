@@ -17,4 +17,19 @@ page-actions {
   ion-list > button > ion-icon {
     text-shadow: 1px 1px #666666;
   }
+  .greenbg {
+    padding: 16px;
+    background-color: #CCFFCC;
+  }
+  .yellowbg {
+    padding: 16px;
+    background-color: #FFFFCC;
+  }
+  ion-card > ion-list > button.item-md {
+    background-color: #f6f6f6; /* fallback color if gradients are not supported */
+    background-image: -webkit-linear-gradient(top, #fff, #f6f6f6); /* For Chrome 25 and Safari 6, iOS 6.1, Android 4.3 */
+    background-image:    -moz-linear-gradient(top, #fff, #f6f6f6); /* For Firefox (3.6 to 15) */
+    background-image:      -o-linear-gradient(top, #fff, #f6f6f6); /* For old Opera (11.1 to 12.0) */ 
+    background-image:         linear-gradient(to bottom, #fff, #f6f6f6); /* Standard syntax; must be last */
+  }
 }

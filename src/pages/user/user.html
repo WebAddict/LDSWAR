@@ -1,4 +1,4 @@
-<ion-header>
+s<ion-header>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
@@ -18,7 +18,7 @@
         <img src="{{(user | async)?.image ? (user | async)?.image : defaultAvatarUrl}}">
       </ion-avatar>
       <h1>{{(user | async)?.displayName}}</h1>
-      <h2><span style="font-size: 120%;">{{(user | async)?.totalPoints | number:0}}</span> W.A.R. Points</h2>
+      <h2><span style="font-size: 120%;">{{(user | async)?.pointsTotal | number:0}}</span> W.A.R. Points</h2>
     </ion-item>
   </ion-card>
 

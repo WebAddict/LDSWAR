@@ -88,19 +88,34 @@ export class WelcomePage {
   }
   
   ShowError(error): void {
-    switch (error.code) {
-      case "auth/email-already-in-use":
-          this.alertMessage = "The specified email is already in use!"
-          break;
-      case "auth/invalid-email":
-          this.alertMessage = "The specified email is not valid!"
-          break;
-      case "auth/operation-not-allowed":
-          this.alertMessage = "Your account has been disabled. Please contact support!"
-          break;
-      case "auth/weak-password":
-          this.alertMessage = "Password should be at least 6 characters!"
-          break;
+    if (typeof(error) == 'string') {
+      this.alertMessage = error;
+    } else if (error && error.code) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+            this.alertMessage = "That email is already in use!"
+            break;
+        case "auth/invalid-email":
+            this.alertMessage = "That email is not valid!"
+            break;
+        case "auth/operation-not-allowed":
+            this.alertMessage = "Your account has been disabled. Please contact support!"
+            break;
+        case "auth/weak-password":
+            this.alertMessage = "Password should be at least 6 characters!"
+            break;
+        case "auth/user-disabled":
+            this.alertMessage = "Your account has been disabled. Please contact support!"
+            break;
+        case "auth/user-not-found":
+            this.alertMessage = "We could not find your account, try another email address"
+            break;
+        case "auth/wrong-password":
+            this.alertMessage = "That was the wrong password, please try again"
+            break;
+        default:
+            this.alertMessage = "Failed to sign up."
+      }
     }
     let alert = this.alertController.create({
       title: 'Sign Up Failed',

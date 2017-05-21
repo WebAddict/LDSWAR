@@ -1,42 +1,55 @@
 <ion-header>
-
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Signup</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content class="sign-up">
-  <div padding class="log-in-txt" (click)="openLoginPage()">
-    Log In
-  </div>
-  <form (ngSubmit)="register()" #signUpForm="ngForm">
-    <ion-list>
 
+<ion-card>
+  <ion-item>
+    <ion-avatar item-left>
+      <img src="../../assets/img/blank_avatar.png">
+    </ion-avatar>
+    <h1><span>{{form.firstName}}</span> <span>{{form.lastName}}</span></h1>
+	<h3 style="font-size: 90%;"><span style="font-size: 120%;">0</span> W.A.R. Points</h3>
+  </ion-item>
+</ion-card>
+
+  <form (ngSubmit)="register()" #signUpForm="ngForm">
+  <ion-card>
+    <ion-list>
       <ion-item>
-        <ion-label fixed>First Name</ion-label>
-        <ion-input type="text" [(ngModel)]="form.firstName" name="name"></ion-input>
+        <ion-label floating>First Name</ion-label>
+        <ion-input type="text" [(ngModel)]="form.firstName" name="firstName" required></ion-input>
       </ion-item>
 
 	  <ion-item>
-        <ion-label fixed>Last Name</ion-label>
-        <ion-input type="text" [(ngModel)]="form.LastName" name="name"></ion-input>
+        <ion-label floating>Last Name</ion-label>
+        <ion-input type="text" [(ngModel)]="form.lastName" name="lastName" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>Email</ion-label>
-        <ion-input type="email" [(ngModel)]="form.email" name="email"></ion-input>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="form.email" name="email" required></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label fixed>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="form.password" name="password"></ion-input>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="form.password" name="password" required></ion-input>
       </ion-item>
+
+	  <ion-item>
+		<ion-label floating>Ward</ion-label>
+		<ion-select [(ngModel)]="form.organization" name="organization" required>
+		  <ion-option value="allenRanch">Allen Ranch</ion-option>
+		  <ion-option value="other">Other</ion-option>
+		</ion-select>
+	  </ion-item>
     </ion-list>
 
     <button ion-button block [disabled]="!signUpForm.form.valid" class="sign-up-btn">Sign Up</button>
-
+  </ion-card>
     <div padding class="error" *ngIf="error">
       <p>{{error}}</p>
     </div>

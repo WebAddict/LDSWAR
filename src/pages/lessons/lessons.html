@@ -5,9 +5,9 @@
     </button>
     <ion-title>Lessons</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only round (click)="showView()"><ion-icon name="list"></ion-icon></button>
-      <button ion-button icon-only round (click)="showFilter()"><ion-icon name="funnel"></ion-icon></button>
-      <button ion-button icon-only round (click)="addLesson()"><ion-icon name="add"></ion-icon></button>
+      <button ion-button icon-only round *ngIf="canShowView" (click)="showView()"><ion-icon name="list"></ion-icon></button>
+      <button ion-button icon-only round *ngIf="canShowFilter" (click)="showFilter()"><ion-icon name="funnel"></ion-icon></button>
+      <button ion-button icon-only round *ngIf="canAddLesson" (click)="addLesson()"><ion-icon name="add"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

@@ -7,15 +7,39 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
 <ion-card>
-  <img [src]="lesson.cardBg">
+  <img *ngIf="lesson.imageOne" [src]="lesson.imageOne">
   <ion-card-header>{{lesson.title}}</ion-card-header>
 	<div *ngIf="lesson.youtubeOne" class="item" style="position:relative;overflow:hidden;padding-bottom:56.25%;height:0;">
 		<iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(lesson.youtubeOne)" frameborder="0" allowfullscreen="" width="560" height="315" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
 	</div>
   <ion-card-content [innerHTML]="lesson.htmlBody"></ion-card-content>
+  <img *ngIf="lesson.imageTwo" [src]="lesson.imageTwo">
+	<div *ngIf="lesson.youtubeTwo" class="item" style="position:relative;overflow:hidden;padding-bottom:56.25%;height:0;">
+		<iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(lesson.youtubeTwo)" frameborder="0" allowfullscreen="" width="560" height="315" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+	</div>
+  <ion-card-content *ngIf="lesson.htmlBody2" [innerHTML]="lesson.htmlBody2"></ion-card-content>
 </ion-card>
+
+  <ion-card>
+    <ion-card-header class="{{daily ? 'greenbg' : 'yellowbg' }}">
+	  <ion-icon name="calendar" item-left></ion-icon>
+	  My W.A.R. Actions
+	</ion-card-header>
+	<ion-list>
+	  <button ion-item (click)="report('lesson')">
+		<ion-icon name="remove-circle" color="yellow" item-left></ion-icon>
+		<h2>Read the Lesson</h2>
+		<h4>100 W.A.R. Points</h4>
+	  </button>
+	  <button ion-item (click)="report('journal')">
+		<ion-icon name="remove-circle" color="yellow" item-left></ion-icon>
+		<h2>Write your feelings in your Journal</h2>
+		<h4>50 W.A.R. Points</h4>
+	  </button>
+	</ion-list>
+  </ion-card>
 
 </ion-content>

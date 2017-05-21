@@ -14,10 +14,13 @@ import { LessonsAddPage } from './add/add';
 export class LessonsPage {
 
   public lessons: FirebaseListObservable<any[]>;
-  public lessonRoot: string = '/'; // end with a slash
+  public lessonRoot: string = '/organization/allenRanch/'; // end with a slash
   public view: any;
   public viewCards: boolean = true;
   public viewList: boolean = false;
+  public canShowView: boolean = true;
+  public canShowFilter: boolean = false;
+  public canAddLesson: boolean = false;
 
   constructor(
       public navCtrl: NavController,

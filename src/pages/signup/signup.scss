@@ -1,7 +1,14 @@
 .sign-up {
   //background-image: url("../../assets/img/auth-background.jpg");
+  background-color: #efefef;
   background-size: 100%;
   background-position-y: 50%;
+
+  .item-md ion-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+
 
   .log-in-txt {
     width: 100%;
@@ -10,7 +17,7 @@
   }
 
   form {
-    width: 95%;
+    //width: 95%;
     margin: auto;
 
     .sign-up-btn {

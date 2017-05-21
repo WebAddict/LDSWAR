@@ -13,8 +13,8 @@ import { AuthProvider } from '../../providers/auth';
 export class LoginPage {
 
   form: {email: string, password: string} = {
-    email: 'test@example.com',
-    password: 'demo1234'
+    email: '',
+    password: ''
   };
 
   // Our translated text strings
@@ -41,23 +41,28 @@ export class LoginPage {
     loading.present();
 
     this.auth.loginWithEmail(this.form).subscribe(data => {
-      setTimeout(() => {
+      if (loading) {
         loading.dismiss();
-        // The auth subscribe method inside the app.component.ts will handle the page switch to home
-        this.menu.enable(true);
-        this.navCtrl.setRoot(MainPage);
-      }, 1000);
+      }
     }, err => {
       setTimeout(() => {
-        loading.dismiss();
+        if (loading) {
+          loading.dismiss();
+        }
         this.LoginError(err);
       }, 1000);
     });
   }
 
   LoginError(error) {
-    if (error.code === 'auth/wrong-password') {
+    if (error.code === 'auth/invalid-email') {
+      this.loginErrorString = "Email Address wasn't valid.";
+    } else if (error.code === 'auth/wrong-password') {
       this.loginErrorString = "Wrong password.";
+    } else if (error.code === 'auth/user-not-found') {
+      this.loginErrorString = "That user wasn't found";
+    } else if (error.code === 'auth/user-disabled') {
+      this.loginErrorString = "That user has been disabled";
     } else {
       this.loginErrorString = error.message;
     }

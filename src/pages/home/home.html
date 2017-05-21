@@ -9,70 +9,41 @@
 
 <ion-content>
 
-<!--
-<h1>Welcome to &quot;Wake And Rise&quot;</h1>
-
-<p>This is in ACTIVE Development and is not ready to use quite yet.</p>
-
-<h2>What Works?</h2>
-
-<ul>
-  <li>Entire Backend framework is almost fully built out</li>
-  <li>Registration and User management</li>
-  <li>Entering Points / Actions via Dates</li>
-  <li>Basic User Profile edits</li>
-</ul>
-
-<h2>What Doesn't Work?</h2>
-
-<ul>
-  <li>Lesson's and thier actions not ready</li>
-  <li>Rewards will be built last</li>
-</ul>
--->
-
 <ion-card>
+  <ion-card-header><h3 style="text-align: center;">The &quot;WAKE AND RISE&quot; Program Starts in:<br><span style="font-size: 130%;">{{counter}}</span></h3></ion-card-header>
+</ion-card>
+
+<ion-card *ngIf="canShare">
   <ion-item>
     <ion-avatar item-left>
       <img src="{{(currentUser | async)?.photoURL}}">
     </ion-avatar>
-    <h2>Waht would you like to share?</h2>
+    <h2>What would you like to share?</h2>
+	<p>Coming Soon</p>
   </ion-item>
 </ion-card>
-<ion-card>
-  <ion-item>
-    <ion-avatar item-left>
-      <img src="{{(auth.currentUser)?.photoURL}}">
-    </ion-avatar>
-    <h2>Waht would you like to share?</h2>
-  </ion-item>
-</ion-card>
-
-
 
 <ion-card *ngFor="let feedItem of feedItems | async">
   <ion-item>
-    <ion-avatar item-left>
-      <img src="https://ionicframework.com/dist/preview-app/www/assets/img/marty-avatar.png">
+    <ion-avatar item-left *ngIf="feedItem.photoURL">
+      <img src="{{feedItem.photoURL}}">
     </ion-avatar>
-    <h2>{{feedItem.displayName}}</h2>
-    <p>November 5, 1955</p>
+    <h2>{{feedItem.title}}</h2>
+    <p *ngIf="feedItem.subtitle">November 5, 1955</p>
   </ion-item>
-  <!--<img src="https://ionicframework.com/dist/preview-app/www/assets/img/advance-card-bttf.png">-->
-  <ion-card-content>
-    <p>Wait a minute. Wait a minute, Doc. Uhhh... Are you telling me that you built a time machine... out of a DeLorean?! Whoa. This is heavy.</p>
-  </ion-card-content>
+  <img *ngIf="feedItem.photoURL" src="{{feedItem.photoURL}}">
+  <ion-card-content *ngIf="feedItem.htmlBody" [innerHTML]="feedItem.htmlBody"></ion-card-content>
   <ion-row>
     <ion-col>
       <button ion-button icon-left clear small>
         <ion-icon name="thumbs-up"></ion-icon>
-        <div>12 Likes</div>
+        <div>{{feedItem.likes ? feedItem.likes : 0}} Likes</div>
       </button>
     </ion-col>
     <ion-col>
       <button ion-button icon-left clear small>
         <ion-icon name="text"></ion-icon>
-        <div>4 Comments</div>
+        <div>{{feedItem.comments ? feedItem.comments : 0}} Comments</div>
       </button>
     </ion-col>
     <ion-col center text-center>

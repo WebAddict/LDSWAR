@@ -3,19 +3,18 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Report {{reportPoints.reportingType}} for {{reportPoints.pointValue}} WAR Points</ion-title>
+    <ion-title>Report {{reportPoints.reportType}} for {{reportPoints.pointValue}} WAR Points</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-<form (ngSubmit)="save()">
-  {{(firebaseUser)?.displayName}}
+<form (ngSubmit)="save()" #reportForm="ngForm">
   <ion-list>
     <ion-item>
       <ion-label floating>Date</ion-label>
       <ion-datetime displayFormat="DDD MMM D, YYYY" pickerFormat="YYYY-MM-DD" [(ngModel)]="reportPoints.date" name="date"></ion-datetime>
     </ion-item>
   </ion-list>
-  <button type="submit" class="btn btn-primary" clear>Save</button>
+  <button ion-button block [disabled]="!reportForm.form.valid" class="">Save</button>
 </form>
 </ion-content>

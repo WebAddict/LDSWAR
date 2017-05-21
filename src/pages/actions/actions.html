@@ -4,24 +4,27 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Actions</ion-title>
+    <ion-buttons end>
+	  <button ion-button icon-only (click)="pointsLog()">
+		<ion-icon name='list-box'></ion-icon> 
+	  </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  {{(firebaseUser)?.displayName}}<br>
-  {{(currentUser)?.displayName}}
+<ion-card>
+  <ion-item>
+    <ion-avatar item-left>
+      <img src="../../assets/img/blank_avatar.png">
+    </ion-avatar>
+    <h1><span>{{(currentUser | async)?.firstName}}</span> <span>{{(currentUser | async)?.lastName}}</span></h1>
+	<h3 style="font-size: 90%;"><span style="font-size: 120%;">{{(points | async)?.total | number:0}}</span> W.A.R. Points</h3>
+  </ion-item>
+</ion-card>
 
   <ion-card>
-    <ion-card-header>
-	  My Points: <span style="font-size: 120%;">{{(points | async)?.total | number:0}}</span> W.A.R. Points
-	  <button ion-button icon-only item-right clear (click)="pointsLog()">
-		<ion-icon name='list-box'></ion-icon> 
-	  </button> 
-	</ion-card-header>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
+    <ion-card-header class="{{daily ? 'greenbg' : 'yellowbg' }}">
 	  <ion-icon name="calendar" item-left></ion-icon>
 	  My Daily Actions
 	</ion-card-header>
@@ -50,7 +53,7 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>
+    <ion-card-header class="{{weekly ? 'greenbg' : 'yellowbg' }}">
 	  <ion-icon name="calendar" item-left></ion-icon>
 	  My Weekly Actions
 	</ion-card-header>
@@ -88,7 +91,7 @@
 	  My Bonus Points!!!
 	</ion-card-header>
 	<ion-list>
-	  <button ion-item (click)="addPoints('social')">
+	  <button ion-item (click)="addPoints('social')" *ngIf="show">
 		<ion-icon name="{{social ? 'checkmark-circle' : 'remove-circle' }}" color="{{social ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Social Points</h2>
 		<h4>{{(points | async)?.social | number:0}} W.A.R. Points</h4>
@@ -113,7 +116,7 @@
 		<h2>Bring Friends to Activities</h2>
 		<h4>{{(points | async)?.friendToActivity | number:0}} W.A.R. Points</h4>
 	  </button>
-	  <button ion-item (click)="addPoints('classroom')">
+	  <button ion-item (click)="addPoints('classroom')" *ngIf="show">
 		<ion-icon name="{{classroom ? 'checkmark-circle' : 'remove-circle' }}" color="{{classroom ? 'green' : 'yellow' }}" item-left></ion-icon>
 		<h2>Classroom &amp; Leader Awarded Points</h2>
 		<h4>{{(points | async)?.classroom | number:0}} W.A.R. Points</h4>

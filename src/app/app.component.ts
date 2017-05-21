@@ -61,7 +61,9 @@ export class LDSWarApp {
 
       this.auth.firebaseUser.subscribe(firebaseUser => {
         if (!firebaseUser) {
-          this.menu.enable(false);
+          if (this.menu) {
+            this.menu.enable(false);
+          }
           this.pages = [
             { headingTitle: 'My Account', pages: [
               { title: 'Login', component: WelcomePage, icon: 'person' },
@@ -71,7 +73,9 @@ export class LDSWarApp {
           this.nav.setRoot(FirstRunPage);
         } else {
           this.currentUser = afdb.object('/users/' + firebaseUser.uid);
-          this.menu.enable(true);
+          if (this.menu) {
+            this.menu.enable(true);
+          }
           this.pages = [
             { headingTitle: 'My Account', pages: [
               { title: 'My Profile', component: UserPage, icon: 'person' },
@@ -101,7 +105,9 @@ export class LDSWarApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.menu.enable(false);
+      if (this.menu) {
+        this.menu.enable(false);
+      }
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       if (this.platform.is('cordova')) {
@@ -110,7 +116,9 @@ export class LDSWarApp {
 
       // WATCH USER ACCOUNT
       this.auth.getUserData().subscribe(data => {
-        this.menu.enable(true);
+        if (this.menu) {
+          this.menu.enable(true);
+        }
         //this.user = data;
         this.pages = [
 	      { headingTitle: 'My Account', pages: [
@@ -148,7 +156,9 @@ export class LDSWarApp {
           ]},
         ];
         this.isAppInitialized = false;
-        this.menu.enable(false);
+        if (this.menu) {
+          this.menu.enable(false);
+        }
         this.nav.setRoot(FirstRunPage);
       });
       if (this.platform.is('cordova')) {
@@ -165,8 +175,12 @@ export class LDSWarApp {
 
   logout() {
     this.auth.logout().subscribe(function() {
-      this.menu.enable(false);
-      this.nav.setRoot(WelcomePage);
+      if (this.menu) {
+        this.menu.enable(false);
+      }
+      if (this.nav) {
+        this.nav.setRoot(WelcomePage);
+      }
     });
   }
 }

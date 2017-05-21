@@ -5,6 +5,7 @@ import { MainPage } from '../../pages/pages';
 import { LoginPage } from '../login/login';
 import { ForgotPasswordPage } from '../forgot-password/forgot-password';
 import { AuthProvider } from '../../providers/auth';
+import { PointsProvider, ReportPoints } from '../../providers/points';
 
 @Component({
   selector: 'page-signup',
@@ -12,18 +13,21 @@ import { AuthProvider } from '../../providers/auth';
 })
 export class SignupPage {
 
-  public form: {firstName: string, lastName: string, email: string, password: string} = {
-    firstName: 'Test',
-    lastName: 'Test',
-    email: 'test@example.com',
-    password: 'demo1234'
+  public form: {firstName: string, lastName: string, email: string, password: string, organization: string} = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    organization: 'allenRanch'
   };
+  public reportPoints: ReportPoints;
   
   alertMessage: string;
 
   constructor(
       private navCtrl: NavController,
       private auth: AuthProvider,
+      public points: PointsProvider,
       private menu: MenuController,
       private alertController: AlertController,
       private toastCtrl: ToastController,
@@ -46,43 +50,77 @@ export class SignupPage {
 
     this.auth.registerUser(this.form).subscribe(registerData => {
       this.auth.loginWithEmail(registerData).subscribe(loginData => {
-        setTimeout(() => {
-          loading.dismiss();
-          this.menu.enable(true);
-          this.navCtrl.setRoot(MainPage);
-        }, 1000);
+        this.reportPoints = new ReportPoints('registration');
+        this.points.add(this.reportPoints).subscribe(key => {
+          let alert = this.alertController.create({
+            title: 'Registraton Success!',
+            message: "You have been rewarded your first 5 W.A.R. Points!",
+            buttons: ['Ok']
+          });
+          alert.present();
+          setTimeout(() => {
+            this.menu.enable(true);
+            if (loading) {
+              loading.dismiss();
+            }
+            //if (this.navCtrl) {
+              //this.navCtrl.setRoot(MainPage);
+            //}
+          }, 1000);
+        }, err => {
+          console.log(err)
+        });
       }, loginError => {
         setTimeout(() => {
-          loading.dismiss();
+          if (loading) {
+            loading.dismiss();
+          }
           this.SignUpError(loginError);
         }, 1000);
       });
     }, registerError => {
       setTimeout(() => {
-        loading.dismiss();
+        if (loading) {
+          loading.dismiss();
+        }
         this.SignUpError(registerError);
       }, 1000);
     });
   }
 
   SignUpError(error): void {
-    switch (error.code) {
-      case "auth/email-already-in-use":
-          this.alertMessage = "The specified email is already in use!"
-          break;
-      case "auth/invalid-email":
-          this.alertMessage = "The specified email is not valid!"
-          break;
-      case "auth/operation-not-allowed":
-          this.alertMessage = "Your account has been disabled. Please contact support!"
-          break;
-      case "auth/weak-password":
-          this.alertMessage = "Password should be at least 6 characters!"
-          break;
+    if (typeof(error) == 'string') {
+      this.alertMessage = error;
+    } else if (error && error.code) {
+      switch (error.code) {
+        case "auth/email-already-in-use":
+            this.alertMessage = "That email is already in use!"
+            break;
+        case "auth/invalid-email":
+            this.alertMessage = "That email is not valid!"
+            break;
+        case "auth/operation-not-allowed":
+            this.alertMessage = "Your account has been disabled. Please contact support!"
+            break;
+        case "auth/weak-password":
+            this.alertMessage = "Password should be at least 6 characters!"
+            break;
+        case "auth/user-disabled":
+            this.alertMessage = "Your account has been disabled. Please contact support!"
+            break;
+        case "auth/user-not-found":
+            this.alertMessage = "We could not find your account, try another email address"
+            break;
+        case "auth/wrong-password":
+            this.alertMessage = "That was the wrong password, please try again"
+            break;
+        default:
+            this.alertMessage = "Failed to sign up."
+      }
     }
     let alert = this.alertController.create({
       title: 'Sign Up Failed',
-      subTitle: this.alertMessage,
+      message: this.alertMessage,
       buttons: ['Ok']
     });
     alert.present();

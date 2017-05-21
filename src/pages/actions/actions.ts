@@ -15,9 +15,11 @@ import { PointsLogPage } from '../points-log/points-log';
 export class ActionsPage {
 
   public points: FirebaseObjectObservable<any>;
+  public currentUser: FirebaseObjectObservable<any>;
 
   classroom: boolean = false;
   dutyToGod: boolean = false;
+  daily: boolean = false;
   friendToActivity: boolean = false;
   friendToChurch: boolean = false;
   indexing: boolean = false;
@@ -31,6 +33,9 @@ export class ActionsPage {
   social: boolean = false;
   temple: boolean = false;
   testimony: boolean = false;
+  weekly: boolean = false;
+
+  show: boolean = false;
 
   classroomKey: string;
   dutyToGodKey: string;
@@ -59,6 +64,7 @@ export class ActionsPage {
       afdb: AngularFireDatabase) {
 
     this.points = afdb.object('/points/' + this.auth.uid);
+    this.currentUser = afdb.object('/users/' + this.auth.uid);
     
     let dateNow = moment().local();
     this.dateKey = dateNow.format('YYYY-MM-DD');
@@ -113,6 +119,16 @@ export class ActionsPage {
           this.temple = true;
         } else if (snapshot.key == this.testimonyKey) {
           this.testimony = true;
+        }
+        if (this.prayer && this.scripture && this.lesson && this.journal) {
+          this.daily = true;
+        } else {
+          this.daily = false;
+        }
+        if (this.dutyToGod && this.temple && this.testimony && this.scouting && this.missionPrep) {
+          this.weekly = true;
+        } else {
+          this.weekly = false;
         }
       });
     }, error => {

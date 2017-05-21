@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { AngularFireModule } from 'angularfire2';
 import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { AuthProvider } from '../../providers/auth';
@@ -21,7 +21,8 @@ export class PointsLogPage {
       public navParams: NavParams,
       public data: DataProvider,
       public auth: AuthProvider,
-      public points: PointsProvider) {
+      public points: PointsProvider,
+      public alertCtrl: AlertController) {
 
     this.userPoints = this.data.object('/points/' + this.auth.uid);
     this.pointHistory = this.data.list('/pointLogs/' + this.auth.uid);
@@ -39,11 +40,29 @@ export class PointsLogPage {
   }
 
   wipePoints() {
-    this.points.wipe().subscribe(key => {
-      this.navCtrl.pop();
-    }, err => {
-      console.log(err)
+    let confirm = this.alertCtrl.create({
+      title: 'WIPE ALL Points?',
+      message: 'Are you sure that you want to reset your points?',
+      buttons: [
+        {
+          text: 'Disagree',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Agree',
+          handler: () => {
+            this.points.wipe().subscribe(key => {
+              this.navCtrl.pop();
+            }, err => {
+              console.log(err)
+            });
+          }
+        }
+      ]
     });
+    confirm.present();
   }
 
 }

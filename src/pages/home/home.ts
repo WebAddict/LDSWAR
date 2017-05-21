@@ -6,6 +6,7 @@ import { DataProvider } from '../../providers/data';
 import { FirebaseApp } from 'angularfire2';
 import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Storage } from '@ionic/storage';
+import * as moment from 'moment';
 
 import { WelcomePage } from '../welcome/welcome';
 
@@ -19,6 +20,10 @@ export class HomePage {
   public currentUser: FirebaseObjectObservable<any[]>;
   //public feedItems: Array<any> = [];
   public feedItems: FirebaseListObservable<any[]>;
+  public canShare: boolean = false;
+  public counter: string;
+  public WarBegins: any;
+  private interval: any;
 
   constructor(
       private navCtrl: NavController,
@@ -27,6 +32,8 @@ export class HomePage {
       public data: DataProvider,
       private fbApp: FirebaseApp,
       private storage: Storage) {
+    
+    this.WarBegins = moment("2017-06-01");
 
     //this.feedItems.push(1);
     if (this.auth.uid) {
@@ -57,6 +64,34 @@ export class HomePage {
     })
 
   }
+  updateCounter() {
+    let now = moment();
+    if (now.isAfter(this.WarBegins)) {
+      this.counter = "";
+      clearInterval(this.interval);
+    }
+    let difference = this.WarBegins.diff(now);
+
+    // get total seconds between the times
+    var delta = Math.abs(difference) / 1000;
+
+    // calculate (and subtract) whole days
+    var days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+
+    // calculate (and subtract) whole hours
+    var hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+    // calculate (and subtract) whole minutes
+    var minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+
+    // what's left is seconds
+    var seconds = Math.floor(delta) % 60;  // in theory the modulus is not required
+
+    this.counter = days + " days, " + hours + " hours, " + minutes + " mins, " + seconds + " sec";
+  }
 
   logout() {
     this.auth.logout().subscribe(function() {
@@ -74,6 +109,10 @@ export class HomePage {
   viewItem(){
  
   }
-  ionViewDidLoad(){
+  ionViewWillEnter(){
+    this.interval = setInterval(() => { this.updateCounter(); }, 1000);
+  }
+  ionViewWillLeave(){
+    clearInterval(this.interval);
   }
 }
