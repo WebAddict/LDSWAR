@@ -82,7 +82,7 @@ export class LDSWarApp {
               { title: 'Home', component: HomePage, icon: 'home' },
               { title: 'Lessons', component: LessonsPage, icon: 'book' },
               { title: 'Actions', component: ActionsPage, icon: 'compass' },
-              { title: 'Rewards', component: RewardsPage, icon: 'cart' },
+              //{ title: 'Rewards', component: RewardsPage, icon: 'cart' },
               //{ title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' },
             ]},
           ];

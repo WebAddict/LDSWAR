@@ -173,7 +173,7 @@ export class AuthProvider {
         provider.addScope('public_profile');
         provider.addScope('email');
         //provider.addScope('user_birthday');
-        this.afAuth.auth.signInWithRedirect(provider).then((firebaseUser) => {
+        this.afAuth.auth.signInWithPopup(provider).then((firebaseUser) => {
           //this.firebaseUser = firebaseUser;
           this.data.object('/users/' + firebaseUser.uid).update({
             displayName: firebaseUser.displayName,
