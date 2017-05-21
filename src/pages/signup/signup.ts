@@ -52,37 +52,37 @@ export class SignupPage {
       this.auth.loginWithEmail(registerData).subscribe(loginData => {
         this.reportPoints = new ReportPoints('registration');
         this.points.add(this.reportPoints).subscribe(key => {
-          let alert = this.alertController.create({
-            title: 'Registraton Success!',
-            message: "You have been rewarded your first 5 W.A.R. Points!",
-            buttons: ['Ok']
-          });
-          alert.present();
-          setTimeout(() => {
-            this.menu.enable(true);
-            if (loading) {
-              loading.dismiss();
-            }
+          //let alert = this.alertController.create({
+          //  title: 'Registraton Success!',
+          //  message: "You have been rewarded your first 5 W.A.R. Points!",
+          //  buttons: ['Ok']
+          //});
+          //alert.present();
+          //setTimeout(() => {
+          //  this.menu.enable(true);
+          //  if (loading) {
+          //    loading.dismiss();
+          //  }
             //if (this.navCtrl) {
               //this.navCtrl.setRoot(MainPage);
             //}
-          }, 1000);
+          //}, 1000);
         }, err => {
           console.log(err)
         });
       }, loginError => {
         setTimeout(() => {
-          if (loading) {
-            loading.dismiss();
-          }
+          //if (loading) {
+          //  loading.dismiss();
+          //}
           this.SignUpError(loginError);
         }, 1000);
       });
     }, registerError => {
       setTimeout(() => {
-        if (loading) {
-          loading.dismiss();
-        }
+        //if (loading) {
+        //  loading.dismiss();
+        //}
         this.SignUpError(registerError);
       }, 1000);
     });

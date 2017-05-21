@@ -35,20 +35,20 @@ export class LoginPage {
   }
 
   login() {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
+    //let loading = this.loadingCtrl.create({
+    //  content: 'Please wait...'
+    //});
+    //loading.present();
 
     this.auth.loginWithEmail(this.form).subscribe(data => {
-      if (loading) {
-        loading.dismiss();
-      }
+      //if (loading) {
+      //  loading.dismiss();
+      //}
     }, err => {
       setTimeout(() => {
-        if (loading) {
-          loading.dismiss();
-        }
+        //if (loading) {
+        //  loading.dismiss();
+        //}
         this.LoginError(err);
       }, 1000);
     });

@@ -70,7 +70,9 @@ export class LDSWarApp {
             ]},
           ];
           this.isAppInitialized = false;
-          this.nav.setRoot(FirstRunPage);
+	  if (this.nav) {
+            this.nav.setRoot(FirstRunPage);
+	  }
         } else {
           this.currentUser = afdb.object('/users/' + firebaseUser.uid);
           if (this.menu) {
@@ -92,7 +94,9 @@ export class LDSWarApp {
           ];
           if (!this.isAppInitialized) {
             this.isAppInitialized = true;
-            this.nav.setRoot(TabsPage);
+	    if (this.nav) {
+              this.nav.setRoot(TabsPage);
+	    }
           }
         }
       });
@@ -170,7 +174,9 @@ export class LDSWarApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component, page.params);
+    if (this.nav) {
+      this.nav.setRoot(page.component, page.params);
+    }
   }
 
   logout() {
