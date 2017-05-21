@@ -86,8 +86,8 @@ export class LDSWarApp {
             { headingTitle: 'My Sections', pages: [
               //{ title: 'Tabed Page', component: TabsPage, icon: 'browsers' },
               { title: 'Home', component: HomePage, icon: 'home' },
-              { title: 'Lessons', component: LessonsPage, icon: 'book' },
               { title: 'Actions', component: ActionsPage, icon: 'compass' },
+              { title: 'Lessons', component: LessonsPage, icon: 'book' },
               //{ title: 'Rewards', component: RewardsPage, icon: 'cart' },
               //{ title: 'Missionaries', component: MissionariesPage, icon: 'bicycle' },
             ]},

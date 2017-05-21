@@ -43,10 +43,10 @@ export class SignupPage {
   }
 
   register() {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    loading.present();
+    //let loading = this.loadingCtrl.create({
+    //  content: 'Please wait...'
+    //});
+    //loading.present();
 
     this.auth.registerUser(this.form).subscribe(registerData => {
       this.auth.loginWithEmail(registerData).subscribe(loginData => {
