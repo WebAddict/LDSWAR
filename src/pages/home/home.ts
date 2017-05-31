@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-
+import { DomSanitizer } from '@angular/platform-browser';
 import { MenuController, AlertController, NavController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth';
 import { DataProvider } from '../../providers/data';
 import { FirebaseApp } from 'angularfire2';
-import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 
@@ -18,8 +18,10 @@ export class HomePage {
   public hits: number;
   public menuenabled: boolean = false;
   public currentUser: FirebaseObjectObservable<any[]>;
-  //public feedItems: Array<any> = [];
-  public feedItems: FirebaseListObservable<any[]>;
+  public feedItemsObservable: FirebaseListObservable<any[]>;
+  public feedItems: Array<any> = [];
+  public predicate: string = "postDate";
+  public reverse: boolean = true;
   public canShare: boolean = false;
   public showCountdown: boolean = false;
   public counter: string;
@@ -32,7 +34,9 @@ export class HomePage {
       public auth: AuthProvider,
       public data: DataProvider,
       private fbApp: FirebaseApp,
+      private afdb: AngularFireDatabase,
       private alertController: AlertController,
+      public sanitizer: DomSanitizer,
       private storage: Storage) {
     
     this.WarBegins = moment("2017-06-01");
@@ -40,7 +44,21 @@ export class HomePage {
     //this.feedItems.push(1);
     if (this.auth.uid) {
       this.currentUser = this.data.object('/users/' + this.auth.uid);
-      this.feedItems = this.data.list('/organization/allenRanch/feed');
+      this.feedItemsObservable = this.afdb.list('/organization/allenRanch/feed', {
+        preserveSnapshot: true,
+        query: {
+          orderByChild: 'postDate'
+        }
+      });
+      // subscribe to changes
+      this.feedItemsObservable.subscribe(snapshots => {
+        //console.log(snapshots);
+        this.feedItems = [];
+        snapshots.forEach(snapshot => {
+          this.feedItems.push(snapshot.val());
+          console.log(snapshot.val());
+        });
+      });
       //console.log(auth.currentUser);
       //var ref = this.fbApp.database().ref('/organization/allenRanch/feed');
       //ref.orderByKey().limitToLast(5).on("child_added", function(snapshot) {
@@ -109,6 +127,15 @@ export class HomePage {
     let alert = this.alertController.create({
       title: 'Coming Soon',
       message: "The 'Comment' feature is coming soon",
+      buttons: ['Ok']
+    });
+    alert.present();
+  }
+  postTime(postDate) {
+    let thePostMoment = moment(postDate);
+    let alert = this.alertController.create({
+      title: 'Posted Date',
+      message: thePostMoment.toISOString(),
       buttons: ['Ok']
     });
     alert.present();

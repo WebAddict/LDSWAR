@@ -10,6 +10,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
+// Importing other Modules
+import { MomentModule } from 'angular2-moment';
+
 // Importing Ionic Native
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -114,7 +117,8 @@ export function providers() {
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(myFirebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    MomentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),

@@ -23,14 +23,17 @@
   </ion-item>
 </ion-card>
 
-<ion-card *ngFor="let feedItem of feedItems | async">
-  <ion-item>
-    <ion-avatar item-left *ngIf="feedItem.photoURL">
-      <img src="{{feedItem.photoURL}}">
+<ion-card *ngFor="let feedItem of feedItems">
+  <ion-item text-wrap>
+    <ion-avatar item-left *ngIf="feedItem.avatarURL">
+      <img src="{{feedItem.avatarURL}}">
     </ion-avatar>
-    <h2>{{feedItem.title}}</h2>
+    <h3>{{feedItem.title}}</h3>
     <p *ngIf="feedItem.subtitle">{{feedItem.subtitle}}</p>
   </ion-item>
+	<div *ngIf="feedItem.youtubeUrl" class="item" style="position:relative;overflow:hidden;padding-bottom:56.25%;height:0;">
+		<iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(feedItem.youtubeUrl)" frameborder="0" allowfullscreen="" width="560" height="315" style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+	</div>
   <img *ngIf="feedItem.photoURL" src="{{feedItem.photoURL}}">
   <ion-card-content *ngIf="feedItem.htmlBody" [innerHTML]="feedItem.htmlBody"></ion-card-content>
   <ion-row>
@@ -46,8 +49,11 @@
         <div>{{feedItem.comments ? feedItem.comments : 0}} Comments</div>
       </button>
     </ion-col>
-    <ion-col center text-center>
-      <ion-note>{{feedItem.postDate | date:'short'}}</ion-note>
+    <ion-col>
+      <button ion-button icon-left clear small (click)="postTime(feedItem.postDate)">
+        <ion-icon name="clock"></ion-icon>
+        <div>{{feedItem.postDate | amTimeAgo}}</div>
+      </button>
     </ion-col>
   </ion-row>
 </ion-card>

@@ -1,4 +1,10 @@
 .login-email {
+  ion-content, .content-md, .content-ios {
+    background: -webkit-gradient(left top, #efefef, #e0e0e0);
+    background: -o-linear-gradient(bottom right, #efefef, #e0e0e0);
+    background: -moz-linear-gradient(bottom right, #efefef, #e0e0e0);
+    background: linear-gradient(to bottom right, #efefef, #e0e0e0);
+  }
   //background-image: url("../../assets/img/auth-background.jpg");
   background-size: 100%;
   background-position-y: 50%;
