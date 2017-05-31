@@ -69,10 +69,12 @@ export class AuthProvider {
             // add this device to my connections list
             //var con = myConnectionsRef.push(true);
             onlineUsersRef.set({displayName: firebaseUser.displayName, organization: 'allenRanch', photoURL: firebaseUser.photoURL, onlineSince: firebase.database.ServerValue.TIMESTAMP});
+            currentUserRef.child('onlineSince').set(firebase.database.ServerValue.TIMESTAMP);
 
             // when I disconnect, remove this device
             //con.onDisconnect().remove();
             onlineUsersRef.onDisconnect().remove();
+            currentUserRef.child('onlineSince').onDisconnect().remove();
 
             // when I disconnect, update the last time I was seen online
             lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
@@ -115,7 +117,7 @@ export class AuthProvider {
   registerUser(credentials: any) {
     return Observable.create(observer => {
       if (!credentials.organization || credentials.organization != 'allenRanch') {
-          observer.error("At this time, this app is only available for Allen Ranch Members...");
+          observer.error("This app is currently only available for Allen Ranch Members... Support for other wards will launch July 1st 2017.");
       } else {
         this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then((firebaseUser) => {
           let displayName = credentials.firstName + ' ' + credentials.lastName;

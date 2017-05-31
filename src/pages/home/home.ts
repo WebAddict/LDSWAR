@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { MenuController, NavController } from 'ionic-angular';
+import { MenuController, AlertController, NavController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth';
 import { DataProvider } from '../../providers/data';
 import { FirebaseApp } from 'angularfire2';
@@ -21,6 +21,7 @@ export class HomePage {
   //public feedItems: Array<any> = [];
   public feedItems: FirebaseListObservable<any[]>;
   public canShare: boolean = false;
+  public showCountdown: boolean = false;
   public counter: string;
   public WarBegins: any;
   private interval: any;
@@ -31,6 +32,7 @@ export class HomePage {
       public auth: AuthProvider,
       public data: DataProvider,
       private fbApp: FirebaseApp,
+      private alertController: AlertController,
       private storage: Storage) {
     
     this.WarBegins = moment("2017-06-01");
@@ -68,6 +70,7 @@ export class HomePage {
     let now = moment();
     if (now.isAfter(this.WarBegins)) {
       this.counter = "";
+      this.showCountdown = false;
       clearInterval(this.interval);
     }
     let difference = this.WarBegins.diff(now);
@@ -93,6 +96,24 @@ export class HomePage {
     this.counter = days + " days, " + hours + " hours, " + minutes + " mins, " + seconds + " sec";
   }
 
+  like() {
+    let alert = this.alertController.create({
+      title: 'Coming Soon',
+      message: "The 'Like' feature is coming soon",
+      buttons: ['Ok']
+    });
+    alert.present();
+  }
+
+  comment() {
+    let alert = this.alertController.create({
+      title: 'Coming Soon',
+      message: "The 'Comment' feature is coming soon",
+      buttons: ['Ok']
+    });
+    alert.present();
+  }
+
   logout() {
     this.auth.logout().subscribe(function() {
       this.navCtrl.setRoot(WelcomePage);
@@ -110,9 +131,15 @@ export class HomePage {
  
   }
   ionViewWillEnter(){
-    this.interval = setInterval(() => { this.updateCounter(); }, 1000);
+    let now = moment();
+    if (now.isBefore(this.WarBegins)) {
+      this.showCountdown = true;
+      this.interval = setInterval(() => { this.updateCounter(); }, 1000);
+    }
   }
   ionViewWillLeave(){
-    clearInterval(this.interval);
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   }
 }

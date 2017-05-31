@@ -9,7 +9,7 @@
 
 <ion-content>
 
-<ion-card>
+<ion-card *ngIf="showCountdown">
   <ion-card-header><h3 style="text-align: center;">The &quot;WAKE AND RISE&quot; Program Starts in:<br><span style="font-size: 130%;">{{counter}}</span></h3></ion-card-header>
 </ion-card>
 
@@ -29,19 +29,19 @@
       <img src="{{feedItem.photoURL}}">
     </ion-avatar>
     <h2>{{feedItem.title}}</h2>
-    <p *ngIf="feedItem.subtitle">November 5, 1955</p>
+    <p *ngIf="feedItem.subtitle">{{feedItem.subtitle}}</p>
   </ion-item>
   <img *ngIf="feedItem.photoURL" src="{{feedItem.photoURL}}">
   <ion-card-content *ngIf="feedItem.htmlBody" [innerHTML]="feedItem.htmlBody"></ion-card-content>
   <ion-row>
     <ion-col>
-      <button ion-button icon-left clear small>
+      <button ion-button icon-left clear small (click)="like()">
         <ion-icon name="thumbs-up"></ion-icon>
         <div>{{feedItem.likes ? feedItem.likes : 0}} Likes</div>
       </button>
     </ion-col>
     <ion-col>
-      <button ion-button icon-left clear small>
+      <button ion-button icon-left clear small (click)="comment()">
         <ion-icon name="text"></ion-icon>
         <div>{{feedItem.comments ? feedItem.comments : 0}} Comments</div>
       </button>
