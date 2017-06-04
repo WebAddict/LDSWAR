@@ -55,7 +55,7 @@ export class HomePage {
         //console.log(snapshots);
         this.feedItems = [];
         snapshots.forEach(snapshot => {
-          this.feedItems.push(snapshot.val());
+          this.feedItems.unshift(snapshot.val());
           console.log(snapshot.val());
         });
       });

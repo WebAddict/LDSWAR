@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 //import { AngularFire, AuthProviders, FirebaseAuthState, AuthMethods } from 'angularfire2';
 
-import { AngularFireModule, FirebaseApp } from 'angularfire2';
-import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabaseModule, AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { FirebaseApp } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase/app'; // app and typings
 
 import { Observable } from 'rxjs/Observable';
